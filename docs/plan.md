@@ -91,48 +91,71 @@ at first and Strapi later, so swapping the source is a one-file change rather th
 
 | | Piece | What it ends with | Est. |
 |---|---|---|---|
-| S0 | Strapi on 512 MB, for real | A Lightsail box with swap, Strapi running, the admin opened and timed, memory measured under load — and a yes or no on the 512 MB plan | ~45 min + your console steps |
+| S0a | A Strapi build that can reach the box | `cms-build.yml` on Actions (ubuntu x64): install, `strapi build`, tar the artifact, plus the step that puts it on Lightsail. P6 reuses it unchanged | ~40 min |
+| S0b | Strapi on 512 MB, for real | A box with swap, that artifact running, the admin opened and timed, memory measured under load — a yes or no on the 512 MB plan | ~45 min + your console steps |
+
+**S0 was one piece and is now two, because as written it could not start.** "Stand the box up, run
+Strapi" needs a *built* Strapi, and nothing in the plan produced one. Building it on your Mac does
+not transfer: your machine is arm64, the box is x86-64, and `better-sqlite3` is a native module —
+the brief said so and an earlier draft of this plan dropped it. A slice of P6 was hiding inside the
+spike; better to name it than to meet it.
+
+Two consequences. My claim that you run the spike while I build P0 and P1 holds only for S0b — S0a
+is on the spike's own critical path. And S0b's number is a **floor**: it runs a bare Strapi, while
+the live one also carries i18n, the R2 provider and sharp. If the floor is uncomfortable, the
+ceiling is worse. Node version gets pinned identically on the box, in CI and on your Mac.
 
 I can't run the AWS CLI in my sandbox, so the console and `aws` steps come to you as commands to
-paste. While you're doing those, I build P0 and P1 — they don't depend on the answer.
+paste.
 
 ### Then — the site, on seed data
 
 | | Piece | What it ends with | Est. |
 |---|---|---|---|
-| P0 | Monorepo scaffold: `cms/`, `web/`, conventions | `pnpm dev` runs an empty Astro site | ~30 min |
-| P1 | The content contract | Strapi schema files **and** a matching folder of seed JSON: 7 lines, 35 placeholder models, 12 industries, 5 showrooms | ~50 min |
-| P2a | Site shell + catalog | Nav, footer, design tokens, `/san-pham` with working filter and search, `/san-pham/[slug]` | ~60 min |
-| P2b | The remaining pages | Industries, services, AI tech, showroom, partnership, about, contact | ~60 min |
+| P0 | Monorepo scaffold: `cms/`, `web/`, conventions | `pnpm dev` runs an empty Astro site; the Functions folder shape and deploy command decided | ~30 min |
+| P1 | The content contract | `web/src/content/types.ts` first — the adapter's output types — then Strapi schemas and seed JSON that both conform to it. Rich text is Markdown | ~60 min |
+| P2a | Site shell + catalog | Nav, footer, design tokens, `/san-pham` with client-side filter and search over a build-time index, `/san-pham/[slug]`. Every string through `t()` over `vi.json` | ~60 min |
+| P2b | The remaining pages | Industries, services, AI tech, showroom, partnership, about, contact. The four code-side lists live in `content/*.json`, not in templates | ~60 min |
 | P2c | Homepage | The eight bands, from P2a/P2b components | ~30 min |
-| P3 | The lead path | One `lead` shape, six form layouts, Turnstile, a Cloudflare Worker that takes the post | ~40 min |
-| P3b | Attachments | Private R2 bucket, the presigned-upload Worker, a lifecycle rule, the warranty ticket's file picker | ~30 min |
-| P4 | Site live | Cloudflare Pages + GitHub Actions build | ~30 min |
+| P3 | The lead path | `packages/lead-schema` — kinds, fields, validation — imported by both the forms and the Worker. Turnstile, the email provider, `_site/settings.json` | ~50 min |
+| P3b | Attachments | Private bucket, CORS rule, presign with an S3 token, `pending/` → `tickets/` copy, lifecycle rule, the file picker | ~40 min |
+| P4 | Site live | Cloudflare Pages + GitHub Actions, with noindex on until launch | ~30 min |
 
 **At the end of P4 the site is on the internet, in Vietnamese, with placeholder catalog data, a
-homepage, and leads and support tickets arriving with photos attached.** Not launch yet — the client
-can't edit. But it's real, and you can judge it.
+homepage, and leads and support tickets arriving with photos attached.** Not launch — the client
+can't edit, and ticket photos are readable only in the Cloudflare dashboard until P7b. But it's
+real, and you can judge it.
 
 ### Then — the CMS behind it, which is launch
 
 | | Piece | What it ends with | Est. |
 |---|---|---|---|
-| P5 | Strapi locally | Types created, seed imported, the site builds from Strapi instead of JSON | ~50 min |
-| P6 | Lightsail, for keeps | Caddy, process manager, R2 media provider, admin accounts for the client | ~60 min + your console work |
-| P7 | The loop closes | Publish in Strapi → webhook → Pages rebuilds; nightly SQLite backup to R2 | ~30 min |
+| P5 | Strapi locally | Types created, seed imported, the adapter mapping Strapi's REST shape into the P1 types | ~50 min |
+| P6 | Lightsail, for keeps | The deploy recipe as parameterised scripts: artifact transfer, prod install with Strapi stopped, SQLite path outside the deploy dir, systemd unit, Caddyfile and sslip.io hostname, swap and swappiness persisted, SSH restricted, R2 media provider, client accounts | ~90 min + your console work |
+| P7 | The loop closes | `/api/rebuild` relaying Strapi's webhook to Actions, a concurrency group on the build, nightly `sqlite3 .backup` by cron **on the box** | ~40 min |
+| P7b | The attachment viewer | Admin-authenticated route that presigns a GET, plus the Content Manager customisation that shows a lead's attachments as links | ~60 min |
 
-**At the end of P7 the client logs in, changes a product, and sees it live two minutes later.**
-That is launch. Roughly 8 hours of machine work in total, plus your console steps and review passes.
+**At the end of P7b the client logs in, changes a product, sees it live two minutes later, and can
+open a support ticket's photos.** That is launch. Roughly 10 hours of machine work, plus your
+console steps and review passes.
+
+P6 went from 60 to 90 minutes because "Actions builds, the box only serves" was a principle with no
+procedure under it, and P7's backup moved from Actions to a cron on the box — Actions cannot reach a
+SQLite file on Lightsail. Writing P6 as scripts taking name, port, domain and bucket as variables
+costs nothing now and is the whole difference between a second client being a copy and a
+re-derivation.
 
 ### After launch
 
 | | Piece | What it ends with | Est. |
 |---|---|---|---|
-| P8 | English | Strapi localization on, EN routes filled, switcher shown | ~40 min |
+| P8 | English | `en.json` filled, Strapi localization populated, switcher shown | ~60 min |
 
-I'd ship Vietnamese only at MVP and hide the language switcher, with the routes already built to
-take `/en/`. Writing and checking a second language of marketing copy is a real cost and it buys
-nothing until a foreign customer is actually looking.
+I'd ship Vietnamese only at MVP and hide the language switcher, with routes already built to take
+`/en/`. The estimate rose because an earlier draft priced it as a translation job; it is only that
+if the strings are already in a dictionary, which is why P2a puts them there from the first page.
+Two things to settle at P5, not now: whether route segments are translated (`/en/san-pham` or
+`/en/products`), and whether Strapi carries relations across locales or needs them re-linked.
 
 ---
 
@@ -200,9 +223,35 @@ Settled, each reversible, each written here so the next session doesn't reopen i
 | Page prose | Stays in code | Changes twice a year; promotable in an afternoon |
 | Localization | Every customer-facing field localized from the start, VI filled only | Free while empty, a migration once it isn't |
 | Catalog data | Placeholders carrying the designer's own badges | Ships honestly; real data swaps in as it arrives |
-| Spike pass mark | Admin under 3s, save under 2s, no OOM restart in 10 min | Miss it and we take the 1 GB plan |
+| Spike pass mark | Admin under 3s, save under 2s, no OOM restart in 10 min | Miss it and we take the 1 GB plan ($5 → $7) |
 
-That is every open question closed. Nothing is waiting on you except go.
+### Added after review
+
+Two independent reviews on a different model read both documents before any code was written. They
+left the architecture alone and took the contracts apart; these came out of it:
+
+| | Decision | Why |
+|---|---|---|
+| Presigning | S3 API token + `aws4fetch`, not the native binding | The binding **cannot** presign. An earlier draft claimed both. |
+| CORS | A rule on the attachments bucket, written down | A browser PUT fails at preflight without it |
+| Size cap | `head()` after upload, not a claim at slip time | A presigned URL carries no size limit |
+| Rate limit | Dropped; an HMAC `sig` replaces the per-IP check | Pages Functions are stateless and pages.dev has no WAF |
+| Rebuild | A third Function relays Strapi's webhook | `repository_dispatch` needs an `event_type` Strapi can't send; direct = 422 |
+| Backup | A cron on the box | Actions cannot reach SQLite on Lightsail |
+| Notify address | Build writes `_site/settings.json`; Worker reads that | The Worker never calls Strapi, so it can't read `site_settings` |
+| Email | A single-sender-verified provider, named | No custom domain, so domain-verified senders won't send |
+| Catalog types | One `product` with `kind`, not three collections | Screen 01 shows them in one grid; software had no type at all |
+| Badges | Two booleans, not one enum | Screen 02 shows both at once; `published` collided with Strapi's own |
+| Specs | A repeatable component | A JSON blob blocks filtering, comparison and any calculator |
+| Lead refs | Slugs + `details` + `schema_version`, not relations | The Worker has no Strapi at first, and R2 copies have no migration |
+| SEO | A `seo` component, and noindex until launch | P4 publishes placeholder slugs to a public URL Google will index |
+| Strings | A `t()` dictionary from P2a | Otherwise P8 is half a day of extraction, not a translation |
+| Reuse | `packages/lead-schema`; P6 as parameterised scripts | The only parts worth lifting to a next client, free if built that way |
+| Multi-tenant | No, deliberately | Strapi CE has no per-row admin permissions; two clients would see each other |
+
+Still open, and only this: whether to keep the strict attachment-viewing design (P7b, ~60 min) or
+let the MVP email a 24-hour link. Recommendation is to keep it strict — the gap it creates falls
+entirely inside pre-launch.
 
 ## What we are giving up
 

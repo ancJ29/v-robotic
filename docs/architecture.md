@@ -58,7 +58,7 @@ flowchart LR
         PAGES["Pages<br/>static site on the edge"]
         FN["Pages Functions<br/>/api/lead · /api/upload-url"]
         TS["Turnstile"]
-        R2[("R2<br/>media · attachments · backups")]
+        R2[("R2 · three buckets<br/>media (public) · attachments (private)<br/>backups (private)")]
     end
 
     MAIL["Email notify<br/>free tier sender"]
@@ -83,7 +83,7 @@ flowchart LR
     FN -.->|"Phase 2 only"| CD
     V -.->|"presigned PUT"| R2
 
-    GA -->|"nightly SQLite backup"| R2
+    PM -->|"nightly cron · sqlite3 .backup"| R2
 ```
 
 Read it as three loops that barely touch each other:
@@ -166,8 +166,25 @@ sequenceDiagram
     F-->>V: thank-you state
 ```
 
-Why this and not the brief's "post straight to Strapi": that version lets the open internet write to
-the database and puts the server's address in the page source. Here the server stays unlisted, spam
+**Two things this flow needs that an earlier draft left as gestures.**
+
+*"Email notify, free tier sender" is not a provider.* A Worker cannot speak SMTP; it needs an HTTP
+email API. And most of them — Resend among them — will only send to the account owner's own address
+until a sending domain is verified, which this plan has no custom domain for. So the MVP uses a
+provider that verifies a **single sender address** instead of a domain (Brevo and similar do this),
+named with its from-address and its API key in Pages' secrets. When the custom domain arrives, the
+provider choice can be revisited.
+
+*The Worker cannot read `lead_notify_email` from Strapi.* That field was put in `site_settings` on
+the reasoning that the client should own it — which is right — but the Function runs at request
+time and never calls Strapi, by design. So the build carries it across: the Astro build writes the
+handful of runtime-needed settings to `dist/_site/settings.json`, and the Function reads that with
+the assets binding, falling back to a Pages environment variable when the file is absent. The client
+still edits the address in Strapi; it reaches the Worker at the next build, which a publish triggers
+anyway.
+
+Why a Function at all, and not the brief's "post straight to Strapi": that version lets the open
+internet write to the database and puts the server's address in the page source. Here the server stays unlisted, spam
 is stopped at the edge before it costs anything, and in Phase 1 the whole thing works with no server
 at all. Leads land in two places on purpose — email gets read, R2 doesn't get lost.
 
@@ -216,35 +233,84 @@ aren't guessable URLs on the open web; and the whole path stands up before Light
 
 ### Worker, not Lambda
 
-A Cloudflare Worker, and it's not close. R2 and Pages are already Cloudflare, so the Worker sits
-beside the bucket with a native binding and no cross-cloud credentials; a Lambda would mean a second
-provider, a second deploy, an AWS key pair held somewhere, and a cold start between a visitor and
-their upload. The only argument for Lambda would be if the rest of the stack were AWS, and it isn't
-— Lightsail only serves the admin panel.
+A Cloudflare Worker, for proximity and one deploy: it ships with the site's build, shares its
+secrets, and sits in the same network as the bucket. A Lambda would mean a second provider, a second
+deploy and a cold start between a visitor and their upload, for nothing gained — the rest of the
+stack isn't AWS; Lightsail only serves the admin panel.
+
+**Not** because a native binding avoids credentials. That was wrong in an earlier draft, and it
+matters because it changes what gets built: **R2's native binding cannot produce a presigned URL.**
+Presigning needs R2's S3-compatible API — an access key and secret scoped to the attachments bucket,
+held in Pages' encrypted environment, with a small signing library (`aws4fetch`) in the Function.
+The binding is still used, for what it can do: `head()` to inspect an object, `get`/`put` to move
+one.
 
 It deploys as a **Pages Function**, which *is* a Worker, just one that ships with the site's build
 rather than on its own. Same runtime, one deploy, one place to set secrets.
 
-### The two endpoints, and what they promise
+### CORS, which nothing works without
+
+A browser `PUT` to a presigned R2 URL fails at preflight until the bucket carries a CORS rule. This
+is the first thing P3b meets, so it is written down rather than discovered:
+
+```
+AllowedOrigins: the production pages.dev origin, plus preview subdomains
+AllowedMethods: PUT
+AllowedHeaders: Content-Type
+MaxAgeSeconds:  3600
+```
+
+The signature must cover `Content-Type`, or the browser's `PUT` is rejected for a signature
+mismatch.
+
+### The three endpoints, and what they promise
 
 ```
 POST /api/upload-url          public · Turnstile-gated
   in   { filename, contentType, bytes, turnstileToken }
-  checks  token valid · type in allow-list · bytes <= 10MB
-          <= 5 objects per ticket · per-IP rate limit
-  out  { putUrl, key }        putUrl expires in 5 minutes
-                              key = tickets/<random>/<random>.<ext>
+  checks  token valid · type in allow-list · claimed bytes <= 10MB
+  out  { putUrl, key, sig }   putUrl expires in 5 minutes
+                              key = pending/<random>/<random>.<ext>
+                              sig = HMAC over key+expiry, so /api/lead can
+                                    trust a key without stored state
 
 POST /api/lead                public · Turnstile-gated
-  in   { kind, name, phone, ..., attachmentKeys[] }
-  checks  token valid · required fields by kind
-          every key matches one this IP was just issued
+  in   { kind, name, phone, ..., attachments[{key, sig}] }
+  checks  token valid · required fields by kind · each sig valid
+          env.ATTACHMENTS.head(key) for REAL size and type;
+            over-size or wrong-type objects are deleted and rejected
+  does    copies accepted objects  pending/…  ->  tickets/<lead>/…
+  out  { ok }
+
+POST /api/rebuild             Strapi's webhook target · shared-secret header
+  checks  header matches REBUILD_SECRET
+  does    calls GitHub repository_dispatch with an event_type
   out  { ok }
 ```
 
-Secrets live in Pages' encrypted environment: an R2 access key scoped to **one** bucket, and the
-Turnstile secret. The attachments bucket is separate from the public media bucket, so a leak of one
-credential isn't a leak of both.
+Three corrections from an earlier draft are folded in above, each of which would otherwise have been
+found the hard way:
+
+- **The 10 MB cap was theatre.** It was checked when the slip was issued, but a presigned URL
+  carries no size limit of its own, so a 2 GB body with a valid slip succeeds. The honest check is
+  `head()` afterwards.
+- **"Every key matches one this IP was just issued" needed state**, and Pages Functions have none.
+  The HMAC `sig` replaces it: the Function verifies its own earlier signature and remembers nothing.
+- **The per-IP rate limit is dropped.** It needed state too, and `*.pages.dev` has no WAF rules to
+  lean on. Turnstile plus the type and size caps carry the load; if abuse appears, a KV namespace is
+  the cheap way back.
+
+Secrets in Pages' encrypted environment: the R2 S3 access key and secret scoped to the attachments
+bucket, the Turnstile secret, `REBUILD_SECRET`, a fine-grained GitHub token for the dispatch, and
+the email provider's key. The attachments bucket stays separate from the public media bucket, so a
+leak of one credential isn't a leak of both.
+
+### Turnstile tokens are single-use
+
+A warranty ticket with three photos is four gated calls, and one widget token works once. So verify
+once at the first `/api/upload-url` call and return a short-lived signed session the later calls
+present, rather than resetting the widget in front of the visitor three times. The pages.dev
+hostname and its preview subdomains go on the widget's allowed list.
 
 ### "Only admin can load, right?"
 
@@ -283,13 +349,33 @@ So: only a logged-in admin can *obtain* a link, and the link is useless within m
 close to "only admin can load" as object storage gets without proxying every byte through a server,
 which on a 512 MB box is exactly what we don't want to do.
 
+**What this costs, which an earlier draft committed to without budgeting.** "Strapi presigns and
+renders the link" is not a setting. It is a custom admin-authenticated route that signs a GET
+against the attachments bucket, plus an admin-panel customisation so a lead's attachments appear as
+links in the Content Manager — React, built in CI like the rest of the admin. Roughly an hour, and
+it appeared in no piece. It is now **P7b**, after P6.
+
+That leaves a real gap worth stating rather than hiding: between P4 (site live) and P7b, the Worker
+never presigns a read, emails carry no links, and Strapi doesn't exist until P6 — so a ticket photo
+is readable only in the Cloudflare dashboard. That window falls entirely inside pre-launch, when the
+only tickets are our own tests, which is why keeping the strict design costs little in practice. The
+alternative, emailing a 24-hour link for the MVP, is exactly the bearer-token weakness this section
+exists to remove.
+
 The public side is write-only and deliberately so — a visitor must be able to attach a photo without
 an account. What stops that being abused is the Turnstile gate, the type and size caps, the per-IP
 rate limit, and the fact that an uploaded object is unreachable to its own uploader the moment the
 five-minute PUT slip expires.
 
-One residual to accept: the bucket can collect junk from anyone who passes Turnstile. A lifecycle
-rule deleting objects not attached to a lead within 24 hours handles it, and goes in at P3b.
+One residual to accept: the bucket can collect junk from anyone who passes Turnstile. The fix is the
+`pending/` prefix in the endpoint contract above — **not**, as an earlier draft had it, "a lifecycle
+rule deleting objects not attached to a lead", which R2 cannot express. Lifecycle rules work on
+prefix and age only, so the rule has to be something a prefix can say:
+
+- uploads land under `pending/`, which expires after 1 day;
+- `/api/lead` copies accepted objects to `tickets/<lead>/`, which never expires.
+
+Written the other way round, either every attachment dies after a day or the junk never does.
 
 ---
 
@@ -303,12 +389,29 @@ sequenceDiagram
     participant P as Cloudflare Pages
 
     E->>S: edit and publish
-    S->>G: webhook · repository_dispatch
-    G->>S: fetch all content (read API)
+    S->>W: webhook · fixed payload + secret header
+    W->>G: repository_dispatch with an event_type
+    G->>S: fetch all content (read API, with a read token)
     G->>G: astro build
     G->>P: deploy
     P-->>E: live, ~2 min later
 ```
+
+**Why the Worker is in the middle, and not a straight webhook.** An earlier draft had Strapi call
+GitHub directly. That returns 422 and nothing ever rebuilds: GitHub's `repository_dispatch` requires
+an `event_type` in the body, and Strapi's webhook payload is fixed at `{event, createdAt, model,
+entry}` — only headers can be customised. So `/api/rebuild` takes Strapi's call, checks a shared
+secret in a header, and makes the dispatch GitHub will accept. The GitHub token lives in Pages, not
+on the box.
+
+**And a concurrency group on the build**, or publishing goes badly wrong: one save in the admin
+fires `entry.update` then `entry.publish`, so publishing ten products fires twenty webhooks and,
+without `concurrency: { group: site-build, cancel-in-progress: true }`, twenty builds. The webhook
+is subscribed to `entry.publish`, `entry.unpublish`, `entry.delete` and the media events.
+
+**The build must fail loudly if Strapi is unreachable.** Otherwise a box that is down deploys an
+empty catalog over a good one — the opposite of the "content goes stale, site stays up" property
+this design is for.
 
 Two rules this picture enforces. **Nothing is ever built on the instance** — Actions builds both the
 site and Strapi's admin panel, and the box only serves what it is handed. Strapi's admin is a
@@ -341,15 +444,16 @@ something you'd want to change without calling me isn't there, say so now while 
 ```mermaid
 erDiagram
     SITE_SETTINGS ||--o{ MEDIA : "logo · mark · share image"
-    PRODUCT_LINE ||--o{ PRODUCT : groups
+    SITE_SETTINGS ||--|| SEO : has
+    PRODUCT_LINE ||--o{ PRODUCT : "groups (robots only)"
     PRODUCT }o--o{ INDUSTRY : "applies to"
-    PRODUCT ||--o{ MEDIA : shows
-    PRODUCT_LINE }o--o{ INDUSTRY : "suits"
-    ACCESSORY }o--o{ PRODUCT : "fits"
-    INDUSTRY ||--o{ JOURNEY_STEP : "has 4"
+    PRODUCT ||--o{ MEDIA : "gallery · documents"
+    PRODUCT ||--o{ SPEC : "has many"
+    PRODUCT ||--|| SEO : has
+    PRODUCT }o--o{ PRODUCT : "related · compatible_with"
+    INDUSTRY ||--o{ JOURNEY_STEP : "has (no fixed count)"
+    INDUSTRY ||--|| SEO : has
     SHOWROOM ||--o{ MEDIA : shows
-    LEAD }o--o| PRODUCT : "asks about"
-    LEAD }o--o| SHOWROOM : "books"
     LEAD ||--o{ ATTACHMENT : carries
 
     SITE_SETTINGS {
@@ -360,47 +464,74 @@ erDiagram
         string phone
         string zalo
         string whatsapp
-        string email_pending
-        text address_pending
-        text legal_entity_pending
+        string email
+        text address
+        text legal_entity
         string lead_notify_email
         bool show_demo_banner
     }
     PRODUCT_LINE {
-        string name_vi_en
+        string name
         string slug
         text summary
         int order
     }
     PRODUCT {
+        enum kind "robot|accessory|software"
         string model
         string slug
         text summary
-        json specifications
-        enum status "provisional|awaiting_spec|published"
+        markdown description
+        bool name_provisional
+        bool spec_pending
         bool featured
         enum badge "new|hot|none"
+        string video_url
+    }
+    SPEC {
+        string group
+        string label
+        string value
+        string unit
+    }
+    SEO {
+        string meta_title
+        text meta_description
+        bool noindex
     }
     INDUSTRY {
         string name
         string slug
         string tagline
-        text problem
+        markdown problem
+        media hero_image
+    }
+    JOURNEY_STEP {
+        int order
+        string title
+        text detail
     }
     SHOWROOM {
         string city
         string name
         enum status "open|fitting_out|planned"
-        string address_hidden_until_confirmed
+        string address
+        string hours
         bool published
     }
     LEAD {
         enum kind
+        int schema_version
         string name
         string phone
         string email
         string company
         text message
+        string product_slug
+        string line_slug
+        string industry_slug
+        string showroom_slug
+        json details
         string source_page
         string locale
         datetime created
@@ -412,17 +543,47 @@ erDiagram
     }
 ```
 
-Four notes on shape. `status` on **product** is what lets the catalog ship honestly with the
-designer's "TÊN MODEL TẠM" and "CHỜ HỒ SƠ KỸ THUẬT" badges rather than pretending. `status` and
-`published` on **showroom** reflect screen 07's own caveat — addresses and hours aren't shown until
-the project owner confirms them. **lead** is read-only to the public role: the Worker creates them,
-nobody on the internet can list them.
+Six notes on shape, four of them corrections to an earlier draft that was drawn from the *list* of
+pages rather than from each page.
+
+**One `product` collection with a `kind`, not three collections.** Screen 01's sidebar runs the
+seven robot lines, then "Phụ kiện", then "Phần mềm / kho Agent", under one heading with one search
+box and one card grid — and its own subtitle says "7 dòng robot • 35 model • Phụ kiện • Phần mềm /
+Agent". An earlier draft had a separate `accessory` type and no software type at all, which would
+have meant three card templates, three detail templates and three search indexes. One collection
+means a new catalog kind is a new enum value. `line` is required for robots only, which Strapi
+cannot enforce natively — validate it in the seed and accept a soft rule in the admin.
+
+**Two booleans, not one status enum.** Screen 02 shows "TÊN MODEL TẠM" *and* "CHỜ HỒ SƠ KỸ THUẬT" on
+the same product at the same time; a single enum can hold only one of them. `name_provisional` and
+`spec_pending` are independent, and Strapi's own draft/publish covers the third state — which is
+also why the old `published` value had to go, since it collided with `publishedAt`.
+
+**Specs are a repeatable component, not a JSON blob.** A blob renders the spec tab and does nothing
+else. "Filter robots over 50 kg payload", a comparison table, or any quote calculator all need a
+key, a value and a unit that are consistent across products. The cost of discovering this later is
+not the schema change, it is that the client will by then have typed 35 specs in 35 different
+shapes.
+
+**The lead carries slugs, not relations.** An earlier draft drew `LEAD }o--o| PRODUCT`. That cannot
+work: the Worker creates leads, and it has no Strapi at all before P6 — it writes JSON to R2 — while
+setting a Strapi relation needs a documentId lookup and a read token the Worker otherwise never
+wants. Strings also survive the client renaming or deleting a product, where a relation would null
+out. `details` carries the per-kind extras (need group, service type, partner type, serial,
+preferred date, stage), and `schema_version` is there because **the R2 lead copy is the one shape in
+this system with no migration path** — it is files written on the day — so it is versioned from the
+first write.
+
+Unchanged and still right: `status` and `published` on **showroom** reflect screen 07's own caveat,
+that addresses and hours aren't shown until the project owner confirms them. **lead** is read-only
+to the public role — the Worker creates them, nobody on the internet can list them.
 
 And **site_settings** is a single type with a rule attached: every field in it is allowed to be
-empty, and the site renders correctly when it is. The `_pending` fields are the ones screen 13 says
-are still being verified — an empty address hides the address block rather than printing a blank
-label. That rule is what makes brand genuinely "uploadable later": the site ships with placeholder
-brand, the client replaces it whenever they're ready, and nothing has to be rebuilt by hand. The
+empty, and the site renders correctly when it is. An empty address hides the address block rather
+than printing a blank label. (The fields lost their `_pending` suffixes: the emptiness is the
+behaviour, and baking a transient state into a field name keeps it there forever.) That rule is what
+makes brand genuinely "uploadable later": the site ships with placeholder brand, the client replaces
+it whenever they're ready, and nothing has to be rebuilt by hand. The
 logo is fetched and optimized at build time rather than hotlinked, so it stays fast in the nav of
 every page, and `show_demo_banner` lets the client switch off the "BẢN MẪU THIẾT KẾ" band
 themselves at launch.
@@ -451,16 +612,23 @@ unknown field is not a risk, it's a Tuesday.
 
 | Change | Why it hurts |
 |---|---|
-| **Relationships between types** | Reshaping product↔industry or collapsing line into product means migrating real content *and* rewriting templates that read it. The one genuinely costly class of change. |
-| **Which fields are localized** | Strapi sets localization per field. Turning it on later for a field that already has data is a migration, not a toggle. |
-| **Slugs, once Google has indexed them** | Free to change today, a redirect map later. No SEO yet, so this one is still free. |
-| **The 512 MB hosting call** | Which is exactly why it's a spike at the front rather than a discovery at the end. |
+| **Shapes already written into R2** | The lead JSON copies are files written on the day; there is no migration to run over them. Hence `schema_version` from the first write. **This is the one with no way back.** |
+| **Free-form JSON that must later be queried** | Specs typed 35 different ways cannot be filtered, compared or calculated over until someone normalises them by hand. Hence the spec component. |
+| **Slugs, once Google has indexed them** | And the site *will* be indexed: P4 puts it on a public pages.dev URL carrying placeholder slugs the plan already expects to rename. Hence noindex until launch. |
+| **Strings scattered across 15 templates** | Extracting microcopy from every page is the difference between a 40-minute second language and a half-day one. Hence a dictionary from P2a. |
+| **Which fields are localized** | Strapi sets localization per field; turning it on for a field that already holds data is a migration, not a toggle. |
+| **The 512 MB hosting call** | Which is why it's a spike at the front rather than a discovery at the end. |
 
-Two of those four are already handled: the relationships are modelled from all 13 screens rather
-than guessed, and the hosting call gets tested first. For localization I'm taking the safe side —
-**every customer-facing text field is localized from the start**, even though only Vietnamese gets
-filled at MVP. Turning localization on for a field costs nothing while it's empty and is a migration
-once it isn't, so there's no reason to be clever about it.
+**An earlier draft of this table named relationships as the one costly class and missed all of the
+above.** That was wrong in both directions. At 35 products, 7 lines and 12 industries, behind a
+content adapter that every template reads through, reshaping a relation is a schema edit, a script
+over a few dozen rows and an adapter change — templates barely notice. What actually hurts is the
+list above: things already written down somewhere nobody can rewrite, and things scattered too
+widely to gather up later.
+
+For localization the safe side is cheap: **every customer-facing text field is localized from the
+start**, even though only Vietnamese gets filled. Free while empty, a migration once it isn't. (No
+reason to localize `slug` or `order`, though — that is over-applying the rule.)
 
 So: build the skeleton, ship it, and let the client's actual requests drive the rest. A field they
 ask for next month is cheap. A relationship we got wrong is not — and that's the part we've done
@@ -519,10 +687,21 @@ switcher stays hidden until it is.
 ## Three changes from the brief
 
 **1. Media goes to R2, not the instance disk.** The brief stores Strapi uploads on the Lightsail
-disk and copies them to R2 nightly. Pointing Strapi's upload provider at R2 directly is better on
+disk and copies them to R2 nightly. (Note the backup arrow in the system diagram is a **cron on the
+box**, not GitHub Actions — an earlier draft drew it as Actions, which cannot reach a SQLite file
+sitting on Lightsail.) Pointing Strapi's upload provider at R2 directly is better on
 every axis: images serve from Cloudflare with no egress charge instead of from a 512 MB box in
 Singapore, the 20 GB disk stops being a ceiling, and the nightly uploads backup disappears because
 the uploads already live in the backup's destination. Only SQLite then needs backing up.
+
+Five things Strapi's own R2 documentation requires that a first attempt usually misses: no `ACL` in
+the provider params (R2 rejects ACLs), `region: 'auto'`, the `r2.cloudflarestorage.com` endpoint,
+`baseUrl` pointed at the public bucket so stored URLs are servable, and the bucket host added to
+`strapi::security`'s `img-src`/`media-src` — without that last one the media library shows no
+thumbnails and simply looks broken. Two more worth knowing now: the free `pub-*.r2.dev` URL is
+rate-limited and Cloudflare says plainly it is not for production, which pulls the custom domain
+earlier than "later"; and sharp generating responsive breakpoints for a 10 MB photo on a 512 MB box
+is a plausible out-of-memory, so breakpoints get turned down and the admin's upload size capped.
 
 **2. Leads go through a Function, not straight to Strapi.** Reasoning in "Sending a lead" above.
 
@@ -547,9 +726,9 @@ are not a Worker endpoint at all — Strapi presigns them behind its own login. 
 
 Figures from the brief and general knowledge — the Lightsail price and the free-tier limits get
 checked against current documentation at the spike, before anything depends on them. If the spike
-says 512 MB won't carry an admin the client can actually work in, the 1 GB plan is the answer and
-the total roughly doubles. Still small, but it's your call, so it comes to you as a question rather
-than a decision.
+says 512 MB won't carry an admin the client can actually work in, the 1 GB plan is the answer: $5 to
+$7, not the doubling an earlier draft claimed. That is small enough that the spike's verdict should
+be taken at face value rather than argued with — but it is a spend, so it still comes to you.
 
 ---
 
