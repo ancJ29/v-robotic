@@ -56,9 +56,9 @@ flowchart LR
 
     subgraph CF["Cloudflare"]
         PAGES["Pages<br/>static site on the edge"]
-        FN["Pages Functions<br/>/api/lead · /api/upload-url"]
+        FN["Pages Functions<br/>/api/lead · /api/rebuild"]
         TS["Turnstile"]
-        R2[("R2 · three buckets<br/>media (public) · attachments (private)<br/>backups (private)")]
+        R2[("R2 · two buckets<br/>media (public)<br/>private: lead copies · backups")]
     end
 
     MAIL["Email notify<br/>free tier sender"]
@@ -81,7 +81,6 @@ flowchart LR
     FN -->|"lead JSON"| R2
     FN --> MAIL
     FN -.->|"Phase 2 only"| CD
-    V -.->|"presigned PUT"| R2
 
     PM -->|"nightly cron · sqlite3 .backup"| R2
 ```
@@ -159,7 +158,7 @@ sequenceDiagram
     T-->>F: ok
     F->>F: validate · rate limit by IP
     F->>R: write lead JSON (durable copy)
-    F->>M: notify, with any attachment links
+    F->>M: notify the lead address
     opt Phase 2
         F->>S: create lead record
     end
@@ -197,89 +196,82 @@ at all. Leads land in two places on purpose — email gets read, R2 doesn't get 
 | `showroom_booking` | city, robot line, preferred date | 07, 11 |
 | `service` | service type (rent / finance / deploy) | 05 |
 | `partnership` | partner type | 08 |
-| `warranty` | robot serial, fault description, attachments | 12 |
+| `warranty` | robot serial, fault description | 12 |
 | `ai_assist` | industry, need, stage | 10 |
 
 ---
 
-## Uploading a photo to a support ticket
+## Photo attachments: deferred
 
-Your call on R2 — and it's the right one, because it means the warranty ticket ships in the MVP
-instead of waiting for a server to have somewhere to put files.
+Dropped on your call, after weighing who would actually be able to open a support photo. **The
+warranty form still ships** — serial number, unit, contact, fault description — it simply doesn't
+take a file. It says a technician will ask for photos when they make contact, which is honest and
+costs nothing.
 
-The browser uploads **straight to R2**, not through the Function. The Function only hands out a
-short-lived permission slip.
+### What this removes, which is more than a file picker
 
-```mermaid
-sequenceDiagram
-    participant V as Visitor
-    participant F as Function /api/upload-url
-    participant R as R2 (private bucket)
-    participant M as Email
+- The private attachments bucket, and its CORS rule.
+- The `/api/upload-url` endpoint, and with it the whole presigning apparatus: the R2 S3 access key
+  and secret, the signing library, the `pending/` → `tickets/` copy, the lifecycle rule, and the
+  HMAC that let one endpoint trust a key issued by another.
+- The size-cap problem entirely — there is no longer an upload whose real size has to be checked
+  after the fact, because a presigned URL cannot enforce the size it was issued for.
+- The Turnstile single-use problem — a form is now one gated call, not four, so there is no signed
+  session to carry between them.
+- The attachment viewer piece, and the custom Strapi route and admin-panel customisation under it.
 
-    V->>F: "I want to upload fault.jpg, 2.1MB, image/jpeg"
-    F->>F: check type + size · cap per ticket
-    F-->>V: presigned PUT url, 5 min
-    V->>R: PUT the file directly
-    R-->>V: 200
-    V->>F: POST lead, kind=warranty, with object keys
-    F->>R: presign GET links, 7 days
-    F->>M: notify technician, links included
-```
+**The Worker now needs no R2 credentials at all.** It writes the durable lead copy through R2's
+native binding, which can `put` perfectly well — it only ever needed an S3 token because *presigning*
+requires one. The single largest piece of fiddly, failure-prone surface in this design goes with the
+feature, which is worth knowing: this was not a small cut.
 
-Three reasons this shape and not an upload proxy: the file never passes through a Worker, so there's
-no request-size ceiling and no CPU time burned on bytes; the bucket stays private, so attachments
-aren't guessable URLs on the open web; and the whole path stands up before Lightsail does.
+### Why it was a decision and not just a feature
 
-### Worker, not Lambda
+Worth recording, because it is the part that would be forgotten if the feature ever comes back.
+Private storage hands out temporary links, and **a temporary link is a key, not an identity check**
+— like a hotel key card, whoever holds it gets in. It cannot tell a technician from whoever an email
+was forwarded to. So "put the photo somewhere private" does not settle anything; the real question
+is who is handed a key and for how long, and every answer to that costs either work or safety.
+
+These particular photos would show a broken robot *where it works* — inside a hospital ward, a bank
+branch, a factory floor. That is the client's customer's premises, sent to get help rather than to
+circulate, which is what made the cheap answer unattractive and the safe answer an hour of work.
+
+### If it comes back
+
+The shape to build, and the reasoning behind it, are in this file's history (453501d): the browser
+PUTs straight to a private bucket using a five-minute slip from the Worker; the Worker never signs a
+read; Strapi presigns downloads behind its own login with a five-minute expiry; notification emails
+carry no links at all. Reckon about an hour for the upload path and an hour for the admin viewer.
+
+---
+
+## The Worker
+
+### Not Lambda
 
 A Cloudflare Worker, for proximity and one deploy: it ships with the site's build, shares its
-secrets, and sits in the same network as the bucket. A Lambda would mean a second provider, a second
-deploy and a cold start between a visitor and their upload, for nothing gained — the rest of the
-stack isn't AWS; Lightsail only serves the admin panel.
+secrets, and sits in the same network as the bucket it writes to. A Lambda would mean a second
+provider, a second deploy and a cold start between a visitor and their form, for nothing gained —
+the rest of the stack isn't AWS; Lightsail only serves the admin panel.
 
-**Not** because a native binding avoids credentials. That was wrong in an earlier draft, and it
-matters because it changes what gets built: **R2's native binding cannot produce a presigned URL.**
-Presigning needs R2's S3-compatible API — an access key and secret scoped to the attachments bucket,
-held in Pages' encrypted environment, with a small signing library (`aws4fetch`) in the Function.
-The binding is still used, for what it can do: `head()` to inspect an object, `get`/`put` to move
-one.
+With attachments gone it uses R2's **native binding**, and holds no storage credentials. (An earlier
+draft claimed the binding was reason enough even with presigning, which was wrong — the binding
+cannot presign. That correction is now moot rather than resolved, which is a different thing and
+worth saying plainly: if presigning ever returns, so does the S3 token.)
 
 It deploys as a **Pages Function**, which *is* a Worker, just one that ships with the site's build
 rather than on its own. Same runtime, one deploy, one place to set secrets.
 
-### CORS, which nothing works without
-
-A browser `PUT` to a presigned R2 URL fails at preflight until the bucket carries a CORS rule. This
-is the first thing P3b meets, so it is written down rather than discovered:
+### The two endpoints, and what they promise
 
 ```
-AllowedOrigins: the production pages.dev origin, plus preview subdomains
-AllowedMethods: PUT
-AllowedHeaders: Content-Type
-MaxAgeSeconds:  3600
-```
-
-The signature must cover `Content-Type`, or the browser's `PUT` is rejected for a signature
-mismatch.
-
-### The three endpoints, and what they promise
-
-```
-POST /api/upload-url          public · Turnstile-gated
-  in   { filename, contentType, bytes, turnstileToken }
-  checks  token valid · type in allow-list · claimed bytes <= 10MB
-  out  { putUrl, key, sig }   putUrl expires in 5 minutes
-                              key = pending/<random>/<random>.<ext>
-                              sig = HMAC over key+expiry, so /api/lead can
-                                    trust a key without stored state
-
 POST /api/lead                public · Turnstile-gated
-  in   { kind, name, phone, ..., attachments[{key, sig}] }
-  checks  token valid · required fields by kind · each sig valid
-          env.ATTACHMENTS.head(key) for REAL size and type;
-            over-size or wrong-type objects are deleted and rejected
-  does    copies accepted objects  pending/…  ->  tickets/<lead>/…
+  in   { kind, name, phone, company, message, ...per-kind extras }
+  checks  token valid · required fields by kind · field lengths
+  does    env.LEADS.put(...)  durable JSON copy, via the native binding
+          sends the notification email
+          (from P6 onward) forwards to Strapi
   out  { ok }
 
 POST /api/rebuild             Strapi's webhook target · shared-secret header
@@ -288,96 +280,8 @@ POST /api/rebuild             Strapi's webhook target · shared-secret header
   out  { ok }
 ```
 
-Three corrections from an earlier draft are folded in above, each of which would otherwise have been
-found the hard way:
-
-- **The 10 MB cap was theatre.** It was checked when the slip was issued, but a presigned URL
-  carries no size limit of its own, so a 2 GB body with a valid slip succeeds. The honest check is
-  `head()` afterwards.
-- **"Every key matches one this IP was just issued" needed state**, and Pages Functions have none.
-  The HMAC `sig` replaces it: the Function verifies its own earlier signature and remembers nothing.
-- **The per-IP rate limit is dropped.** It needed state too, and `*.pages.dev` has no WAF rules to
-  lean on. Turnstile plus the type and size caps carry the load; if abuse appears, a KV namespace is
-  the cheap way back.
-
-Secrets in Pages' encrypted environment: the R2 S3 access key and secret scoped to the attachments
-bucket, the Turnstile secret, `REBUILD_SECRET`, a fine-grained GitHub token for the dispatch, and
-the email provider's key. The attachments bucket stays separate from the public media bucket, so a
-leak of one credential isn't a leak of both.
-
-### Turnstile tokens are single-use
-
-A warranty ticket with three photos is four gated calls, and one widget token works once. So verify
-once at the first `/api/upload-url` call and return a short-lived signed session the later calls
-present, rather than resetting the widget in front of the visitor three times. The pages.dev
-hostname and its preview subdomains go on the widget's allowed list.
-
-### "Only admin can load, right?"
-
-Close, and worth being exact about, because the honest answer has a wrinkle and a fix.
-
-**The bucket is private.** There is no public URL, no bucket listing, and keys are random on two
-levels, so nothing is guessable or enumerable. That part holds absolutely.
-
-**But a presigned link is a bearer token, not an identity check.** Anyone holding the URL can fetch
-the object until it expires — no login involved. So the question isn't really "is the bucket
-private" but "who ends up holding links". My earlier sketch emailed technicians a seven-day link,
-which means a forwarded email is a working link for a week. That is weaker than "only admin".
-
-**Because the client now edits at launch, we can do it properly.** Strapi is there, with real
-accounts and roles, so:
-
-```mermaid
-flowchart LR
-    V["Visitor"] -->|"presigned PUT · 5 min · write only"| R[("R2 attachments<br/>private")]
-    W["Worker"] -->|"issues upload slips only"| V
-    A["Admin · logged into Strapi"] -->|"opens a ticket"| S["Strapi"]
-    S -->|"presigns GET · 5 min · on request"| R
-    S -->|"renders the link"| A
-    X["Anyone else"] -.->|"denied"| R
-```
-
-- **The Worker never presigns a download.** It only ever hands out upload slips. There is no public
-  endpoint that returns a readable URL, so there's nothing to attack.
-- **Downloads are presigned by Strapi**, server-side, only for a request that already carries a
-  valid admin session with the right role, and only for the one attachment being viewed.
-- **Expiry drops from seven days to five minutes**, because an admin asks for it at the moment they
-  look rather than receiving it in advance. A leaked link is dead long before it travels.
-- **Notification emails carry no links** — just "ticket #123 has 2 attachments, open the admin".
-
-So: only a logged-in admin can *obtain* a link, and the link is useless within minutes. That's as
-close to "only admin can load" as object storage gets without proxying every byte through a server,
-which on a 512 MB box is exactly what we don't want to do.
-
-**What this costs, which an earlier draft committed to without budgeting.** "Strapi presigns and
-renders the link" is not a setting. It is a custom admin-authenticated route that signs a GET
-against the attachments bucket, plus an admin-panel customisation so a lead's attachments appear as
-links in the Content Manager — React, built in CI like the rest of the admin. Roughly an hour, and
-it appeared in no piece. It is now **P7b**, after P6.
-
-That leaves a real gap worth stating rather than hiding: between P4 (site live) and P7b, the Worker
-never presigns a read, emails carry no links, and Strapi doesn't exist until P6 — so a ticket photo
-is readable only in the Cloudflare dashboard. That window falls entirely inside pre-launch, when the
-only tickets are our own tests, which is why keeping the strict design costs little in practice. The
-alternative, emailing a 24-hour link for the MVP, is exactly the bearer-token weakness this section
-exists to remove.
-
-The public side is write-only and deliberately so — a visitor must be able to attach a photo without
-an account. What stops that being abused is the Turnstile gate, the type and size caps, the per-IP
-rate limit, and the fact that an uploaded object is unreachable to its own uploader the moment the
-five-minute PUT slip expires.
-
-One residual to accept: the bucket can collect junk from anyone who passes Turnstile. The fix is the
-`pending/` prefix in the endpoint contract above — **not**, as an earlier draft had it, "a lifecycle
-rule deleting objects not attached to a lead", which R2 cannot express. Lifecycle rules work on
-prefix and age only, so the rule has to be something a prefix can say:
-
-- uploads land under `pending/`, which expires after 1 day;
-- `/api/lead` copies accepted objects to `tickets/<lead>/`, which never expires.
-
-Written the other way round, either every attachment dies after a day or the junk never does.
-
----
+Secrets in Pages' encrypted environment: the Turnstile secret, the email provider's key,
+`REBUILD_SECRET`, and a fine-grained GitHub token for the dispatch. No storage credentials.
 
 ## Publishing content
 
@@ -454,7 +358,6 @@ erDiagram
     INDUSTRY ||--o{ JOURNEY_STEP : "has (no fixed count)"
     INDUSTRY ||--|| SEO : has
     SHOWROOM ||--o{ MEDIA : shows
-    LEAD ||--o{ ATTACHMENT : carries
 
     SITE_SETTINGS {
         string brand_name
@@ -535,11 +438,6 @@ erDiagram
         string source_page
         string locale
         datetime created
-    }
-    ATTACHMENT {
-        string r2_key
-        string content_type
-        int bytes
     }
 ```
 
@@ -680,7 +578,7 @@ switcher stays hidden until it is.
 | `/ve-chung-toi` | code | 09 |
 | `/tro-ly-ai` | code + form | 10 |
 | `/lien-he` | code + form | 13 |
-| `/api/lead`, `/api/upload-url` | Functions | — |
+| `/api/lead`, `/api/rebuild` | Functions | — |
 
 ---
 
@@ -705,9 +603,11 @@ is a plausible out-of-memory, so breakpoints get turned down and the admin's upl
 
 **2. Leads go through a Function, not straight to Strapi.** Reasoning in "Sending a lead" above.
 
-**3. Uploads are in the MVP, direct to R2.** Reversing my own earlier cut, on your call. Downloads
-are not a Worker endpoint at all — Strapi presigns them behind its own login. See
-"Only admin can load, right?" above.
+**3. Visitor uploads are out of the MVP entirely.** The brief did not ask for them; they came in as
+a reading of screen 12's "Thêm ảnh hoặc video lỗi", went in direct to R2, and have now come back out
+on your call. R2 stays, for product media and for the durable lead copies and backups — the storage
+was never the hard part. See "Photo attachments: deferred" above for what went with them, and for
+the shape to rebuild if the client asks.
 
 ---
 
@@ -741,13 +641,15 @@ the site keeps serving and only editing stops. But "the admin panel is usable en
 will actually use it" is a bar the brief's 512 MB plan has not yet cleared, and we should find out
 before building on it. Worst case is the 1 GB plan — a few dollars, not a redesign.
 
-**R2 credentials in the Worker.** An access key lives in Pages' encrypted environment, scoped to the
-attachments bucket alone and write-only in practice, since the Worker never presigns a read. Keep
-the attachments bucket separate from the public media bucket so a leak of one isn't a leak of both.
+**Two risks left with the attachments.** The Worker no longer holds any storage credential, because
+without presigning the native binding is enough; and the public can no longer write to a bucket at
+all, because nothing it sends is a file. Both were on this list a revision ago. Worth noting that
+dropping one feature removed two of this design's four standing risks — a reminder that the cost of
+a feature is not only the hours to build it.
 
-**The public can write to the attachments bucket.** By design — a visitor attaches a photo without
-an account. Turnstile, the type and size caps, the per-IP limit and a 24-hour lifecycle rule on
-unattached objects are what keep that from becoming free storage for strangers.
+**The Worker is still a public write path**, just a narrow one: a form post that becomes a small
+JSON object and an email. Turnstile and per-kind field validation carry it, and the blast radius of
+abuse is now storage measured in kilobytes rather than a bucket of strangers' files.
 
 **The build becomes the single point of failure for content.** If Actions breaks, content freezes —
 the site stays up, but stale. Acceptable, and worth knowing.

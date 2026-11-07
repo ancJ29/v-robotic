@@ -41,7 +41,7 @@ file upload on the warranty ticket (12) stays in, via R2.
 
 ---
 
-## The three cuts that make this an MVP
+## The four cuts that make this an MVP
 
 **1. Five forms become one.** Contact, showroom booking, service request, partnership proposal and
 warranty ticket are the same act: someone tells us who they are and what they want. One `lead`
@@ -63,11 +63,17 @@ type the client controls, along with a switch for the "BẢN MẪU THIẾT KẾ"
 down themselves at launch. Costs about twenty minutes, folded into P1 and P2a. Any page prose can be
 promoted into the CMS later in an afternoon if it turns out to move more than expected.
 
-**File upload is no longer a cut.** It was, until R2 made it cheap: the browser uploads straight to
-a private R2 bucket with a short-lived permission slip from a Cloudflare Function, so the file never
-passes through a Worker and nothing needs a server. It ships in the MVP, and the upload path stands
-up before Lightsail does. The flow — and the answer to who can read an attachment — is drawn in
-[architecture.md](architecture.md#uploading-a-photo-to-a-support-ticket).
+**4. Photo attachments are out.** They were a cut, then R2 looked cheap enough to put them back, and
+they are now out again — on a closer look at who could actually open a support photo once it was
+stored. The warranty form still ships; it just doesn't take a file, and says a technician will ask
+for photos when they make contact.
+
+This turned out to be the largest cut of the four. It removes a bucket, a CORS rule, an endpoint, a
+storage credential, a signing library, a lifecycle rule, the size-check-after-upload problem, the
+single-use-Turnstile problem, and an entire piece for the admin viewer — about 100 minutes of build
+and two of this design's four standing risks.
+[architecture.md](architecture.md#photo-attachments-deferred) keeps the reasoning and the shape to
+rebuild from, so the decision can be reversed without being re-derived.
 
 ---
 
@@ -118,13 +124,11 @@ paste.
 | P2b | The remaining pages | Industries, services, AI tech, showroom, partnership, about, contact. The four code-side lists live in `content/*.json`, not in templates | ~60 min |
 | P2c | Homepage | The eight bands, from P2a/P2b components | ~30 min |
 | P3 | The lead path | `packages/lead-schema` — kinds, fields, validation — imported by both the forms and the Worker. Turnstile, the email provider, `_site/settings.json` | ~50 min |
-| P3b | Attachments | Private bucket, CORS rule, presign with an S3 token, `pending/` → `tickets/` copy, lifecycle rule, the file picker | ~40 min |
 | P4 | Site live | Cloudflare Pages + GitHub Actions, with noindex on until launch | ~30 min |
 
 **At the end of P4 the site is on the internet, in Vietnamese, with placeholder catalog data, a
-homepage, and leads and support tickets arriving with photos attached.** Not launch — the client
-can't edit, and ticket photos are readable only in the Cloudflare dashboard until P7b. But it's
-real, and you can judge it.
+homepage, and every form delivering a lead to your inbox.** Not launch — the client can't edit yet.
+But it's real, and you can judge it.
 
 ### Then — the CMS behind it, which is launch
 
@@ -133,11 +137,9 @@ real, and you can judge it.
 | P5 | Strapi locally | Types created, seed imported, the adapter mapping Strapi's REST shape into the P1 types | ~50 min |
 | P6 | Lightsail, for keeps | The deploy recipe as parameterised scripts: artifact transfer, prod install with Strapi stopped, SQLite path outside the deploy dir, systemd unit, Caddyfile and sslip.io hostname, swap and swappiness persisted, SSH restricted, R2 media provider, client accounts | ~90 min + your console work |
 | P7 | The loop closes | `/api/rebuild` relaying Strapi's webhook to Actions, a concurrency group on the build, nightly `sqlite3 .backup` by cron **on the box** | ~40 min |
-| P7b | The attachment viewer | Admin-authenticated route that presigns a GET, plus the Content Manager customisation that shows a lead's attachments as links | ~60 min |
 
-**At the end of P7b the client logs in, changes a product, sees it live two minutes later, and can
-open a support ticket's photos.** That is launch. Roughly 10 hours of machine work, plus your
-console steps and review passes.
+**At the end of P7 the client logs in, changes a product, and sees it live two minutes later.**
+That is launch. Roughly 8.5 hours of machine work, plus your console steps and review passes.
 
 P6 went from 60 to 90 minutes because "Actions builds, the box only serves" was a principle with no
 procedure under it, and P7's backup moved from Actions to a cron on the box — Actions cannot reach a
@@ -166,7 +168,8 @@ disk and copies them to R2 nightly. Pointing Strapi's upload provider at R2 dire
 every axis: images serve from Cloudflare with no egress charge instead of from a 512 MB box in
 Singapore, the 20 GB disk stops being a ceiling, and the nightly uploads backup disappears because
 the uploads already live where that backup was going. Only SQLite then needs backing up. We're
-standing R2 up for ticket attachments anyway, so this costs nothing extra.
+standing R2 up for the durable lead copies and the nightly backups anyway, so this costs nothing
+extra.
 
 **Leads should not post to Strapi directly.** The brief has the public site calling Strapi's public
 create endpoint. That means the open internet can write to the database, and it puts the server's
@@ -232,10 +235,7 @@ left the architecture alone and took the contracts apart; these came out of it:
 
 | | Decision | Why |
 |---|---|---|
-| Presigning | S3 API token + `aws4fetch`, not the native binding | The binding **cannot** presign. An earlier draft claimed both. |
-| CORS | A rule on the attachments bucket, written down | A browser PUT fails at preflight without it |
-| Size cap | `head()` after upload, not a claim at slip time | A presigned URL carries no size limit |
-| Rate limit | Dropped; an HMAC `sig` replaces the per-IP check | Pages Functions are stateless and pages.dev has no WAF |
+| Rate limit | Dropped | Pages Functions are stateless and pages.dev has no WAF; Turnstile carries it |
 | Rebuild | A third Function relays Strapi's webhook | `repository_dispatch` needs an `event_type` Strapi can't send; direct = 422 |
 | Backup | A cron on the box | Actions cannot reach SQLite on Lightsail |
 | Notify address | Build writes `_site/settings.json`; Worker reads that | The Worker never calls Strapi, so it can't read `site_settings` |
@@ -249,9 +249,10 @@ left the architecture alone and took the contracts apart; these came out of it:
 | Reuse | `packages/lead-schema`; P6 as parameterised scripts | The only parts worth lifting to a next client, free if built that way |
 | Multi-tenant | No, deliberately | Strapi CE has no per-row admin permissions; two clients would see each other |
 
-Still open, and only this: whether to keep the strict attachment-viewing design (P7b, ~60 min) or
-let the MVP email a 24-hour link. Recommendation is to keep it strict — the gap it creates falls
-entirely inside pre-launch.
+Nothing is open. The attachment question that was the last one standing was answered by dropping
+the feature, which removed the question rather than settling it — the cheapest kind of answer, and
+worth noticing as a pattern: two of the four cuts in this plan came from asking what a feature
+really costs rather than how to build it well.
 
 ## What we are giving up
 
