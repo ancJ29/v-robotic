@@ -134,3 +134,20 @@ than code.
 
 **What closes it:** the rule, at P4 when the project exists in Cloudflare. Until then the endpoint is
 not reachable, because nothing is deployed.
+
+## 14. Cloudflare now points new projects at Workers, not Pages
+
+Opened by P4 on 2026-11-08, from documentation read at the time rather than memory. The Pages
+overview carries a banner, "Are you sure you want to use Pages?", saying Workers supports most Pages
+use cases with a broader feature set and advising new projects to start with Workers. The migration
+guide names the successor: Workers with Static Assets, an `assets.directory` in `wrangler.jsonc`
+deployed with `wrangler deploy`, with a `functions/` folder moved by compiling it through
+`wrangler pages functions build` and pointing `main` at the output.
+
+P4 stayed on Pages, and the reasoning holds: the lead Function is already written in the Pages form
+(`onRequestPost`), both the architecture memo and the lead-path note say Pages, and Pages is
+supported today. Moving later is a config change plus one build step, not a rewrite.
+
+**What closes it:** a deliberate decision, not a deadline. Revisit if Cloudflare announces an end
+date for Pages, or when something is wanted that only Workers assets offer. Recorded in
+`docs/conventions/live-deploy.md` with both source URLs.
