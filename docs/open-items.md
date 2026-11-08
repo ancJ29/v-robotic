@@ -33,3 +33,23 @@ network. Installing roughly 1,250 packages on a 512 MB box is the wrong place fo
 
 **What closes it:** P6 decides. If it unpacks the artifact, the plan line is corrected to match; if
 it installs on the box after all, this item records why that was chosen against the cheaper route.
+
+## 4. Catalog search is a client-side filter, not a build-time index
+
+Opened by P2a on 2026-11-08. `docs/plan.md`'s P2a row says the catalog search uses a build-time
+index. P2a built a progressive inline script filtering over data attributes instead: with JavaScript
+off, all 20 products show. At 20 products that is the cheaper and more robust choice, and nothing is
+lost. It is recorded because the plan and the code disagree, and because the decision stops being
+right somewhere above a few hundred products.
+
+**What closes it:** either correct the plan row to match, or build the index when the catalogue
+outgrows a client-side filter. Recorded in `docs/conventions/site-shell.md`.
+
+## 5. The four numbered chips on the product page are a guess
+
+Opened by P2a on 2026-11-08. Reference screen 02 shows four numbered chips, 01 to 04, and their
+meaning is not in the data or anywhere in the memos. P2a mapped them to applications, specs, related
+products and documents, as anchors. It is a reasonable reading and it is not a verified one.
+
+**What closes it:** the human reads screen 02 and says what the four chips were meant to be, or
+confirms the mapping. Cheap to change — they are four labels and four anchor targets.
