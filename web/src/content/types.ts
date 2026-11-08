@@ -111,8 +111,8 @@ export interface Showroom {
   /** Null until the project owner confirms it; the page then hides the address block. */
   address: string | null;
   hours: string | null;
-  /** True once address and hours are confirmed for display (screen 07's caveat). */
-  published: boolean;
+  /** True once address and hours are verified; false hides the address and hours block. Independent of draft/publish: a showroom can be live with this false. */
+  details_confirmed: boolean;
   gallery: MediaRef[];
 }
 

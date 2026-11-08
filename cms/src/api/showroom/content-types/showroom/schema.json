@@ -74,7 +74,7 @@
         }
       }
     },
-    "published": {
+    "details_confirmed": {
       "type": "boolean",
       "default": false,
       "pluginOptions": {

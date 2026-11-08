@@ -6,7 +6,7 @@
     "status": "fitting_out",
     "address": null,
     "hours": null,
-    "published": false,
+    "details_confirmed": false,
     "gallery": []
   },
   {
@@ -16,7 +16,7 @@
     "status": "planned",
     "address": null,
     "hours": null,
-    "published": false,
+    "details_confirmed": false,
     "gallery": []
   },
   {
@@ -26,7 +26,7 @@
     "status": "open",
     "address": "Địa chỉ tạm thời",
     "hours": "09:00 – 18:00 (tạm)",
-    "published": true,
+    "details_confirmed": true,
     "gallery": []
   }
 ]
