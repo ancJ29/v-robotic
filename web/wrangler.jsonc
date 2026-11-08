@@ -1,0 +1,13 @@
+// Cloudflare Pages configuration for the web app (piece P4). Read by `wrangler pages deploy` run from web/.
+// Once this file exists it is the source of truth: the bindings below cannot be edited in the dashboard.
+// No secret and no variable value lives here. Secrets (TURNSTILE_SECRET_KEY, SLACK_WEBHOOK_URL) are set
+// with `wrangler pages secret put`; PUBLIC_TURNSTILE_SITE_KEY is a build-time variable held in GitHub.
+// Names are the contract with web/functions/_lib/env.ts; .github/scripts and the preflight one-off check them.
+{
+  "name": "v-robotic",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-11-01",
+  "r2_buckets": [
+    { "binding": "LEADS", "bucket_name": "v-robotic-leads" }
+  ]
+}
