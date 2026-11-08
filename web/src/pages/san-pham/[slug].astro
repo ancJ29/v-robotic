@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Badge from '../../components/Badge.astro';
+import Button from '../../components/Button.astro';
+import ProductVisual from '../../components/ProductVisual.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { getContent, lineOf, productBySlug } from '../../content/load';
+import { parseBlocks } from '../../lib/text';
+import { routes } from '../../lib/routes';
+import { t } from '../../i18n/t';
+
+export function getStaticPaths() {
+  return getContent().products.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const c = getContent();
+const p = productBySlug(c, Astro.params.slug!)!;
+const line = lineOf(c, p);
+const groupLabel = line?.name ?? t(`kind.${p.kind}`);
+const blocks = parseBlocks(p.description);
+
+// Specs are rows with a group; print them grouped, groups in order of first appearance.
+const groups: { name: string; rows: typeof p.specs }[] = [];
+for (const s of p.specs) {
+  const name = s.group ?? t('product.specs.ungrouped');
+  let g = groups.find((x) => x.name === name);
+  if (!g) groups.push((g = { name, rows: [] }));
+  g.rows.push(s);
+}
+
+const industries = p.industries.map((s) => c.industries.find((i) => i.slug === s)).filter((i) => i !== undefined);
+const bySlug = (slugs: string[]) => slugs.map((s) => productBySlug(c, s)).filter((x) => x !== undefined);
+const related = bySlug(p.related);
+const compatible = bySlug(p.compatible_with);
+const subtitleOf = (x: typeof p) => lineOf(c, x)?.name ?? t(`kind.${x.kind}`);
+
+const chips = [
+  { n: '01', label: t('product.chip.1'), href: '#ung-dung' },
+  { n: '02', label: t('product.chip.2'), href: '#thong-so' },
+  { n: '03', label: t('product.chip.3'), href: '#lien-quan' },
+  { n: '04', label: t('product.chip.4'), href: '#tai-lieu' },
+];
+const tabs = [
+  { href: '#tong-quan', label: t('product.tab.overview') },
+  { href: '#thong-so', label: t('product.tab.specs') },
+  { href: '#ung-dung', label: t('product.tab.uses') },
+  { href: '#video', label: t('product.tab.video') },
+  { href: '#tai-lieu', label: t('product.tab.docs') },
+  { href: '#lien-quan', label: t('product.tab.related') },
+];
+---
+<BaseLayout title={p.model} description={p.summary}>
+  <Breadcrumb items={[
+    { label: t('product.breadcrumbRoot'), href: routes.products },
+    { label: groupLabel, href: routes.products },
+    { label: t('product.breadcrumbLeaf') },
+  ]} />
+
+  <section class="wrap top">
+    <div class="gallery">
+      <ProductVisual product={p} ratio="4 / 5" />
+      <p class="cap">{t('product.media.placeholder')}</p>
+    </div>
+    <div class="info">
+      <p class="kicker">{groupLabel}</p>
+      <h1>{p.model}</h1>
+      {(p.name_provisional || p.spec_pending || p.badge !== 'none') && (
+        <p class="badges">
+          {p.badge !== 'none' && <Badge tone={p.badge}>{t(`badge.${p.badge}`)}</Badge>}
+          {p.name_provisional && <Badge tone="provisional">{t('badge.provisional')}</Badge>}
+          {p.spec_pending && <Badge tone="pending">{t('badge.specPending')}</Badge>}
+        </p>
+      )}
+      {p.summary && <p class="lead">{p.summary}</p>}
+      <ul class="chips">
+        {chips.map((x) => (
+          <li><a href={x.href}><b>{x.n}</b>{x.label}</a></li>
+        ))}
+      </ul>
+      <div class="cta">
+        <Button variant="cta" href={`${routes.contact}?product=${p.slug}`}>{t('product.cta.quote')}</Button>
+        <Button variant="outline" href={routes.visit}>{t('product.cta.visit')}</Button>
+      </div>
+    </div>
+  </section>
+
+  <div class="tabbar-wrap wrap">
+    <nav class="tabbar" aria-label={t('product.tabsLabel')}>
+      {tabs.map((x) => <a href={x.href}>{x.label}</a>)}
+    </nav>
+  </div>
+
+  <div class="wrap sections">
+    <section id="tong-quan">
+      <h2>{t('product.tab.overview')}</h2>
+      {blocks.length === 0 && <p class="muted">{t('product.overview.empty')}</p>}
+      {blocks.map((b) => b.type === 'p'
+        ? <p>{b.text}</p>
+        : <ul class="bul">{b.items.map((i) => <li>{i}</li>)}</ul>)}
+    </section>
+
+    <section id="thong-so">
+      <h2>{t('product.tab.specs')}</h2>
+      {p.spec_pending && <p class="notice">{t('product.specs.pending')}</p>}
+      {groups.map((g) => (
+        <table class="specs">
+          <caption>{g.name}</caption>
+          <thead><tr><th scope="col">{t('product.specs.col.label')}</th><th scope="col">{t('product.specs.col.value')}</th></tr></thead>
+          <tbody>
+            {g.rows.map((s) => (
+              <tr data-spec={s.key}><th scope="row">{s.label}</th><td>{s.value}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      ))}
+    </section>
+
+    <section id="ung-dung">
+      <h2>{t('product.tab.uses')}</h2>
+      {industries.length === 0
+        ? <p class="muted">{t('product.uses.empty')}</p>
+        : <ul class="pills">{industries.map((i) => <li><a href={routes.solution(i.slug)}>{i.name}</a></li>)}</ul>}
+    </section>
+
+    <section id="video">
+      <h2>{t('product.tab.video')}</h2>
+      {p.video_url
+        ? <p><a href={p.video_url} rel="noopener">{p.video_url}</a></p>
+        : <p class="muted">{t('product.video.empty')}</p>}
+    </section>
+
+    <section id="tai-lieu">
+      <h2>{t('product.tab.docs')}</h2>
+      {p.documents.length === 0
+        ? <p class="muted">{t('product.docs.empty')}</p>
+        : <ul class="bul">{p.documents.map((d) => <li><a href={d.src}>{d.alt ?? d.src}</a></li>)}</ul>}
+    </section>
+
+    <section id="lien-quan">
+      <h2>{t('product.tab.related')}</h2>
+      {compatible.length > 0 && (
+        <>
+          <h3>{t('product.compatible')}</h3>
+          <div class="grid">{compatible.map((x) => <ProductCard product={x} subtitle={subtitleOf(x)} />)}</div>
+        </>
+      )}
+      {related.length === 0 && compatible.length === 0 && <p class="muted">{t('product.related.empty')}</p>}
+      {related.length > 0 && <div class="grid">{related.map((x) => <ProductCard product={x} subtitle={subtitleOf(x)} />)}</div>}
+    </section>
+  </div>
+</BaseLayout>
+<style>
+  .top { display: grid; gap: var(--space-6); padding-block: var(--space-5) var(--space-6); }
+  .gallery { background: var(--color-panel); border-radius: var(--radius-lg); padding: var(--space-5); align-self: start; }
+  .cap { color: var(--color-muted); margin-top: var(--space-4); }
+  .kicker { color: var(--color-brand); font-weight: var(--weight-semibold); text-transform: uppercase; }
+  h1 { font-size: var(--text-4xl); margin-top: var(--space-2); }
+  .badges { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+  .lead { font-size: var(--text-xl); margin-top: var(--space-5); line-height: 1.5; }
+  .chips { list-style: none; margin: var(--space-6) 0 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .chips a { display: flex; gap: var(--space-3); align-items: baseline; border: 2px solid var(--color-line); border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4); color: var(--color-ink); font-weight: var(--weight-semibold); min-height: 76px; }
+  .chips a:hover { border-color: var(--color-brand); }
+  .chips b { color: var(--color-brand); }
+  .cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+  .tabbar-wrap { padding-block: 0; }
+  .tabbar { display: flex; gap: var(--space-5); overflow-x: auto; background: var(--color-panel-strong); border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5); position: sticky; top: 72px; z-index: 5; }
+  .tabbar a { color: var(--color-ink); font-weight: var(--weight-bold); white-space: nowrap; }
+  .tabbar a:hover { color: var(--color-brand); }
+  .sections { padding-block: var(--space-6) var(--space-8); display: grid; gap: var(--space-7); }
+  section { scroll-margin-top: 150px; }
+  h2 { font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+  h3 { font-size: var(--text-lg); margin: var(--space-4) 0 var(--space-3); }
+  section p + p, section p + .bul { margin-top: var(--space-3); }
+  .muted { color: var(--color-muted); }
+  .bul { padding-left: var(--space-5); margin: 0; }
+  .notice { background: var(--color-badge-pending-bg); color: var(--color-badge-pending-fg); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-weight: var(--weight-semibold); }
+  .specs { width: 100%; max-width: 760px; border-collapse: collapse; margin-top: var(--space-4); }
+  .specs caption { text-align: left; font-weight: var(--weight-bold); color: var(--color-brand); padding-bottom: var(--space-2); }
+  .specs th, .specs td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-line); }
+  .specs thead th { color: var(--color-muted); font-size: var(--text-sm); font-weight: var(--weight-semibold); }
+  .specs tbody th { font-weight: var(--weight-medium); width: 50%; }
+  .specs td { font-weight: var(--weight-semibold); }
+  .pills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .pills a { display: inline-block; background: var(--color-panel-strong); border-radius: var(--radius-pill); padding: var(--space-2) var(--space-4); font-weight: var(--weight-semibold); }
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); margin-bottom: var(--space-4); }
+  @media (min-width: 900px) {
+    .top { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-7); }
+  }
+</style>

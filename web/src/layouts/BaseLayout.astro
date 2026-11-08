@@ -1,0 +1,40 @@
+---
+import '../styles/base.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getContent } from '../content/load';
+import { NOINDEX } from '../lib/site';
+import { t } from '../i18n/t';
+
+interface Props {
+  title?: string;
+  description?: string | null;
+}
+const { title, description } = Astro.props;
+const { siteSettings } = getContent();
+const brand = siteSettings.brand_name ?? t('site.fallbackName');
+const fullTitle = title ? `${title} | ${brand}` : (siteSettings.seo?.meta_title ?? brand);
+const favicon = siteSettings.favicon?.src;
+---
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {NOINDEX && <meta name="robots" content="noindex, nofollow" />}
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    {favicon && <link rel="icon" href={favicon} />}
+  </head>
+  <body>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+<style is:global>
+  body { min-height: 100vh; display: flex; flex-direction: column; }
+  main { flex: 1; }
+</style>

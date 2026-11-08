@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { getContent, lineOf } from '../../content/load';
+import { fold } from '../../lib/text';
+import { routes } from '../../lib/routes';
+import { t } from '../../i18n/t';
+
+const c = getContent();
+const lineIds = c.productLines.map((l) => ({ id: `line:${l.slug}`, label: l.name }));
+const sidebar = [
+  { id: 'all', label: t('catalog.all') },
+  ...lineIds,
+  { id: 'kind:accessory', label: t('kind.accessory') },
+  { id: 'kind:software', label: t('kind.software') },
+];
+const subtitleOf = (p: (typeof c.products)[number]) => lineOf(c, p)?.name ?? t(`kind.${p.kind}`);
+const anyProvisional = c.products.some((p) => p.name_provisional);
+---
+<BaseLayout title={t('catalog.title')}>
+  <PageHead kicker={t('catalog.kicker')} title={t('catalog.title')}
+    subtitle={t('catalog.subtitle', { lines: c.productLines.length, count: c.products.length })} />
+  <div class="wrap layout" data-catalog>
+    <aside class="side" aria-labelledby="filter-title">
+      <h2 id="filter-title">{t('catalog.filterTitle')}</h2>
+      <ul>
+        {sidebar.map((s, i) => (
+          <li><button type="button" data-filter={s.id} aria-pressed={i === 0 ? 'true' : 'false'}>{s.label}</button></li>
+        ))}
+      </ul>
+    </aside>
+    <div class="main">
+      <div class="search">
+        <label class="sr-only" for="q">{t('catalog.searchLabel')}</label>
+        <input id="q" type="search" placeholder={t('catalog.searchPlaceholder')} autocomplete="off" data-q />
+        <label class="sr-only" for="ind">{t('catalog.byIndustry')}</label>
+        <select id="ind" data-industry>
+          <option value="">{t('catalog.byIndustry')}</option>
+          {c.industries.map((i) => <option value={i.slug}>{i.name}</option>)}
+        </select>
+      </div>
+      <div class="grid" data-grid>
+        {c.products.map((p) => (
+          <ProductCard product={p} subtitle={subtitleOf(p)}
+            data-group={p.line ? `line:${p.line}` : `kind:${p.kind}`}
+            data-industries={p.industries.join(' ')}
+            data-text={fold([p.model, p.summary ?? '', subtitleOf(p), ...p.specs.map((s) => `${s.label} ${s.value}`)].join(' '))} />
+        ))}
+        <a class="tile" href={routes.solutions} data-tile>
+          <span class="tile-k">{t('catalog.agentTile.kicker')}</span>
+          <strong>{t('catalog.agentTile.title')}</strong>
+          <span class="tile-l">{t('catalog.agentTile.link')} →</span>
+        </a>
+      </div>
+      <p class="empty" data-empty hidden>{t('catalog.empty')}</p>
+      {anyProvisional && <p class="note">{t('catalog.provisionalNote')}</p>}
+    </div>
+  </div>
+</BaseLayout>
+<script>
+  // Progressive filter: with JS off every product stays visible. Group, industry and text combine with AND.
+  const root = document.querySelector<HTMLElement>('[data-catalog]');
+  if (root) {
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-grid] > [data-group]')];
+    const tile = root.querySelector<HTMLElement>('[data-tile]');
+    const empty = root.querySelector<HTMLElement>('[data-empty]');
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const q = root.querySelector<HTMLInputElement>('[data-q]');
+    const industry = root.querySelector<HTMLSelectElement>('[data-industry]');
+    let group = 'all';
+    const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'd').toLowerCase();
+    const apply = () => {
+      const text = fold(q?.value.trim() ?? '');
+      const ind = industry?.value ?? '';
+      let shown = 0;
+      for (const card of cards) {
+        const ok =
+          (group === 'all' || card.dataset.group === group) &&
+          (!ind || (card.dataset.industries ?? '').split(' ').includes(ind)) &&
+          (!text || (card.dataset.text ?? '').includes(text));
+        card.hidden = !ok;
+        if (ok) shown++;
+      }
+      if (tile) tile.hidden = !(group === 'all' || group === 'kind:software') || !!text || !!ind;
+      if (empty) empty.hidden = shown > 0;
+    };
+    for (const b of buttons) b.addEventListener('click', () => {
+      group = b.dataset.filter ?? 'all';
+      for (const o of buttons) o.setAttribute('aria-pressed', String(o === b));
+      apply();
+    });
+    q?.addEventListener('input', apply);
+    industry?.addEventListener('change', apply);
+  }
+</script>
+<style>
+  .layout { display: grid; gap: var(--space-5); padding-bottom: var(--space-7); align-items: start; }
+  .side { background: var(--color-panel); border-radius: var(--radius-lg); padding: var(--space-5); }
+  .side h2 { font-size: var(--text-xl); letter-spacing: 0; margin-bottom: var(--space-3); }
+  .side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .side button { font: inherit; text-align: left; width: 100%; background: none; border: 0; cursor: pointer; color: var(--color-muted);
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
+  .side button:hover { color: var(--color-ink); }
+  .side button[aria-pressed='true'] { background: var(--color-panel-strong); color: var(--color-ink); font-weight: var(--weight-semibold); }
+  .search { display: flex; flex-wrap: wrap; gap: var(--space-3); border: 2px solid var(--color-line); border-radius: var(--radius-lg);
+    padding: var(--space-3); margin-bottom: var(--space-4); }
+  .search input { flex: 1 1 220px; border: 0; font: inherit; font-size: var(--text-lg); padding: var(--space-2) var(--space-3); background: transparent; color: var(--color-ink); }
+  .search input:focus-visible { outline: none; box-shadow: none; }
+  .search select { font: inherit; font-weight: var(--weight-semibold); color: var(--color-brand); background: var(--color-panel-strong);
+    border: 0; border-radius: var(--radius-pill); padding: var(--space-2) var(--space-4); cursor: pointer; }
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+  .grid > :global([hidden]), .tile[hidden] { display: none; }
+  .tile { display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); background: var(--color-panel);
+    border: 2px solid var(--color-line); border-radius: var(--radius-md); padding: var(--space-5); color: var(--color-ink); min-height: 200px; }
+  .tile-k { font-size: var(--text-2xl); font-weight: var(--weight-bold); color: var(--color-brand); }
+  .tile-l { color: var(--color-brand); font-weight: var(--weight-medium); }
+  .empty { color: var(--color-muted); padding: var(--space-5) 0; }
+  .note { display: inline-block; margin-top: var(--space-4); background: var(--color-panel-strong); color: var(--color-muted);
+    font-weight: var(--weight-semibold); font-size: var(--text-sm); padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill); }
+  @media (min-width: 900px) {
+    .layout { grid-template-columns: 300px 1fr; }
+    .side { position: sticky; top: 88px; }
+    .side ul { flex-direction: column; flex-wrap: nowrap; }
+  }
+</style>

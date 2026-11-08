@@ -1,13 +1,15 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import Button from '../components/Button.astro';
+import { getContent } from '../content/load';
+import { routes } from '../lib/routes';
+import { t } from '../i18n/t';
+
+// Placeholder: the real homepage is piece P2c. It exists so the shell has a home to link to.
+const { siteSettings: s } = getContent();
 ---
-<html lang="vi">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="robots" content="noindex" />
-    <title>V-ROBOTICS</title>
-  </head>
-  <body>
-    <h1>V-ROBOTICS</h1>
-  </body>
-</html>
+<BaseLayout>
+  <PageHead title={s.hero_headline ?? t('site.fallbackName')} subtitle={s.hero_sub ?? undefined} />
+  <div class="wrap"><Button href={routes.products}>{t('nav.products')}</Button></div>
+</BaseLayout>

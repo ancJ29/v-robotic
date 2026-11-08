@@ -1,0 +1,18 @@
+---
+import type { Product } from '../content/types';
+import { t } from '../i18n/t';
+/** First gallery image, or a neutral well with the kind's name when the product has none (all seed products today). */
+interface Props { product: Product; ratio?: string; }
+const { product, ratio = '4 / 3' } = Astro.props;
+const img = product.gallery[0];
+---
+<div class="visual" style={`aspect-ratio:${ratio}`}>
+  {img
+    ? <img src={img.src} alt={img.alt ?? product.model} width={img.width ?? undefined} height={img.height ?? undefined} loading="lazy" />
+    : <span class="ph" aria-hidden="true">{t(`kind.${product.kind}`)}</span>}
+</div>
+<style>
+  .visual { background: var(--color-panel-strong); border-radius: var(--radius-md); display: grid; place-items: center; overflow: hidden; }
+  img { width: 100%; height: 100%; object-fit: contain; }
+  .ph { color: var(--color-muted); font-weight: var(--weight-semibold); letter-spacing: 0.08em; text-transform: uppercase; font-size: var(--text-sm); }
+</style>

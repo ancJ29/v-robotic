@@ -1,0 +1,20 @@
+---
+import { t } from '../i18n/t';
+/** Last item has no href and is the current page. */
+interface Props { items: { label: string; href?: string }[]; }
+const { items } = Astro.props;
+---
+<nav class="wrap crumbs" aria-label={t('product.crumbsLabel')}>
+  <ol>
+    {items.map((i) => (
+      <li>{i.href ? <a href={i.href}>{i.label}</a> : <span aria-current="page">{i.label}</span>}</li>
+    ))}
+  </ol>
+</nav>
+<style>
+  .crumbs { padding-top: var(--space-4); }
+  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); color: var(--color-muted); }
+  li + li::before { content: '/'; margin-right: var(--space-2); }
+  a { color: var(--color-muted); }
+  a:hover { color: var(--color-brand); }
+</style>
