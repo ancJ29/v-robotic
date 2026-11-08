@@ -12,4 +12,7 @@ export const routes = {
   partners: '/hop-tac',
   about: '/ve-chung-toi',
   contact: '/lien-he',
+  /** Built by P3 (form flows); linked from P2b pages before it exists. */
+  warranty: '/dich-vu/bao-hanh',
+  assistant: '/tro-ly-ai',
 } as const;

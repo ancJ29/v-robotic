@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import Band from '../components/Band.astro';
+import { getContent } from '../content/load';
+import { contact } from '../copy/contact';
+import { t } from '../i18n/t';
+
+const { siteSettings: s } = getContent();
+const digits = (v: string) => v.replace(/[^\d+]/g, '');
+const phone = s.phone ? { value: s.phone, href: `tel:${digits(s.phone)}` } : null;
+const channels = [
+  s.phone && { label: t('contact.phone'), href: `tel:${digits(s.phone)}` },
+  s.zalo && { label: t('contact.zalo'), href: `https://zalo.me/${digits(s.zalo).replace(/^\+/, '')}` },
+  s.whatsapp && { label: t('contact.whatsapp'), href: `https://wa.me/${digits(s.whatsapp).replace(/^\+/, '')}` },
+].filter((c): c is { label: string; href: string } => Boolean(c));
+const facts = [
+  s.email && { label: t('contact.email'), value: s.email, href: `mailto:${s.email}` },
+  s.address && { label: t('contact.address'), value: s.address, href: null },
+  s.legal_entity && { label: t('contact.legal'), value: s.legal_entity, href: null },
+].filter((f): f is { label: string; value: string; href: string | null } => Boolean(f));
+const anyFact = Boolean(phone) || channels.length > 0 || facts.length > 0;
+---
+<BaseLayout title={contact.title} description={contact.subtitle}>
+  <PageHead kicker={contact.kicker} title={contact.title} subtitle={contact.subtitle} />
+  <Band label={contact.kicker}>
+    <div class="cols">
+      {/*
+        FORM SLOT: P3 REPLACES THE CONTENTS OF <div data-form-slot="b2b-contact"> BELOW.
+        Screen 13's fields (name, organisation, phone, email, need group, data-notice checkbox, submit "Nhận tư vấn giải pháp robot")
+        become the lead kind "b2b_contact" from packages/lead-schema, with Turnstile and the Worker submit. P2b builds no field,
+        validation or handler. Keep this section's heading and the data-form-slot attribute; delete the <p class="pending"> line.
+      */}
+      <section class="form" aria-labelledby="form-title">
+        <h2 id="form-title">{t('contact.formTitle')}</h2>
+        <div data-form-slot="b2b-contact">
+          <p class="pending">{t('contact.formPending')}</p>
+        </div>
+      </section>
+      <aside class="connect" aria-labelledby="connect-title">
+        <h2 id="connect-title">{t('contact.panelTitle')}</h2>
+        {phone && (
+          <div class="fact">
+            <p class="lab">{t('contact.phone')}</p>
+            <a class="big" href={phone.href}>{phone.value}</a>
+          </div>
+        )}
+        {channels.length > 0 && (
+          <div class="fact">
+            <p class="lab">{t('contact.channels')}</p>
+            <ul class="chan">{channels.map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
+          </div>
+        )}
+        {facts.map((f) => (
+          <div class="fact">
+            <p class="lab">{f.label}</p>
+            <p class="val">{f.href ? <a href={f.href}>{f.value}</a> : f.value}</p>
+          </div>
+        ))}
+        {!anyFact && <p class="val">{contact.pendingNote}</p>}
+        <p class="panel-note">{contact.panelNote}</p>
+      </aside>
+    </div>
+  </Band>
+</BaseLayout>
+<style>
+  .cols { display: grid; gap: var(--space-5); }
+  .form { border: 2px solid var(--color-line); border-radius: var(--radius-lg); padding: var(--space-5); }
+  .form h2, .connect h2 { font-size: var(--text-xl); text-transform: uppercase; }
+  .pending { color: var(--color-muted); margin-top: var(--space-4); }
+  .connect { background: var(--color-navy); color: var(--color-on-dark); border-radius: var(--radius-lg); padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-5); }
+  .connect h2 { color: var(--color-on-dark); }
+  .lab { color: var(--color-on-dark-muted); font-size: var(--text-sm); }
+  .big { display: block; color: var(--color-on-dark); font-size: var(--text-2xl); font-weight: var(--weight-bold); margin-top: var(--space-1); overflow-wrap: anywhere; }
+  .val { color: var(--color-on-dark); margin-top: var(--space-1); }
+  .val a, .chan a { color: var(--color-on-dark); }
+  .chan { list-style: none; margin: var(--space-1) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); font-size: var(--text-lg); }
+  .panel-note { margin-top: auto; background: var(--color-navy-soft); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); color: var(--color-on-dark); }
+  @media (min-width: 900px) { .cols { grid-template-columns: 1.1fr 1fr; align-items: stretch; } }
+</style>

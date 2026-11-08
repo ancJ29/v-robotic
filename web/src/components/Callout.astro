@@ -1,0 +1,16 @@
+---
+/** A pale rounded notice bar closing a page (screens 04-09): one sentence, optionally with a button in the `actions` slot. `strong` for the bolder hand-off sentence. */
+interface Props { strong?: boolean; tone?: 'panel' | 'navy'; }
+const { strong = false, tone = 'panel' } = Astro.props;
+---
+<div class:list={['callout', tone, { strong }]}>
+  <p><slot /></p>
+  {Astro.slots.has('actions') && <div class="actions"><slot name="actions" /></div>}
+</div>
+<style>
+  .callout { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4);
+    background: var(--color-panel); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); color: var(--color-ink); }
+  .navy { background: var(--color-navy-soft); color: var(--color-on-dark); }
+  .strong p { font-weight: var(--weight-bold); font-size: var(--text-lg); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+</style>

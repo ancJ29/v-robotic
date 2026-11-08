@@ -1,0 +1,14 @@
+---
+import type { MediaRef } from '../content/types';
+/** A picture in a rounded well, or a neutral well when there is none (the seed has no images). Never a broken <img>. */
+interface Props { media?: MediaRef | null; fallbackAlt?: string; ratio?: string; fit?: 'cover' | 'contain'; }
+const { media = null, fallbackAlt = '', ratio = '4 / 3', fit = 'cover' } = Astro.props;
+---
+<div class="well" style={`aspect-ratio:${ratio}`}>
+  {media && <img src={media.src} alt={media.alt ?? fallbackAlt} width={media.width ?? undefined} height={media.height ?? undefined}
+    loading="lazy" style={`object-fit:${fit}`} />}
+</div>
+<style>
+  .well { background: var(--color-panel-strong); border-radius: var(--radius-md); overflow: hidden; width: 100%; }
+  img { width: 100%; height: 100%; }
+</style>

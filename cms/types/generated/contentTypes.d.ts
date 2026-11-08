@@ -787,6 +787,16 @@ export interface ApiShowroomShowroom extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    opening_status: Schema.Attribute.Enumeration<
+      ['open', 'fitting_out', 'planned']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'planned'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'name'> &
       Schema.Attribute.Required &
@@ -795,14 +805,6 @@ export interface ApiShowroomShowroom extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
-    status: Schema.Attribute.Enumeration<['open', 'fitting_out', 'planned']> &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<'planned'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

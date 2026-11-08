@@ -1,6 +1,6 @@
 ---
 /** Status badges from the designer's screens. `tone` picks the colours; text comes from the caller via t(). */
-interface Props { tone: 'provisional' | 'pending' | 'new' | 'hot'; size?: 'md' | 'sm'; }
+interface Props { tone: 'provisional' | 'pending' | 'new' | 'hot' | 'open'; size?: 'md' | 'sm'; }
 const { tone, size = 'md' } = Astro.props;
 ---
 <span class:list={['badge', tone, size]}><slot /></span>
@@ -10,6 +10,7 @@ const { tone, size = 'md' } = Astro.props;
   .sm { padding: 2px var(--space-3); font-size: var(--text-xs); }
   .provisional { background: var(--color-badge-provisional-bg); color: var(--color-badge-provisional-fg); }
   .pending { background: var(--color-badge-pending-bg); color: var(--color-badge-pending-fg); }
+  .open { background: var(--color-panel-strong); color: var(--color-brand); }
   .new { background: var(--color-badge-new); color: var(--color-on-dark); border-radius: var(--radius-sm); }
   .hot { background: var(--color-badge-hot); color: var(--color-on-dark); border-radius: var(--radius-sm); }
 </style>
