@@ -86,3 +86,27 @@ may read differently with 11.
 
 **What closes it:** the client's real content, or a decision to extend the seed before launch if the
 layout needs proving at full size.
+
+## 9. The same card-grid CSS is copied across five pages
+
+Opened by P2c on 2026-11-08, as a finding about the two pieces before it rather than its own work. Four
+pages carry their own copy of the same card-grid rule, and the homepage added a fifth. A shared
+`CardGrid` component would remove all five. P2c noted it and deliberately did not do it, which was
+right — a refactor inside another piece's files is how two pieces conflict.
+
+**What closes it:** one small piece that adds `CardGrid` and deletes the five copies. It is cheap
+now and gets slightly more expensive with every page added, so it is worth doing before P3's six
+form layouts rather than after.
+
+## 10. The hero headline ships filled, not empty
+
+Opened by the orchestrator on 2026-11-08, correcting its own brief. P2c was told the seed ships the
+hero headline empty; it does not — `content/seed/vi/site-settings.json` has "Tiêu đề trang chủ tạm
+thời" and a matching sub-line. The fallback for the empty case exists and was proved separately by
+blanking the settings and rebuilding, so nothing is wrong with the page. What is wrong is the claim,
+and it matters because "every `site_settings` field may be empty" is a design promise several
+pieces rest on, and the seed does not actually exercise it for these two fields.
+
+**What closes it:** decide whether the seed should ship these two empty, so the promise is exercised
+by the data rather than only by a test. The counter-argument is that a visibly temporary headline is
+more useful to a client reviewing the site than a generic fallback.
