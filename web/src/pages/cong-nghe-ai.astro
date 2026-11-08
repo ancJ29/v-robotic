@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Band from '../components/Band.astro';
+import InfoCard from '../components/InfoCard.astro';
+import Callout from '../components/Callout.astro';
+import ImageWell from '../components/ImageWell.astro';
+import { getContent } from '../content/load';
+import { ai } from '../copy/ai';
+
+const { siteSettings } = getContent();
+const logo = siteSettings.logo;
+---
+<BaseLayout title={ai.title} description={ai.subtitle}>
+  <Band tone="dark" size="hero" level={1} kicker={ai.kicker} title={ai.title} subtitle={ai.subtitle}>
+    {logo && <div slot="aside" class="logo"><ImageWell media={logo} fallbackAlt="" ratio="16 / 10" fit="contain" /></div>}
+  </Band>
+  <Band title={ai.ecosystemTitle}>
+    <div class="grid">
+      {ai.capabilities.map((c) => <InfoCard title={c.title} subtitle={c.body} />)}
+    </div>
+    <div class="note"><Callout>{ai.footnote}</Callout></div>
+  </Band>
+</BaseLayout>
+<style>
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  .note { margin-top: var(--space-5); }
+  .logo { max-width: 420px; margin-inline: auto; }
+  @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1120px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

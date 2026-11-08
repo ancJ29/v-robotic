@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Band from '../components/Band.astro';
+import InfoCard from '../components/InfoCard.astro';
+import Callout from '../components/Callout.astro';
+import Button from '../components/Button.astro';
+import { partners } from '../copy/partners';
+import { routes } from '../lib/routes';
+import { t } from '../i18n/t';
+
+/*
+ * P3 NOTE: architecture.md lists /hop-tac as "code + form" (partner lead). Until P3 builds that form, every
+ * "propose a partnership" link goes to the B2B contact page. P3 replaces these hrefs with the partner form's anchor or route.
+ */
+const apply = routes.contact;
+---
+<BaseLayout title={partners.title} description={partners.subtitle}>
+  <Band tone="dark" size="hero" level={1} kicker={partners.kicker} title={partners.title} subtitle={partners.subtitle} />
+  <Band label={partners.kicker}>
+    <div class="grid">
+      {partners.types.map((p) => <InfoCard title={p.title} subtitle={p.body} href={apply} linkLabel={t('partners.request')} />)}
+    </div>
+    <div class="note">
+      <Callout strong>
+        {partners.closing}
+        <Fragment slot="actions"><Button href={apply} variant="cta">{t('partners.register')}</Button></Fragment>
+      </Callout>
+    </div>
+  </Band>
+</BaseLayout>
+<style>
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  .note { margin-top: var(--space-5); }
+  @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1120px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

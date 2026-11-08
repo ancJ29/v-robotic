@@ -1,0 +1,25 @@
+---
+import type { Industry } from '../content/types';
+import ImageWell from './ImageWell.astro';
+import { routes } from '../lib/routes';
+import { t } from '../i18n/t';
+/** One industry in the listing (screen 03): picture left, name and "explore" link right. The whole card is the link. */
+interface Props { industry: Industry; }
+const { industry } = Astro.props;
+---
+<a class="card" href={routes.solution(industry.slug)}>
+  <div class="pic"><ImageWell media={industry.hero_image} fallbackAlt={industry.name} ratio="1 / 1" /></div>
+  <div class="txt">
+    <h3>{industry.name}</h3>
+    <span class="go">{t('industry.explore')} →</span>
+  </div>
+</a>
+<style>
+  .card { display: grid; grid-template-columns: minmax(96px, 38%) 1fr; gap: var(--space-4); align-items: stretch;
+    background: var(--color-page); border: 2px solid var(--color-line); border-radius: var(--radius-md);
+    padding: var(--space-3); color: var(--color-ink); box-shadow: var(--shadow-card); transition: box-shadow .15s, border-color .15s; }
+  .card:hover { border-color: var(--color-brand); box-shadow: var(--shadow-raised); color: var(--color-ink); }
+  .txt { display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-3); padding-block: var(--space-2); min-width: 0; }
+  h3 { font-size: var(--text-xl); overflow-wrap: anywhere; }
+  .go { color: var(--color-brand); font-weight: var(--weight-bold); }
+</style>

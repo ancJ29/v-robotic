@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import Band from '../../components/Band.astro';
+import Callout from '../../components/Callout.astro';
+import Badge from '../../components/Badge.astro';
+import Button from '../../components/Button.astro';
+import ImageWell from '../../components/ImageWell.astro';
+import { getContent } from '../../content/load';
+import { routes } from '../../lib/routes';
+import { t } from '../../i18n/t';
+
+const { showrooms } = getContent();
+// The first showroom that is open leads; otherwise the first in the list.
+const firstOpen = showrooms.findIndex((s) => s.opening_status === 'open');
+const active = firstOpen >= 0 ? firstOpen : 0;
+---
+<BaseLayout title={t('showroom.title')}>
+  <PageHead kicker={t('showroom.kicker')} title={t('showroom.title')} subtitle={t('showroom.subtitle', { count: showrooms.length })} />
+  <Band label={t('showroom.title')}>
+    {showrooms.length === 0 && <p class="none">{t('showroom.empty')}</p>}
+    {showrooms.length > 0 && (
+      <div data-showrooms>
+        <div class="tabs" role="tablist" aria-label={t('showroom.tabs')}>
+          {showrooms.map((s, i) => (
+            <button type="button" role="tab" id={`tab-${s.slug}`} aria-controls={`panel-${s.slug}`}
+              aria-selected={i === active ? 'true' : 'false'} data-tab={s.slug}>{s.city}</button>
+          ))}
+        </div>
+        {showrooms.map((s, i) => {
+          const showDetails = s.details_confirmed && Boolean(s.address || s.hours);
+          return (
+            <section class="room" role="tabpanel" id={`panel-${s.slug}`} aria-labelledby={`tab-${s.slug}`} data-panel={s.slug} hidden={i !== active}>
+              <div class:list={['main', { alone: !showDetails }]}>
+                <ImageWell media={s.gallery[0] ?? null} fallbackAlt={s.name} ratio="4 / 3" />
+                <div class="info">
+                  <h2>{s.name}</h2>
+                  <p><Badge tone="open">{t(`showroom.status.${s.opening_status}`)}</Badge></p>
+                  {!s.details_confirmed && <p class="pending">{t('showroom.pending')}</p>}
+                  <div><Button href={routes.visit} variant="cta">{t('showroom.book')}</Button></div>
+                </div>
+              </div>
+              {/* The address and hours block exists in the markup only for a confirmed showroom (contract: hidden, not greyed). */}
+              {showDetails && (
+                <aside class="visit" aria-labelledby={`visit-${s.slug}`}>
+                  <h3 id={`visit-${s.slug}`}>{t('showroom.visitTitle')}</h3>
+                  <dl>
+                    {s.address && <><dt>{t('showroom.address')}</dt><dd>{s.address}</dd></>}
+                    {s.hours && <><dt>{t('showroom.hours')}</dt><dd>{s.hours}</dd></>}
+                  </dl>
+                </aside>
+              )}
+            </section>
+          );
+        })}
+      </div>
+    )}
+    <div class="note"><Callout>{t('showroom.footnote')}</Callout></div>
+  </Band>
+</BaseLayout>
+<script>
+  // Progressive: with no JS every panel but the first is hidden by the server; this only switches which one shows.
+  document.querySelectorAll<HTMLElement>('[data-showrooms]').forEach((root) => {
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-tab]');
+    const panels = root.querySelectorAll<HTMLElement>('[data-panel]');
+    tabs.forEach((tab) =>
+      tab.addEventListener('click', () => {
+        tabs.forEach((x) => x.setAttribute('aria-selected', String(x === tab)));
+        panels.forEach((p) => { p.hidden = p.dataset.panel !== tab.dataset.tab; });
+      }),
+    );
+  });
+</script>
+<style>
+  .tabs { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-5); }
+  .tabs button { flex: 1 1 140px; text-align: left; font: inherit; font-weight: var(--weight-medium); cursor: pointer; border: 0;
+    background: var(--color-panel); color: var(--color-ink); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); }
+  .tabs button[aria-selected='true'] { background: var(--color-brand); color: var(--color-on-dark); font-weight: var(--weight-bold); }
+  .room { display: grid; gap: var(--space-4); }
+  .room[hidden] { display: none; }
+  .main { background: var(--color-panel); border-radius: var(--radius-lg); padding: var(--space-4); display: grid; gap: var(--space-5); align-items: center; }
+  .info { display: flex; flex-direction: column; gap: var(--space-4); align-items: flex-start; }
+  .info h2 { font-size: var(--text-2xl); text-transform: uppercase; }
+  .pending { color: var(--color-muted); font-size: var(--text-lg); }
+  .visit { border: 2px solid var(--color-line); border-radius: var(--radius-lg); padding: var(--space-5); }
+  .visit h3 { font-size: var(--text-xl); text-transform: uppercase; }
+  dl { margin: var(--space-4) 0 0; display: grid; gap: var(--space-1); }
+  dt { color: var(--color-muted); font-size: var(--text-sm); margin-top: var(--space-3); }
+  dd { margin: 0; font-weight: var(--weight-medium); }
+  .note { margin-top: var(--space-5); }
+  .none { color: var(--color-muted); }
+  @media (min-width: 900px) {
+    .room:has(.visit) { grid-template-columns: 1.7fr 1fr; align-items: start; }
+    .main { grid-template-columns: 1.1fr 1fr; }
+  }
+</style>

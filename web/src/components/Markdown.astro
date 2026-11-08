@@ -1,0 +1,25 @@
+---
+import { parseMarkdown, type Inline } from '../lib/markdown';
+/** Renders a CMS Markdown field as text nodes (see lib/markdown.ts). */
+interface Props { source: string | null; }
+const blocks = parseMarkdown(Astro.props.source);
+const tag = (i: Inline) => (i.kind === 'strong' ? 'strong' : i.kind === 'em' ? 'em' : null);
+---
+{blocks.length > 0 && (
+  <div class="md">
+    {blocks.map((b) => {
+      if (b.type === 'h') {
+        const H = b.level === 3 ? 'h3' : 'h4';
+        return <H>{b.inline.map((i) => (tag(i) === 'strong' ? <strong>{i.text}</strong> : tag(i) === 'em' ? <em>{i.text}</em> : i.text))}</H>;
+      }
+      if (b.type === 'p') return <p>{b.inline.map((i) => (tag(i) === 'strong' ? <strong>{i.text}</strong> : tag(i) === 'em' ? <em>{i.text}</em> : i.text))}</p>;
+      return <ul>{b.items.map((it) => <li>{it.map((i) => (tag(i) === 'strong' ? <strong>{i.text}</strong> : tag(i) === 'em' ? <em>{i.text}</em> : i.text))}</li>)}</ul>;
+    })}
+  </div>
+)}
+<style>
+  .md { display: grid; gap: var(--space-3); max-width: 70ch; }
+  .md :global(h3), .md :global(h4) { font-size: var(--text-xl); }
+  .md ul { margin: 0; padding-left: var(--space-5); }
+  .md :global(p), .md :global(li) { color: var(--color-muted); font-size: var(--text-lg); }
+</style>

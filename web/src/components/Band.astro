@@ -1,0 +1,71 @@
+---
+/**
+ * The section band: one full-width horizontal section of a page, the unit the homepage (P2c) is made of.
+ * Everything a band varies by is a parameter; pages never write their own section wrapper.
+ *
+ *   tone      'light' (white) | 'panel' (pale blue) | 'dark' (navy)
+ *   size      'section' (default) | 'hero' (taller, bigger title: the dark openers of screens 05, 06, 08)
+ *   kicker, title, subtitle   the heading block; all optional, none printed when absent
+ *   level     1 makes the title the page's h1 (a hero), 2 (default) an h2
+ *   id        anchor
+ *   label     aria-label for a band with no title
+ *
+ * Slots: default (the content), `aside` (a visual beside the heading, e.g. a hero image),
+ *        `actions` (buttons under the heading, before the content).
+ */
+interface Props {
+  tone?: 'light' | 'panel' | 'dark';
+  size?: 'section' | 'hero';
+  kicker?: string;
+  title?: string;
+  subtitle?: string;
+  level?: 1 | 2;
+  id?: string;
+  label?: string;
+}
+const { tone = 'light', size = 'section', kicker, title, subtitle, level = 2, id, label } = Astro.props;
+const Heading = level === 1 ? 'h1' : 'h2';
+const hasHead = Boolean(kicker || title || subtitle);
+const hasAside = Astro.slots.has('aside');
+const hasActions = Astro.slots.has('actions');
+const hasBody = Astro.slots.has('default');
+---
+<section class:list={['band', tone, size]} id={id} aria-label={title ? undefined : label}>
+  <div class="wrap">
+    {(hasHead || hasAside) && (
+      <div class:list={['head', { split: hasAside, spaced: hasBody }]}>
+        <div class="text">
+          {kicker && <p class="kicker">{kicker}</p>}
+          {title && <Heading>{title}</Heading>}
+          {subtitle && <p class="sub">{subtitle}</p>}
+          {hasActions && <div class="actions"><slot name="actions" /></div>}
+        </div>
+        {hasAside && <div class="aside"><slot name="aside" /></div>}
+      </div>
+    )}
+    {!hasHead && !hasAside && hasActions && <div class="actions"><slot name="actions" /></div>}
+    {hasBody && <slot />}
+  </div>
+</section>
+<style>
+  .band { padding-block: var(--space-6); }
+  .hero { padding-block: var(--space-7); }
+  .panel { background: var(--color-panel); }
+  .dark { background: var(--color-navy); color: var(--color-on-dark); }
+  .head.spaced { margin-bottom: var(--space-6); }
+  .kicker { color: var(--color-brand); font-weight: var(--weight-semibold); text-transform: uppercase; letter-spacing: 0.01em; }
+  .dark .kicker { color: var(--color-brand-on-dark); }
+  h1, h2 { font-size: var(--text-2xl); margin-top: var(--space-2); }
+  .hero h1, .hero h2 { font-size: var(--text-3xl); }
+  .dark h1, .dark h2 { color: var(--color-on-dark); }
+  .sub { color: var(--color-muted); font-size: var(--text-lg); margin-top: var(--space-2); max-width: 60ch; }
+  .dark .sub { color: var(--color-on-dark-muted); }
+  .actions { margin-top: var(--space-5); display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .head.split { display: grid; gap: var(--space-6); align-items: center; }
+  .aside { min-width: 0; }
+  @media (min-width: 900px) {
+    .band { padding-block: var(--space-7); }
+    .hero { padding-block: var(--space-8); }
+    .head.split { grid-template-columns: 1.1fr 1fr; }
+  }
+</style>

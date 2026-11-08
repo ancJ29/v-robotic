@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import Band from '../components/Band.astro';
+import Callout from '../components/Callout.astro';
+import Button from '../components/Button.astro';
+import { getContent } from '../content/load';
+import { about } from '../copy/about';
+import { routes } from '../lib/routes';
+import { t } from '../i18n/t';
+
+const { siteSettings } = getContent();
+const logo = siteSettings.logo;
+const brand = siteSettings.brand_name ?? t('site.fallbackName');
+---
+<BaseLayout title={about.title} description={about.subtitle}>
+  <PageHead kicker={about.kicker} title={about.title} subtitle={about.subtitle} />
+  <Band label={about.kicker}>
+    <div class="cols">
+      <div class="brand">
+        {logo
+          ? <div class="logo"><img src={logo.src} alt={logo.alt ?? brand} width={logo.width ?? undefined} height={logo.height ?? undefined} /></div>
+          : <div class="logo name">{brand}</div>}
+        <p class="quote">{about.quote}</p>
+      </div>
+      <div class="principles">
+        <h2>{about.principlesTitle}</h2>
+        <ol>
+          {about.principles.map((p, i) => (
+            <li>
+              <span class="n">{String(i + 1).padStart(2, '0')}</span>
+              <div><h3>{p.title}</h3><p>{p.body}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+    <div class="note">
+      <Callout>
+        {about.legalNote}
+        <Fragment slot="actions"><Button href={routes.contact}>{t('about.connect')}</Button></Fragment>
+      </Callout>
+    </div>
+  </Band>
+</BaseLayout>
+<style>
+  .cols { display: grid; gap: var(--space-5); }
+  .brand { background: var(--color-navy); color: var(--color-on-dark); border-radius: var(--radius-lg); padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-5); justify-content: space-between; }
+  .logo { background: var(--color-page); border-radius: var(--radius-md); padding: var(--space-5); display: grid; place-items: center; min-height: 180px; }
+  .logo img { max-height: 220px; width: auto; }
+  .logo.name { color: var(--color-navy); font-size: var(--text-2xl); font-weight: var(--weight-bold); letter-spacing: 0.02em; text-align: center; }
+  .quote { font-size: var(--text-xl); font-weight: var(--weight-bold); }
+  .principles { border: 2px solid var(--color-line); border-radius: var(--radius-lg); padding: var(--space-5); }
+  .principles h2 { color: var(--color-brand); font-size: var(--text-lg); text-transform: uppercase; }
+  ol { list-style: none; margin: var(--space-5) 0 0; padding: 0; display: grid; gap: var(--space-5); }
+  li { display: flex; gap: var(--space-4); align-items: flex-start; }
+  .n { flex: none; background: var(--color-brand); color: var(--color-on-dark); border-radius: var(--radius-sm); min-width: 2.5rem;
+    padding: var(--space-1) var(--space-3); text-align: center; font-weight: var(--weight-bold); }
+  li h3 { font-size: var(--text-xl); }
+  li p { color: var(--color-muted); margin-top: var(--space-1); }
+  .note { margin-top: var(--space-5); }
+  @media (min-width: 900px) { .cols { grid-template-columns: 1fr 1.1fr; } }
+</style>

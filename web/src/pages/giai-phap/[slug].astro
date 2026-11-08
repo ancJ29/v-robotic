@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Band from '../../components/Band.astro';
+import Callout from '../../components/Callout.astro';
+import Button from '../../components/Button.astro';
+import ImageWell from '../../components/ImageWell.astro';
+import Markdown from '../../components/Markdown.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { getContent, lineOf } from '../../content/load';
+import { routes } from '../../lib/routes';
+import { t } from '../../i18n/t';
+
+export function getStaticPaths() {
+  return getContent().industries.map((industry) => ({ params: { slug: industry.slug }, props: { industry } }));
+}
+const { industry } = Astro.props;
+const c = getContent();
+const journey = [...industry.journey].sort((a, b) => a.order - b.order);
+const related = c.products.filter((p) => p.industries.includes(industry.slug));
+const seo = industry.seo;
+---
+<BaseLayout title={seo?.meta_title ?? industry.name} description={seo?.meta_description ?? industry.tagline}>
+  <Breadcrumb items={[
+    { label: t('nav.solutions'), href: routes.solutions },
+    { label: industry.name },
+  ]} />
+  <Band tone="dark" size="hero" level={1} kicker={t('industry.heroKicker', { name: industry.name })} title={industry.tagline ?? industry.name}>
+    <Fragment slot="actions"><Button href={routes.contact} variant="primary">{t('industry.cta')}</Button></Fragment>
+    {industry.hero_image && <div slot="aside"><ImageWell media={industry.hero_image} fallbackAlt={industry.name} ratio="16 / 9" /></div>}
+  </Band>
+  {industry.problem && (
+    <Band title={t('industry.problemTitle')}><Markdown source={industry.problem} /></Band>
+  )}
+  {journey.length > 0 && (
+    <Band tone="panel" title={t('industry.journeyTitle', { name: industry.name })}>
+      <ol class="steps">
+        {journey.map((s) => (
+          <li>
+            <span class="n">{s.order}</span>
+            <h3>{s.title}</h3>
+            {s.detail && <p>{s.detail}</p>}
+          </li>
+        ))}
+      </ol>
+    </Band>
+  )}
+  {related.length > 0 && (
+    <Band title={t('industry.relatedTitle')}>
+      <div class="products">
+        {related.map((p) => <ProductCard product={p} subtitle={lineOf(c, p)?.name ?? t(`kind.${p.kind}`)} />)}
+      </div>
+    </Band>
+  )}
+  <Band label={t('industry.closing')}>
+    <Callout strong>
+      {t('industry.closing')}
+      <Fragment slot="actions"><Button href={routes.contact}>{t('industry.closingCta')}</Button></Fragment>
+    </Callout>
+  </Band>
+</BaseLayout>
+<style>
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .steps li { background: var(--color-page); border: 2px solid var(--color-line); border-radius: var(--radius-md); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
+  .n { align-self: flex-start; background: var(--color-brand); color: var(--color-on-dark); border-radius: var(--radius-sm);
+    min-width: 2.5rem; padding: var(--space-1) var(--space-3); text-align: center; font-weight: var(--weight-bold); font-size: var(--text-lg); }
+  .steps h3 { font-size: var(--text-xl); margin-top: var(--space-2); }
+  .steps p { color: var(--color-muted); }
+  .products { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+</style>

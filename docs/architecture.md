@@ -417,7 +417,7 @@ erDiagram
     SHOWROOM {
         string city
         string name
-        enum status "open|fitting_out|planned"
+        enum opening_status "open|fitting_out|planned"
         string address
         string hours
         bool details_confirmed
@@ -472,7 +472,7 @@ preferred date, stage), and `schema_version` is there because **the R2 lead copy
 this system with no migration path** — it is files written on the day — so it is versioned from the
 first write.
 
-Unchanged and still right: `status` and `details_confirmed` (first drawn as `published`, renamed to avoid Strapi's own draft/publish) on **showroom** reflect screen 07's own caveat,
+Unchanged and still right: `opening_status` and `details_confirmed` (first drawn as `published`, renamed to avoid Strapi's own draft/publish; `status` became `opening_status` for the same reason, since Strapi reserves `status` as a query parameter while draft/publish is on) on **showroom** reflect screen 07's own caveat,
 that addresses and hours aren't shown until the project owner confirms them. **lead** is read-only
 to the public role — the Worker creates them, nobody on the internet can list them.
 

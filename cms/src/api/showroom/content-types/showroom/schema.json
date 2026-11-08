@@ -43,7 +43,7 @@
         }
       }
     },
-    "status": {
+    "opening_status": {
       "type": "enumeration",
       "enum": [
         "open",

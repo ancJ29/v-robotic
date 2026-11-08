@@ -101,13 +101,13 @@ export interface Industry {
   seo: Seo | null;
 }
 
-export type ShowroomStatus = 'open' | 'fitting_out' | 'planned';
+export type ShowroomOpeningStatus = 'open' | 'fitting_out' | 'planned';
 
 export interface Showroom {
   city: string;
   name: string;
   slug: string;
-  status: ShowroomStatus;
+  opening_status: ShowroomOpeningStatus;
   /** Null until the project owner confirms it; the page then hides the address block. */
   address: string | null;
   hours: string | null;

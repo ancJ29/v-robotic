@@ -17,6 +17,8 @@
   --color-muted: #5f6f86;         /* secondary text */
   --color-on-dark: #ffffff;
   --color-on-dark-muted: #c9d4e6;
+  --color-navy-soft: #12315a;     /* a notice sitting on a navy panel */
+  --color-brand-on-dark: #4aa8ff; /* kickers on navy */
   /* colour: accent */
   --color-brand: #1a6dff;         /* links, kickers, primary button */
   --color-brand-strong: #0f55d1;
