@@ -1,0 +1,25 @@
+---
+/**
+ * The two-column body of every form page (screens 10-13): a bordered form card on the left, a panel on the right
+ * (default dark navy, content in the `aside` slot). Default slot = the card's content. Pages never write this grid.
+ */
+interface Props { title?: string; label?: string; id?: string; }
+const { title, label, id } = Astro.props;
+---
+<section class="band" aria-label={label}>
+  <div class="wrap cols">
+    <div class="card" id={id}>
+      {title && <h2>{title}</h2>}
+      <slot />
+    </div>
+    <aside class="aside"><slot name="aside" /></aside>
+  </div>
+</section>
+<style>
+  .band { padding: var(--space-6) 0; }
+  .cols { display: grid; gap: var(--space-5); }
+  .card { border: 2px solid var(--color-line); border-radius: var(--radius-lg); padding: var(--space-5); min-width: 0; }
+  .card h2 { font-size: var(--text-xl); text-transform: uppercase; margin-bottom: var(--space-4); }
+  .aside { min-width: 0; }
+  @media (min-width: 900px) { .cols { grid-template-columns: 1.1fr 1fr; align-items: stretch; } }
+</style>

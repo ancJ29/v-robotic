@@ -1,0 +1,154 @@
+---
+/**
+ * One form component for every lead form. It prints the fields the schema lists for the kind(s) it is given
+ * (packages/lead-schema), every word through t(), and hands off to lib/lead-form.ts, which validates with the
+ * SAME validateLead the Worker uses, posts to /api/lead and shows success or failure.
+ *
+ *   kinds        one kind, or several that share a page (the contact page: contact, consult, service). The script picks
+ *                the active kind from the address (?product=, ?service=); fields not in the active kind are hidden and not sent.
+ *   choices      the CMS-driven selects: showroom / line / industry, as {value,label}[] supplied by the page.
+ *   labels       per-page wording for a field's label, placeholders for its placeholder (both default to lead.field.*).
+ *   productNames slug -> name, so a ?product= link can show which product the enquiry is about.
+ *   fallback     phone / email from site_settings, offered when sending fails. Either may be absent.
+ */
+import { FIELDS, OPTIONS, type FieldDef, type FieldName, type LeadKind, type ErrorCode } from '../../../packages/lead-schema/src/index.ts';
+import { t, type MessageKey } from '../i18n/t';
+
+interface Choice { value: string; label: string }
+interface Props {
+  kinds: LeadKind[];
+  choices?: Partial<Record<'showroom' | 'line' | 'industry', Choice[]>>;
+  labels?: Partial<Record<FieldName, string>>;
+  placeholders?: Partial<Record<FieldName, string>>;
+  productNames?: Record<string, string>;
+  fallback?: { phone?: string | null; email?: string | null };
+  /** Text above the fields (the AI page's greeting). */
+  lead?: string;
+}
+const { kinds, choices = {}, labels = {}, placeholders = {}, productNames = {}, fallback = {}, lead } = Astro.props;
+
+// One row per field name across the kinds, remembering which kinds have it. product_slug is a hidden input.
+const rows: { def: FieldDef; kinds: LeadKind[] }[] = [];
+for (const k of kinds) {
+  for (const def of FIELDS[k]) {
+    const row = rows.find((r) => r.def.name === def.name);
+    if (row) row.kinds.push(k); else rows.push({ def, kinds: [k] });
+  }
+}
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA'; // Cloudflare's always-passes test key
+const errorCodes: ErrorCode[] = ['required', 'too_long', 'invalid_phone', 'invalid_email', 'invalid_option', 'invalid_slug', 'invalid_date', 'date_past', 'consent_required'];
+
+const optionList = (def: FieldDef): Choice[] => {
+  if (def.options) return OPTIONS[def.options].map((v) => ({ value: v, label: t(`lead.option.${def.options}.${v}` as MessageKey) }));
+  if (def.cms) return choices[def.cms] ?? [];
+  return [];
+};
+const labelOf = (name: FieldName) => labels[name] ?? t(`lead.field.${name}` as const);
+const messages = {
+  error: Object.fromEntries(errorCodes.map((c) => [c, t(`lead.error.${c}` as const)])),
+  summary: t('lead.summary'), busy: t('lead.busy'),
+  captchaWait: t('lead.captcha.wait'), captchaBlocked: t('lead.captcha.blocked'),
+  failUnavailable: t('lead.fail.unavailable'), failNetwork: t('lead.fail.network'), failCaptcha: t('lead.fail.captcha'), failGeneric: t('lead.fail.generic'),
+  productContext: t('lead.productContext', { name: '{name}' }), ref: t('lead.success.ref', { id: '{id}' }),
+  submit: Object.fromEntries(kinds.map((k) => [k, t(`lead.submit.${k}` as const)])),
+};
+const config = { kinds, sitekey, endpoint: '/api/lead', messages, productNames };
+const fallbackLinks = [
+  fallback.phone && { href: `tel:${fallback.phone.replace(/[^\d+]/g, '')}`, text: fallback.phone },
+  fallback.email && { href: `mailto:${fallback.email}`, text: fallback.email },
+].filter((x): x is { href: string; text: string } => Boolean(x));
+---
+<form class="lead" data-lead-form novalidate>
+  {lead && <p class="lead-text">{lead}</p>}
+  <noscript><p class="notice">{t('lead.noscript')}</p></noscript>
+  <p class="product-ctx" data-product-ctx hidden></p>
+  <div class="fields">
+    {rows.map(({ def, kinds: ks }) => def.name === 'product_slug' ? (
+      <input type="hidden" name="product_slug" data-field data-kinds={ks.join(' ')} />
+    ) : (
+      <div class:list={['row', def.width, { check: def.control === 'checkbox' }]} data-field data-kinds={ks.join(' ')}>
+        {def.control === 'checkbox' ? (
+          <label class="checkline"><input type="checkbox" name={def.name} /> <span>{labelOf(def.name)}</span></label>
+        ) : (
+          <>
+            <label for={`f-${def.name}`}>{labelOf(def.name)}</label>
+            {def.control === 'select' ? (
+              <select id={`f-${def.name}`} name={def.name} aria-required={def.required}>
+                <option value="">{t('lead.choose')}</option>
+                {optionList(def).map((o) => <option value={o.value}>{o.label}</option>)}
+              </select>
+            ) : def.control === 'textarea' ? (
+              <textarea id={`f-${def.name}`} name={def.name} rows="4" maxlength={def.max} placeholder={placeholders[def.name]} aria-required={def.required}></textarea>
+            ) : (
+              <input id={`f-${def.name}`} name={def.name} type={def.control} maxlength={def.max || undefined} aria-required={def.required}
+                placeholder={placeholders[def.name] ?? (def.control === 'tel' ? t('lead.phonePlaceholder') : undefined)}
+                autocomplete={def.name === 'name' ? 'name' : def.control === 'tel' ? 'tel' : def.control === 'email' ? 'email' : def.name === 'company' ? 'organization' : undefined} />
+            )}
+          </>
+        )}
+        <p class="err" id={`err-${def.name}`} hidden></p>
+      </div>
+    ))}
+    <div class="trap" aria-hidden="true"><label>website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
+  </div>
+  <p class="privacy">{t('lead.privacy')}</p>
+  <div class="ts" data-turnstile></div>
+  <p class="summary" data-summary role="alert" hidden></p>
+  <div class="fail" data-fail role="alert" hidden>
+    <p data-fail-text></p>
+    {fallbackLinks.length > 0 && (
+      <p>{t('lead.fail.direct')} {fallbackLinks.map((l, i) => <><a href={l.href}>{l.text}</a>{i < fallbackLinks.length - 1 ? ' · ' : ''}</>)}</p>
+    )}
+  </div>
+  <button type="submit" class="submit" data-submit>{messages.submit[kinds[0]]}</button>
+  <div class="ok" data-success role="status" tabindex="-1" hidden>
+    <h3>{t('lead.success.title')}</h3>
+    {kinds.map((k) => <p data-success-kind={k} hidden>{t(`lead.success.body.${k}` as const)}</p>)}
+    <p class="ref" data-ref></p>
+    <button type="button" class="again" data-again>{t('lead.success.again')}</button>
+  </div>
+  <script type="application/json" data-config set:html={JSON.stringify(config)} />
+</form>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script>
+  import { initLeadForms } from '../lib/lead-form';
+  initLeadForms();
+</script>
+<style>
+  .fields { display: grid; gap: var(--space-4); grid-template-columns: 1fr; margin-top: var(--space-4); }
+  .row { min-width: 0; }
+  .row[hidden] { display: none; }
+  label { display: block; font-weight: var(--weight-semibold); color: var(--color-ink); margin-bottom: var(--space-1); }
+  input[type='text'], input[type='tel'], input[type='email'], input[type='date'], select, textarea {
+    width: 100%; font: inherit; color: var(--color-ink); background: var(--color-panel); border: 2px solid transparent;
+    border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+  textarea { resize: vertical; min-height: 7rem; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-brand); background: var(--color-page); }
+  [aria-invalid='true'] { border-color: var(--color-cta); background: var(--color-page); }
+  .checkline { display: flex; gap: var(--space-3); align-items: flex-start; font-weight: var(--weight-regular); }
+  .checkline input { margin-top: 0.3em; width: 1.2rem; height: 1.2rem; flex: none; }
+  .err { color: var(--color-cta-strong); font-size: var(--text-sm); margin-top: var(--space-1); }
+  .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .privacy { color: var(--color-muted); font-size: var(--text-sm); margin-top: var(--space-4); }
+  .ts { margin-top: var(--space-4); min-height: 0; }
+  .summary, .fail, .notice { margin-top: var(--space-4); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); background: var(--color-badge-provisional-bg); color: var(--color-ink); }
+  .fail p + p { margin-top: var(--space-2); }
+  .summary[hidden], .fail[hidden], .ok[hidden], .product-ctx[hidden] { display: none; }
+  .product-ctx { margin-top: var(--space-4); background: var(--color-panel); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); font-weight: var(--weight-semibold); }
+  .lead-text { background: var(--color-panel); border-radius: var(--radius-md); padding: var(--space-4); margin-top: var(--space-3); }
+  .submit, .again { margin-top: var(--space-5); width: 100%; font: inherit; font-weight: var(--weight-bold); cursor: pointer; border: 0; color: var(--color-on-dark);
+    background: var(--color-cta); border-radius: var(--radius-md); padding: var(--space-3) var(--space-5); }
+  .submit:hover { background: var(--color-cta-strong); }
+  .submit:disabled { opacity: 0.6; cursor: wait; }
+  .again { width: auto; background: var(--color-brand); }
+  .ok { margin-top: var(--space-4); background: var(--color-panel); border-radius: var(--radius-md); padding: var(--space-5); }
+  .ok h3 { font-size: var(--text-xl); }
+  .ok p { margin-top: var(--space-2); }
+  .ref { color: var(--color-muted); }
+  form.done .fields, form.done .privacy, form.done .ts, form.done .submit, form.done .fail, form.done .summary, form.done .lead-text, form.done .product-ctx { display: none; }
+  @media (min-width: 640px) {
+    .fields { grid-template-columns: 1fr 1fr; }
+    .row.full { grid-column: 1 / -1; }
+    .submit { width: auto; min-width: 18rem; }
+  }
+</style>

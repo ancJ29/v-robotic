@@ -222,7 +222,7 @@ Settled, each reversible, each written here so the next session doesn't reopen i
 | Worker vs Lambda | Worker, as a Pages Function | Native R2 binding, one deploy, no cross-cloud keys |
 | Brand & contact | `site_settings` single type, every field optional | Client-editable; screen 13 says they're pending anyway |
 | Hero headline & sub | In `site_settings` too | Near-free, and exactly what a client fiddles with |
-| Lead destination | A `lead_notify_email` field, seeded to Hau's address | Makes the open question a field the client can change |
+| Lead destination | `LEAD_NOTIFY_EMAIL`, a Worker environment variable (revised in P3; a CMS field was unreachable from the Worker) | The Worker never calls Strapi |
 | Page prose | Stays in code | Changes twice a year; promotable in an afternoon |
 | Localization | Every customer-facing field localized from the start, VI filled only | Free while empty, a migration once it isn't |
 | Catalog data | Placeholders carrying the designer's own badges | Ships honestly; real data swaps in as it arrives |

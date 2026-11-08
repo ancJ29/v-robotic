@@ -866,12 +866,6 @@ export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
           localized: true;
         };
       }>;
-    lead_notify_email: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
     legal_entity: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

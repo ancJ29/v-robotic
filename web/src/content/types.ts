@@ -128,8 +128,6 @@ export interface SiteSettings {
   email: string | null;
   address: string | null;
   legal_entity: string | null;
-  /** Where leads are mailed. Reaches the Worker through the build's _site/settings.json. */
-  lead_notify_email: string | null;
   /** The "BẢN MẪU THIẾT KẾ" band. */
   show_demo_banner: boolean;
   logo: MediaRef | null;

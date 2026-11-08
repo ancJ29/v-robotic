@@ -1,0 +1,21 @@
+---
+/** The dark side panel of screens 10-12: a heading, numbered steps or plain items, and a closing note. */
+interface Props { title: string; steps?: string[]; note?: string; }
+const { title, steps = [], note } = Astro.props;
+---
+<div class="panel">
+  <h2>{title}</h2>
+  {steps.length > 0 && (
+    <ol>{steps.map((s, i) => <li><span class="n">{String(i + 1).padStart(2, '0')}</span><span>{s}</span></li>)}</ol>
+  )}
+  {note && <p class="note">{note}</p>}
+</div>
+<style>
+  .panel { background: var(--color-navy); color: var(--color-on-dark); border-radius: var(--radius-lg); padding: var(--space-5);
+    height: 100%; display: flex; flex-direction: column; gap: var(--space-5); }
+  h2 { color: var(--color-on-dark); font-size: var(--text-xl); text-transform: uppercase; }
+  ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-4); }
+  li { display: flex; gap: var(--space-4); align-items: baseline; font-weight: var(--weight-semibold); font-size: var(--text-lg); }
+  .n { color: var(--color-brand-on-dark); font-weight: var(--weight-bold); min-width: 2ch; }
+  .note { margin-top: auto; color: var(--color-on-dark-muted); }
+</style>

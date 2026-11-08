@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import FormBand from '../components/FormBand.astro';
+import FormSteps from '../components/FormSteps.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { assistant } from '../copy/assistant';
+import { leadChoices } from '../lib/lead-choices';
+
+const { choices, fallback } = leadChoices();
+---
+<BaseLayout title={assistant.title} description={assistant.subtitle}>
+  <PageHead kicker={assistant.kicker} title={assistant.title} subtitle={assistant.subtitle} />
+  <FormBand title={assistant.headerTitle}>
+    <LeadForm kinds={['ai_assist']} choices={choices} fallback={fallback} lead={assistant.greeting}
+      placeholders={{ message: assistant.messagePlaceholder }} />
+    <FormSteps slot="aside" title={assistant.asideTitle} steps={assistant.steps} note={assistant.note} />
+  </FormBand>
+</BaseLayout>

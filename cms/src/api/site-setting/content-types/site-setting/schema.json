@@ -95,14 +95,6 @@
         }
       }
     },
-    "lead_notify_email": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      }
-    },
     "show_demo_banner": {
       "type": "boolean",
       "default": true,

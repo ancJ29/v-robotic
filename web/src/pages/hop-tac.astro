@@ -5,21 +5,22 @@ import CardGrid from '../components/CardGrid.astro';
 import InfoCard from '../components/InfoCard.astro';
 import Callout from '../components/Callout.astro';
 import Button from '../components/Button.astro';
+import FormBand from '../components/FormBand.astro';
+import FormSteps from '../components/FormSteps.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { leadChoices } from '../lib/lead-choices';
 import { partners } from '../copy/partners';
 import { routes } from '../lib/routes';
 import { t } from '../i18n/t';
 
-/*
- * P3 NOTE: architecture.md lists /hop-tac as "code + form" (partner lead). Until P3 builds that form, every
- * "propose a partnership" link goes to the B2B contact page. P3 replaces these hrefs with the partner form's anchor or route.
- */
-const apply = routes.contact;
+const apply = '#dang-ky';
+const { fallback } = leadChoices();
 ---
 <BaseLayout title={partners.title} description={partners.subtitle}>
   <Band tone="dark" size="hero" level={1} kicker={partners.kicker} title={partners.title} subtitle={partners.subtitle} />
   <Band label={partners.kicker}>
     <CardGrid cols={3}>
-      {partners.types.map((p) => <InfoCard title={p.title} subtitle={p.body} href={apply} linkLabel={t('partners.request')} />)}
+      {partners.types.map((p) => <InfoCard title={p.title} subtitle={p.body} href={`${routes.partners}?type=${p.id}#dang-ky`} linkLabel={t('partners.request')} />)}
     </CardGrid>
     <div class="note">
       <Callout strong>
@@ -28,6 +29,10 @@ const apply = routes.contact;
       </Callout>
     </div>
   </Band>
+  <FormBand title={partners.formTitle} id="dang-ky" label={partners.formKicker}>
+    <LeadForm kinds={['partnership']} fallback={fallback} />
+    <FormSteps slot="aside" title={partners.formKicker} note={partners.closing} />
+  </FormBand>
 </BaseLayout>
 <style>
   .note { margin-top: var(--space-5); }

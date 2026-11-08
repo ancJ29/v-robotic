@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import FormBand from '../../components/FormBand.astro';
+import FormSteps from '../../components/FormSteps.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { booking } from '../../copy/booking';
+import { leadChoices } from '../../lib/lead-choices';
+
+const { choices, fallback } = leadChoices();
+---
+<BaseLayout title={booking.title} description={booking.subtitle}>
+  <PageHead kicker={booking.kicker} title={booking.title} subtitle={booking.subtitle} />
+  <FormBand title={booking.formTitle}>
+    <LeadForm kinds={['showroom_booking']} choices={choices} fallback={fallback} />
+    <FormSteps slot="aside" title={booking.asideTitle} steps={booking.steps} note={booking.note} />
+  </FormBand>
+</BaseLayout>

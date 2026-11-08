@@ -14,3 +14,5 @@ logs/
 notes.local/
 .DS_Store
 .strapi-updater.json
+.dev.vars
+web/.dev-leads/

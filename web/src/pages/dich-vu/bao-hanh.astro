@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import FormBand from '../../components/FormBand.astro';
+import FormSteps from '../../components/FormSteps.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { warranty } from '../../copy/warranty';
+import { leadChoices } from '../../lib/lead-choices';
+
+const { fallback } = leadChoices();
+---
+<BaseLayout title={warranty.title} description={warranty.subtitle}>
+  <PageHead kicker={warranty.kicker} title={warranty.title} subtitle={warranty.subtitle} />
+  <FormBand title={warranty.formTitle}>
+    <LeadForm kinds={['warranty']} fallback={fallback} placeholders={{ message: warranty.messagePlaceholder }} />
+    <p class="photo">{warranty.photoNote}</p>
+    <FormSteps slot="aside" title={warranty.asideTitle} steps={warranty.steps} note={warranty.note} />
+  </FormBand>
+</BaseLayout>
+<style>
+  .photo { color: var(--color-muted); margin-top: var(--space-4); }
+</style>

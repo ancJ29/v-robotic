@@ -61,7 +61,7 @@ flowchart LR
         R2[("R2 · two buckets<br/>media (public)<br/>private: lead copies · backups")]
     end
 
-    MAIL["Email notify<br/>free tier sender"]
+    MAIL["Slack webhook<br/>best-effort notice"]
 
     E -->|"edits content"| CD
     CD --> ST
@@ -90,7 +90,7 @@ Read it as three loops that barely touch each other:
 - **The content loop** (editor → Strapi → webhook → Actions → Pages). Slow, occasional, and entirely
   invisible to visitors.
 - **The visitor loop** (browser → Pages + R2). Pure static delivery. No server, no database.
-- **The lead loop** (browser → Function → R2 + email, and in Phase 2 also → Strapi). The only
+- **The lead loop** (browser → Function → R2, then a Slack notice, and in Phase 2 also → Strapi). The only
   writing path from the public internet, and it goes through one door we control.
 
 ---
@@ -147,7 +147,7 @@ sequenceDiagram
     participant T as Turnstile
     participant F as Function /api/lead
     participant R as R2
-    participant M as Email
+    participant M as Slack
     participant S as Strapi (Phase 2)
 
     V->>P: opens a form page
@@ -157,8 +157,8 @@ sequenceDiagram
     F->>T: verify token
     T-->>F: ok
     F->>F: validate · rate limit by IP
-    F->>R: write lead JSON (durable copy)
-    F->>M: notify the lead address
+    F->>R: write lead JSON (the record of truth)
+    F->>M: notify (Slack webhook, after the R2 write)
     opt Phase 2
         F->>S: create lead record
     end
@@ -167,25 +167,18 @@ sequenceDiagram
 
 **Two things this flow needs that an earlier draft left as gestures.**
 
-*"Email notify, free tier sender" is not a provider.* A Worker cannot speak SMTP; it needs an HTTP
-email API. And most of them — Resend among them — will only send to the account owner's own address
-until a sending domain is verified, which this plan has no custom domain for. So the MVP uses a
-provider that verifies a **single sender address** instead of a domain (Brevo and similar do this),
-named with its from-address and its API key in Pages' secrets. When the custom domain arrives, the
-provider choice can be revisited.
+*The notification is a Slack incoming webhook, sent after the lead is safe.* A Worker cannot speak SMTP, and an email
+API needs a verified sender or domain this plan does not have, so the email provider question was parked on the
+human's call. The notification is one `POST` to `SLACK_WEBHOOK_URL`, best effort, and absent until the human supplies
+it. R2 is the record of truth; the message is minimal and carries no contact details. See `docs/conventions/lead-path.md`.
 
-*The Worker cannot read `lead_notify_email` from Strapi.* That field was put in `site_settings` on
-the reasoning that the client should own it — which is right — but the Function runs at request
-time and never calls Strapi, by design. So the build carries it across: the Astro build writes the
-handful of runtime-needed settings to `dist/_site/settings.json`, and the Function reads that with
-the assets binding, falling back to a Pages environment variable when the file is absent. The client
-still edits the address in Strapi; it reaches the Worker at the next build, which a publish triggers
-anyway.
+*There is no notification address in the CMS.* An earlier draft put `lead_notify_email` in `site_settings`; the
+Function never calls Strapi and holds no read token, so it could not read it. Dropped, not rescued.
 
 Why a Function at all, and not the brief's "post straight to Strapi": that version lets the open
 internet write to the database and puts the server's address in the page source. Here the server stays unlisted, spam
 is stopped at the edge before it costs anything, and in Phase 1 the whole thing works with no server
-at all. Leads land in two places on purpose — email gets read, R2 doesn't get lost.
+at all. R2 holds every lead; the notification only says one arrived.
 
 **Lead kinds** carried by one record:
 
@@ -270,7 +263,7 @@ POST /api/lead                public · Turnstile-gated
   in   { kind, name, phone, company, message, ...per-kind extras }
   checks  token valid · required fields by kind · field lengths
   does    env.LEADS.put(...)  durable JSON copy, via the native binding
-          sends the notification email
+          sends the Slack notification (after the write; best effort)
           (from P6 onward) forwards to Strapi
   out  { ok }
 
@@ -280,7 +273,7 @@ POST /api/rebuild             Strapi's webhook target · shared-secret header
   out  { ok }
 ```
 
-Secrets in Pages' encrypted environment: the Turnstile secret, the email provider's key,
+Secrets in Pages' encrypted environment: the Turnstile secret, the Slack webhook URL,
 `REBUILD_SECRET`, and a fine-grained GitHub token for the dispatch. No storage credentials.
 
 ## Publishing content
@@ -370,7 +363,6 @@ erDiagram
         string email
         text address
         text legal_entity
-        string lead_notify_email
         bool show_demo_banner
     }
     PRODUCT_LINE {
