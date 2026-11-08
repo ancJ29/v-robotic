@@ -1,0 +1,45 @@
+{
+  "_note": "Every slug ever published, per type. Slugs are URLs Google indexes: a slug in this file must stay in the seed. To rename one on purpose, edit this file in the same commit, and add a redirect in the site.",
+  "product-line": [
+    "dong-tam-1",
+    "dong-tam-2",
+    "dong-tam-3",
+    "dong-tam-4",
+    "dong-tam-5",
+    "dong-tam-6",
+    "dong-tam-7"
+  ],
+  "industry": [
+    "nganh-tam-san-xuat",
+    "nganh-tam-kho-van",
+    "nganh-tam-y-te",
+    "nganh-tam-khach-san"
+  ],
+  "product": [
+    "model-tam-1-1",
+    "model-tam-1-2",
+    "model-tam-2-1",
+    "model-tam-2-2",
+    "model-tam-3-1",
+    "model-tam-3-2",
+    "model-tam-4-1",
+    "model-tam-4-2",
+    "model-tam-5-1",
+    "model-tam-5-2",
+    "model-tam-6-1",
+    "model-tam-6-2",
+    "model-tam-7-1",
+    "model-tam-7-2",
+    "phu-kien-tam-1",
+    "phu-kien-tam-2",
+    "phu-kien-tam-3",
+    "phan-mem-tam-1",
+    "phan-mem-tam-2",
+    "phan-mem-tam-3"
+  ],
+  "showroom": [
+    "showroom-tam-ha-noi",
+    "showroom-tam-da-nang",
+    "showroom-tam-ho-chi-minh"
+  ]
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Dòng robot tạm 1",
+    "slug": "dong-tam-1",
+    "summary": "Mô tả tạm cho dòng robot 1.",
+    "order": 1
+  },
+  {
+    "name": "Dòng robot tạm 2",
+    "slug": "dong-tam-2",
+    "summary": "Mô tả tạm cho dòng robot 2.",
+    "order": 2
+  },
+  {
+    "name": "Dòng robot tạm 3",
+    "slug": "dong-tam-3",
+    "summary": "Mô tả tạm cho dòng robot 3.",
+    "order": 3
+  },
+  {
+    "name": "Dòng robot tạm 4",
+    "slug": "dong-tam-4",
+    "summary": "Mô tả tạm cho dòng robot 4.",
+    "order": 4
+  },
+  {
+    "name": "Dòng robot tạm 5",
+    "slug": "dong-tam-5",
+    "summary": "Mô tả tạm cho dòng robot 5.",
+    "order": 5
+  },
+  {
+    "name": "Dòng robot tạm 6",
+    "slug": "dong-tam-6",
+    "summary": "Mô tả tạm cho dòng robot 6.",
+    "order": 6
+  },
+  {
+    "name": "Dòng robot tạm 7",
+    "slug": "dong-tam-7",
+    "summary": "Mô tả tạm cho dòng robot 7.",
+    "order": 7
+  }
+]
