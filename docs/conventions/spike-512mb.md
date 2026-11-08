@@ -15,6 +15,10 @@ One script, run by the human in their own terminal (a Claude session's sandbox c
 needs `INSTANCE_NAME` and `REGION` and refuses without them. It prints the plan, the price and a
 15-second Ctrl-C window before creating anything, and prints the delete commands every time it ends.
 
+## The start command (read this before P6)
+
+**The correct start is the shim run as a program, not through `node`:** `ExecStart=/opt/strapi/app/node_modules/.bin/strapi start`, with `Environment=PATH=/opt/node/bin:/usr/bin:/bin` and the heap cap as `Environment=NODE_OPTIONS=--max-old-space-size=320`. In a pnpm tree `node_modules/.bin/strapi` is a shell script, so `node node_modules/.bin/strapi start` dies with `SyntaxError: Invalid or unexpected token` on the script's second line; the first spike run crash-looped 132 times in five minutes on exactly that. The shim's own text (read from the artifact) runs `exec node <strapi.js>` and finds `node` on `PATH` (it prefers a `node` beside itself, which there is none of), which is why the `PATH` line is needed. **`docs/conventions/cms-build.md#L14` states the wrong command** (`NODE_ENV=production node node_modules/.bin/strapi start`) and should be corrected; that note's author never started the app from the tarball.
+
 ## What is measured, and how
 
 | Number | Method | Where |
@@ -68,7 +72,8 @@ curl -fsSL https://nodejs.org/dist/latest-v24.x/SHASUMS256.txt; download node-v2
 tar -xzf cms.tar.gz -C /opt/strapi/app
 node -e '<generate six secrets into .env from .env.example, add DATABASE_FILENAME=/var/lib/strapi/data.db>'
 systemd unit: User=ubuntu, WorkingDirectory=/opt/strapi/app, NODE_ENV=production,
-  NODE_OPTIONS=--max-old-space-size=320, ExecStart=/opt/node/bin/node node_modules/.bin/strapi start,
+  NODE_OPTIONS=--max-old-space-size=320, PATH=/opt/node/bin:/usr/bin:/bin,
+  ExecStart=/opt/strapi/app/node_modules/.bin/strapi start,
   Restart=always, RestartSec=2, MemoryAccounting=yes
 sudo systemctl daemon-reload; sudo systemctl enable --now strapi
 curl http://127.0.0.1:1337/_health        (204 when ready)
