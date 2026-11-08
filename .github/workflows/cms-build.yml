@@ -1,0 +1,118 @@
+# Builds the Strapi app in cms/ on x86-64 Linux, the architecture of the Lightsail box, and uploads
+# a self-contained tarball. Builds only: nothing here deploys or touches the box.
+name: cms-build
+
+on:
+  # Any branch, but only when something the CMS build reads changed: documentation commits and
+  # web/ changes do not start it.
+  push:
+    paths:
+      - 'cms/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.nvmrc'
+      - '.github/workflows/cms-build.yml'
+      - '.github/scripts/boot-check.cjs'
+  # Run it by hand from the Actions tab (or `gh workflow run cms-build.yml --ref <branch>`).
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cms-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build cms (linux x64)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CI: 'true'
+      STRAPI_TELEMETRY_DISABLED: 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Require an x86-64 runner
+        run: |
+          arch="$(uname -m)"
+          echo "runner architecture: $arch"
+          test "$arch" = "x86_64"
+
+      # Reads the pnpm version from the root package.json "packageManager".
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm --filter cms check
+
+      - name: Build Strapi and its admin panel
+        run: pnpm --filter cms build
+        env:
+          NODE_ENV: production
+
+      # A production-only copy of cms with its own node_modules, so the box needs no install.
+      - name: Assemble the production tree
+        run: pnpm --filter cms deploy --prod "$RUNNER_TEMP/cms-pkg"
+
+      - name: Prune and stamp the tree
+        working-directory: ${{ runner.temp }}/cms-pkg
+        run: |
+          # Strapi starts from dist/ when tsconfig.json is present; the sources are not needed.
+          rm -rf src config types .strapi .strapi-updater.json
+          # better-sqlite3 ships a binary per platform; keep the one this box runs.
+          find node_modules -type d -path '*/better-sqlite3/prebuilds' | while read -r d; do
+            find "$d" -type f ! -name 'linux-x64.node' -delete
+          done
+          {
+            echo "commit: $GITHUB_SHA"
+            echo "ref: $GITHUB_REF_NAME"
+            echo "built: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "node: $(node -v)"
+            echo "pnpm: $(pnpm -v)"
+          } > BUILD-INFO.txt
+          cat BUILD-INFO.txt
+
+      - name: Check the native driver and boot the app
+        working-directory: ${{ runner.temp }}/cms-pkg
+        env:
+          NODE_ENV: production
+          # Throwaway values; this app never listens and its database is deleted below.
+          APP_KEYS: a,b,c,d
+          API_TOKEN_SALT: ci
+          ADMIN_JWT_SECRET: ci
+          TRANSFER_TOKEN_SALT: ci
+          JWT_SECRET: ci
+          ENCRYPTION_KEY: ci
+          DATABASE_FILENAME: ${{ runner.temp }}/boot-check.db
+        run: |
+          binary="$(find node_modules -path '*/better-sqlite3/prebuilds/linux-x64.node' | head -n 1)"
+          file "$binary"
+          file "$binary" | grep -q 'x86-64'
+          node "$GITHUB_WORKSPACE/.github/scripts/boot-check.cjs"
+          rm -rf "$RUNNER_TEMP/boot-check.db"* .tmp .strapi-updater.json
+
+      # tar, not the artifact's own zip: pnpm's node_modules is symlinks, which zip would flatten.
+      - name: Pack
+        run: |
+          name="cms-${GITHUB_SHA::7}-linux-x64.tar.gz"
+          tar -czf "$RUNNER_TEMP/$name" -C "$RUNNER_TEMP/cms-pkg" .
+          ls -lh "$RUNNER_TEMP/$name"
+          echo "ARCHIVE=$RUNNER_TEMP/$name" >> "$GITHUB_ENV"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cms-linux-x64
+          path: ${{ env.ARCHIVE }}
+          compression-level: 0
+          retention-days: 14
+          if-no-files-found: error

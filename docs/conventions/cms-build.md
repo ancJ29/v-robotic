@@ -1,0 +1,18 @@
+# The Strapi build on Actions (piece S0a)
+
+Decisions a later session should not re-derive. Each is reversible. The scaffold's own note is
+`scaffold.md`; this one extends it and changes none of it.
+
+- **Workflow:** `.github/workflows/cms-build.yml`, one job on `ubuntu-24.04` (x86-64, pinned rather than `latest`). It builds only; it deploys nothing and holds no secret. P6 adds the step that puts the tarball on the box.
+- **Triggers:** `push` on any branch, but only when `cms/**`, the root `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `.nvmrc`, the workflow or its script changed; and `workflow_dispatch`. A documentation or `web/` commit starts nothing. Any branch, so a piece branch that breaks the CMS build is seen before it merges. No tag trigger until P6 has a release to name.
+- **Steps, in order:** assert `x86_64`; pnpm (version from `packageManager`); Node from `.nvmrc`; `pnpm install --frozen-lockfile`; `pnpm --filter cms check`; `pnpm --filter cms build`; `pnpm --filter cms deploy --prod` into a temp folder; prune and stamp; check the driver and boot the app; tar; upload.
+- **No type-generation step:** `strapi ts:generate-types` was run on a clean tree and changed nothing; `cms/types/generated/` is committed, so CI would be checking a file against itself. Add it when P1's schemas exist and a drift check is wanted.
+- **The artifact:** name `cms-linux-x64`, holding one file, `cms-<7-char commit>-linux-x64.tar.gz`; kept 14 days. Packed as tar and uploaded uncompressed (`compression-level: 0`) because pnpm's `node_modules` is symlinks, which the artifact's zip would flatten, and the tar is already gzipped.
+- **What is in the tarball:** `dist/` (compiled config, src and the built admin panel in `dist/build/`), `public/`, `package.json`, `tsconfig.json` (its presence is how Strapi knows to run from `dist/`), the lockfile, `.env.example`, `BUILD-INFO.txt` (commit, branch, time, Node and pnpm versions), and a production-only `node_modules` with the Linux x64 `better-sqlite3`.
+- **What is left out:** the TypeScript sources (`src/`, `config/`, `types/`), `.strapi/`, dev dependencies, `web/`, the other platforms' `better-sqlite3` binaries, any `.env` and any database file.
+- **The box needs Node 24 and nothing else:** no pnpm, no install, no network. Start it with `NODE_ENV=production node node_modules/.bin/strapi start` from the unpacked folder, with the six secrets from `.env.example` in a `.env` beside `package.json` or in the environment.
+- **The check before upload:** the workflow confirms the kept binary is x86-64 (`file`), then loads Strapi from the pruned tree and runs one SQLite query, with no port opened and throwaway secrets. If the driver or the admin build is missing, the run fails and nothing is uploaded.
+- **`DATABASE_FILENAME` may now be absolute.** `cms/config/database.ts` joined it onto the app folder, so `/var/lib/x/data.db` became `<app>/var/lib/x/data.db`. It now uses `path.resolve`; a relative value behaves as before. Found by running the packaged tree.
+- **`better-sqlite3` 13 ships prebuilt binaries for every platform in the package itself**, so a Mac-made copy would not necessarily fail on the box for that reason alone (the plan said it must). The runner build stays: other native packages in the tree (sharp's libvips) are installed per platform, and the artifact should be what the box runs, not what happens to work.
+- **Local limits:** the Mac cannot run the Linux binary, so the boot check after pruning runs only on GitHub. Locally the same steps were run on the unpruned tree.
+- **`strapi build` prints `EPERM … mkdir ~/Library/Preferences/com.strapi` in the sandbox** and carries on (Strapi's config store); the build succeeds. Not an issue on the runner.
