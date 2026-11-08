@@ -105,5 +105,11 @@
   "contact.address": "Địa chỉ",
   "contact.legal": "Pháp nhân",
   "contact.zalo": "Zalo",
-  "contact.whatsapp": "WhatsApp"
+  "contact.whatsapp": "WhatsApp",
+  "home.viewAll": "Xem tất cả",
+  "home.learnMore": "Tìm hiểu thêm",
+  "home.viewCatalog": "Khám phá sản phẩm",
+  "home.heroLabel": "Giới thiệu V-ROBOTICS",
+  "home.contactCta": "Gửi nhu cầu của bạn",
+  "home.showroomCount": "Mạng lưới {count} thành phố"
 }

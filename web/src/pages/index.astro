@@ -1,15 +1,97 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHead from '../components/PageHead.astro';
+import Band from '../components/Band.astro';
 import Button from '../components/Button.astro';
+import ProductCard from '../components/ProductCard.astro';
+import IndustryCard from '../components/IndustryCard.astro';
+import InfoCard from '../components/InfoCard.astro';
+import ProductVisual from '../components/ProductVisual.astro';
 import { getContent } from '../content/load';
+import { home } from '../copy/home';
+import { about } from '../copy/about';
+import { services } from '../copy/services';
+import { ai } from '../copy/ai';
 import { routes } from '../lib/routes';
 import { t } from '../i18n/t';
 
-// Placeholder: the real homepage is piece P2c. It exists so the shell has a home to link to.
-const { siteSettings: s } = getContent();
+const c = getContent();
+const s = c.siteSettings;
+// Settings may be empty: the hero falls back to the string file, never to a blank or a visible placeholder.
+const headline = s.hero_headline?.trim() || home.heroFallbackHeadline;
+const sub = s.hero_sub?.trim() || home.heroFallbackSub;
+// One card per product line: the first robot of each, in line order. Lines with no robot are skipped.
+const lineCards = c.productLines
+  .map((line) => ({ line, product: c.products.find((p) => p.kind === 'robot' && p.line === line.slug) }))
+  .flatMap(({ line, product }) => (product ? [{ line, product }] : []));
+const heroProduct = c.products.find((p) => p.featured) ?? c.products.find((p) => p.kind === 'robot');
+const industries = c.industries.slice(0, 6);
 ---
 <BaseLayout>
-  <PageHead title={s.hero_headline ?? t('site.fallbackName')} subtitle={s.hero_sub ?? undefined} />
-  <div class="wrap"><Button href={routes.products}>{t('nav.products')}</Button></div>
+  <Band tone="dark" size="hero" level={1} kicker={home.heroKicker} title={headline} subtitle={sub}>
+    <Fragment slot="actions">
+      <Button href={routes.contact} variant="cta">{t('nav.consult')}</Button>
+      <Button href={routes.products} variant="outline">{t('home.viewCatalog')}</Button>
+    </Fragment>
+    <Fragment slot="aside">{heroProduct && <ProductVisual product={heroProduct} ratio="4 / 3" />}</Fragment>
+  </Band>
+
+  {lineCards.length > 0 && (
+    <Band id="dong-robot" kicker={home.linesKicker} title={home.linesTitle} subtitle={home.linesSubtitle}>
+      <Fragment slot="actions"><Button href={routes.products} variant="outline">{t('home.viewAll')}</Button></Fragment>
+      <div class="grid g4">
+        {lineCards.map(({ line, product }) => <ProductCard product={product} subtitle={line.name} />)}
+      </div>
+    </Band>
+  )}
+
+  {industries.length > 0 && (
+    <Band tone="panel" id="giai-phap" kicker={home.solutionsKicker} title={home.solutionsTitle}>
+      <Fragment slot="actions"><Button href={routes.solutions} variant="outline">{t('home.viewAll')}</Button></Fragment>
+      <div class="grid g2">{industries.map((i) => <IndustryCard industry={i} />)}</div>
+    </Band>
+  )}
+
+  <Band id="vi-sao" kicker={home.principlesKicker} title={home.principlesTitle}>
+    <div class="grid g3">
+      {about.principles.map((p, i) => <InfoCard index={i + 1} title={p.title} body={p.body} />)}
+    </div>
+  </Band>
+
+  <Band tone="panel" id="dich-vu" kicker={home.servicesKicker} title={home.servicesTitle}>
+    <Fragment slot="actions"><Button href={routes.services} variant="outline">{t('home.viewAll')}</Button></Fragment>
+    <div class="grid g4">
+      {services.items.map((it, i) => (
+        <InfoCard index={i + 1} accent={i === 0} title={it.title} subtitle={it.subtitle} href={routes.services} linkLabel={t('home.learnMore')} />
+      ))}
+    </div>
+  </Band>
+
+  {c.showrooms.length > 0 && (
+    <Band id="showroom" kicker={home.showroomKicker} title={home.showroomTitle}
+      subtitle={t('home.showroomCount', { count: c.showrooms.length })}>
+      <Fragment slot="actions"><Button href={routes.showroom} variant="outline">{t('home.viewAll')}</Button></Fragment>
+      <div class="grid g3">
+        {c.showrooms.map((r) => (
+          <InfoCard title={r.city} subtitle={t(`showroom.status.${r.opening_status}`)} href={routes.showroom} linkLabel={t('home.learnMore')} />
+        ))}
+      </div>
+    </Band>
+  )}
+
+  <Band tone="dark" id="ai" kicker={home.aiKicker} title={home.aiTitle} subtitle={ai.subtitle}>
+    <Fragment slot="actions"><Button href={routes.ai} variant="outline">{t('home.learnMore')}</Button></Fragment>
+    <div class="grid g3">
+      {ai.capabilities.slice(0, home.aiTeaserCount).map((cap) => <InfoCard title={cap.title} body={cap.body} />)}
+    </div>
+  </Band>
+
+  <Band tone="panel" id="tu-van" title={home.leadTitle} subtitle={home.leadSubtitle}>
+    <Fragment slot="actions"><Button href={routes.contact} variant="cta">{t('home.contactCta')}</Button></Fragment>
+  </Band>
 </BaseLayout>
+<style>
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .g2, .g4 { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .g3 { grid-template-columns: repeat(3, 1fr); } .g2 { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1120px) { .g4 { grid-template-columns: repeat(4, 1fr); } }
+</style>
