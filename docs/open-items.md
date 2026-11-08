@@ -53,3 +53,36 @@ products and documents, as anchors. It is a reasonable reading and it is not a v
 
 **What closes it:** the human reads screen 02 and says what the four chips were meant to be, or
 confirms the mapping. Cheap to change — they are four labels and four anchor targets.
+
+## 6. Page prose lives in `web/src/copy/`, not `content/*.json`
+
+Opened by P2b on 2026-11-08. The plan has the hard-coded page prose for services, AI technology,
+partnership, about and contact sitting in `content/*.json`. P2b put it in typed objects under
+`web/src/copy/<page>.ts` instead, shaped like Strapi single types, with a README. The reason is
+sound: the seed validator checks **every** JSON file in `content/` against a Strapi schema, and
+these five pages have no content type behind them on purpose, so JSON there would either fail the
+check or force five schemas nobody wants.
+
+**What closes it:** correct the plan row to match, or give those pages real Strapi single types if
+the client turns out to want to edit that prose. The objects are already shaped for the second
+outcome. Recorded in `docs/conventions/remaining-pages.md`.
+
+## 7. Three routes are linked but not built until P3
+
+Opened by P2b on 2026-11-08. `/showroom/dat-lich` (showroom booking), `/dich-vu/bao-hanh` (warranty)
+and `/tro-ly-ai` (the AI assistant) are linked from built pages and 404. None is a header or footer
+link, so the navigation is whole; but `/showroom/dat-lich` is linked from 20 product pages as well
+as the showroom page, so it is the most visible of the three.
+
+**What closes it:** P3 builds all three as form flows. Until then they are dead links on a site that
+is noindex and not public.
+
+## 8. The seed has fewer industries and showrooms than the screens
+
+Opened by P2b on 2026-11-08. The reference screens show 11 industries and 5 showrooms; the seed has 4
+and 3. The pages count from the data rather than hard-coding, so nothing breaks and the counts
+update themselves when real content arrives. It is recorded because a page laid out against 4 cards
+may read differently with 11.
+
+**What closes it:** the client's real content, or a decision to extend the seed before launch if the
+layout needs proving at full size.
