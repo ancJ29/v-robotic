@@ -1,0 +1,32 @@
+[
+  {
+    "city": "Hà Nội",
+    "name": "Showroom Hà Nội (tạm)",
+    "slug": "showroom-tam-ha-noi",
+    "status": "fitting_out",
+    "address": null,
+    "hours": null,
+    "published": false,
+    "gallery": []
+  },
+  {
+    "city": "Đà Nẵng",
+    "name": "Showroom Đà Nẵng (tạm)",
+    "slug": "showroom-tam-da-nang",
+    "status": "planned",
+    "address": null,
+    "hours": null,
+    "published": false,
+    "gallery": []
+  },
+  {
+    "city": "TP. Hồ Chí Minh",
+    "name": "Showroom TP. Hồ Chí Minh (tạm)",
+    "slug": "showroom-tam-ho-chi-minh",
+    "status": "open",
+    "address": "Địa chỉ tạm thời",
+    "hours": "09:00 – 18:00 (tạm)",
+    "published": true,
+    "gallery": []
+  }
+]

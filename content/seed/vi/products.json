@@ -1,0 +1,526 @@
+[
+  {
+    "industries": [
+      "nganh-tam-y-te",
+      "nganh-tam-khach-san"
+    ],
+    "related": [
+      "model-tam-1-2"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 1-1.",
+    "description": "Nội dung tạm cho model 1-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": true,
+    "badge": "new",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Tải trọng",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "50 kg",
+        "value_number": 50,
+        "unit": "kg"
+      },
+      {
+        "group": "Di chuyển",
+        "key": "speed_mps",
+        "label": "Tốc độ tối đa",
+        "value": "1,2 m/s",
+        "value_number": 1.2,
+        "unit": "m/s"
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "8 giờ",
+        "value_number": 8,
+        "unit": "h"
+      },
+      {
+        "group": null,
+        "key": "navigation",
+        "label": "Điều hướng",
+        "value": "LiDAR + camera",
+        "value_number": null,
+        "unit": null
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 1-1",
+    "slug": "model-tam-1-1",
+    "line": "dong-tam-1"
+  },
+  {
+    "industries": [
+      "nganh-tam-khach-san",
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-1-1"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 1-2.",
+    "description": "Nội dung tạm cho model 1-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "hot",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 1-2",
+    "slug": "model-tam-1-2",
+    "line": "dong-tam-1"
+  },
+  {
+    "industries": [
+      "nganh-tam-khach-san",
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-2-2"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 2-1.",
+    "description": "Nội dung tạm cho model 2-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": true,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 2-1",
+    "slug": "model-tam-2-1",
+    "line": "dong-tam-2"
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat",
+      "nganh-tam-kho-van"
+    ],
+    "related": [
+      "model-tam-2-1"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 2-2.",
+    "description": "Nội dung tạm cho model 2-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 2-2",
+    "slug": "model-tam-2-2",
+    "line": "dong-tam-2"
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat",
+      "nganh-tam-kho-van"
+    ],
+    "related": [
+      "model-tam-3-2"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 3-1.",
+    "description": "Nội dung tạm cho model 3-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": true,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 3-1",
+    "slug": "model-tam-3-1",
+    "line": "dong-tam-3"
+  },
+  {
+    "industries": [
+      "nganh-tam-kho-van",
+      "nganh-tam-y-te"
+    ],
+    "related": [
+      "model-tam-3-1"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 3-2.",
+    "description": "Nội dung tạm cho model 3-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 3-2",
+    "slug": "model-tam-3-2",
+    "line": "dong-tam-3"
+  },
+  {
+    "industries": [
+      "nganh-tam-kho-van",
+      "nganh-tam-y-te"
+    ],
+    "related": [
+      "model-tam-4-2"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 4-1.",
+    "description": "Nội dung tạm cho model 4-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 4-1",
+    "slug": "model-tam-4-1",
+    "line": "dong-tam-4"
+  },
+  {
+    "industries": [
+      "nganh-tam-y-te",
+      "nganh-tam-khach-san"
+    ],
+    "related": [
+      "model-tam-4-1"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 4-2.",
+    "description": "Nội dung tạm cho model 4-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 4-2",
+    "slug": "model-tam-4-2",
+    "line": "dong-tam-4"
+  },
+  {
+    "industries": [
+      "nganh-tam-y-te",
+      "nganh-tam-khach-san"
+    ],
+    "related": [
+      "model-tam-5-2"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 5-1.",
+    "description": "Nội dung tạm cho model 5-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 5-1",
+    "slug": "model-tam-5-1",
+    "line": "dong-tam-5"
+  },
+  {
+    "industries": [
+      "nganh-tam-khach-san",
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-5-1"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 5-2.",
+    "description": "Nội dung tạm cho model 5-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 5-2",
+    "slug": "model-tam-5-2",
+    "line": "dong-tam-5"
+  },
+  {
+    "industries": [
+      "nganh-tam-khach-san",
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-6-2"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 6-1.",
+    "description": "Nội dung tạm cho model 6-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 6-1",
+    "slug": "model-tam-6-1",
+    "line": "dong-tam-6"
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat",
+      "nganh-tam-kho-van"
+    ],
+    "related": [
+      "model-tam-6-1"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 6-2.",
+    "description": "Nội dung tạm cho model 6-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 6-2",
+    "slug": "model-tam-6-2",
+    "line": "dong-tam-6"
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat",
+      "nganh-tam-kho-van"
+    ],
+    "related": [
+      "model-tam-7-2"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 7-1.",
+    "description": "Nội dung tạm cho model 7-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 7-1",
+    "slug": "model-tam-7-1",
+    "line": "dong-tam-7"
+  },
+  {
+    "industries": [
+      "nganh-tam-kho-van",
+      "nganh-tam-y-te"
+    ],
+    "related": [
+      "model-tam-7-1"
+    ],
+    "compatible_with": [],
+    "summary": "Mô tả ngắn tạm cho model 7-2.",
+    "description": "Nội dung tạm cho model 7-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "robot",
+    "model": "Model tạm 7-2",
+    "slug": "model-tam-7-2",
+    "line": "dong-tam-7"
+  },
+  {
+    "industries": [],
+    "related": [],
+    "compatible_with": [
+      "model-tam-1-1",
+      "model-tam-2-1"
+    ],
+    "summary": "Mô tả tạm cho phụ kiện 1.",
+    "description": null,
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "accessory",
+    "model": "Phụ kiện tạm 1",
+    "slug": "phu-kien-tam-1",
+    "line": null
+  },
+  {
+    "industries": [],
+    "related": [],
+    "compatible_with": [
+      "model-tam-1-1",
+      "model-tam-2-1"
+    ],
+    "summary": "Mô tả tạm cho phụ kiện 2.",
+    "description": null,
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "accessory",
+    "model": "Phụ kiện tạm 2",
+    "slug": "phu-kien-tam-2",
+    "line": null
+  },
+  {
+    "industries": [],
+    "related": [],
+    "compatible_with": [
+      "model-tam-1-1",
+      "model-tam-2-1"
+    ],
+    "summary": "Mô tả tạm cho phụ kiện 3.",
+    "description": null,
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "accessory",
+    "model": "Phụ kiện tạm 3",
+    "slug": "phu-kien-tam-3",
+    "line": null
+  },
+  {
+    "industries": [],
+    "related": [],
+    "compatible_with": [
+      "model-tam-1-1",
+      "model-tam-3-1",
+      "model-tam-5-1"
+    ],
+    "summary": "Mô tả tạm cho phần mềm 1.",
+    "description": null,
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": "https://example.com/video-tam",
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "software",
+    "model": "Phần mềm tạm 1",
+    "slug": "phan-mem-tam-1",
+    "line": null
+  },
+  {
+    "industries": [],
+    "related": [],
+    "compatible_with": [
+      "model-tam-1-1",
+      "model-tam-3-1",
+      "model-tam-5-1"
+    ],
+    "summary": "Mô tả tạm cho phần mềm 2.",
+    "description": null,
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "software",
+    "model": "Phần mềm tạm 2",
+    "slug": "phan-mem-tam-2",
+    "line": null
+  },
+  {
+    "industries": [],
+    "related": [],
+    "compatible_with": [
+      "model-tam-1-1",
+      "model-tam-3-1",
+      "model-tam-5-1"
+    ],
+    "summary": "Mô tả tạm cho phần mềm 3.",
+    "description": null,
+    "name_provisional": true,
+    "spec_pending": true,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [],
+    "seo": null,
+    "kind": "software",
+    "model": "Phần mềm tạm 3",
+    "slug": "phan-mem-tam-3",
+    "line": null
+  }
+]

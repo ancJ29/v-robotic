@@ -1,6 +1,7 @@
 packages:
   - cms
   - web
+  - content
 
 # pnpm 12 runs no dependency build scripts unless named here.
 allowBuilds:

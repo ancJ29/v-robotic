@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Sản xuất (tạm)",
+    "slug": "nganh-tam-san-xuat",
+    "order": 1,
+    "tagline": "Câu giới thiệu ngành tạm thời.",
+    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Sản xuất (tạm)**, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "Bước 1 (tạm)",
+        "detail": "Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "Bước 2 (tạm)",
+        "detail": "Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "Bước 3 (tạm)",
+        "detail": "Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Kho vận (tạm)",
+    "slug": "nganh-tam-kho-van",
+    "order": 2,
+    "tagline": "Câu giới thiệu ngành tạm thời.",
+    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Kho vận (tạm)**, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "Bước 1 (tạm)",
+        "detail": "Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "Bước 2 (tạm)",
+        "detail": "Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "Bước 3 (tạm)",
+        "detail": "Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Y tế (tạm)",
+    "slug": "nganh-tam-y-te",
+    "order": 3,
+    "tagline": "Câu giới thiệu ngành tạm thời.",
+    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Y tế (tạm)**, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "Bước 1 (tạm)",
+        "detail": "Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "Bước 2 (tạm)",
+        "detail": "Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "Bước 3 (tạm)",
+        "detail": "Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Khách sạn (tạm)",
+    "slug": "nganh-tam-khach-san",
+    "order": 4,
+    "tagline": "Câu giới thiệu ngành tạm thời.",
+    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Khách sạn (tạm)**, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "Bước 1 (tạm)",
+        "detail": "Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "Bước 2 (tạm)",
+        "detail": "Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "Bước 3 (tạm)",
+        "detail": "Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  }
+]

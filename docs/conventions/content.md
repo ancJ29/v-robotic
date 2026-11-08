@@ -1,0 +1,19 @@
+# Content contract conventions (piece P1)
+
+Decisions a later session should not re-derive. Each is reversible except where it says otherwise.
+
+- **Three places hold the contract, kept equal by a script.** `cms/src/api/*/content-types/*/schema.json` and `cms/src/components/**` (Strapi), `web/src/content/types.ts` (what templates read), `content/seed/<locale>/*.json` (the data). `pnpm --filter content check` (also in root `pnpm check`) fails on any field name, type, enum, required field or relation that differs between them. Change all three in one commit.
+- **Seed layout:** `content/seed/vi/<plural>.json`, one file per type (array for collections, one object for `site-settings`). Locale folders because each Strapi locale is a full entry; `en` (P8) is a second folder with the same slugs. `content/` is a workspace package so the check runs under `pnpm -r check`; it has no dependencies.
+- **Seed record shape = `types.ts` shape = the schema's own fields.** Relations are slugs (owning side only; `line`, `industries`, `related`, `compatible_with`); inverse sides (a line's products, an industry's products) are derived and never in the seed. Media is `{src, alt, width, height}` or `null`; seed uses none. Empty is `null` or `[]`, never absent.
+- **P5's adapter** turns Strapi's REST answer (`populate` for relations, media, components) into these shapes: relation objects to slugs, media to `MediaRef`, for the request's locale.
+- **Field names are snake_case** (as the architecture memo draws them); Strapi's own fields (`documentId`, `publishedAt`) stay camelCase.
+- **Localized:** every customer-facing text field, `model` and component text included. Shared: slugs, `order`, enums, booleans, phone/zalo/whatsapp/email, `lead_notify_email`, media, `value_number`, `unit`, spec `key`. Default locale is `vi`: `STRAPI_PLUGIN_I18N_INIT_LOCALE_CODE=vi` in `.env` (first run only; in `.env.example`).
+- **Slugs are the contract.** A ledger, `content/slugs.json`, lists every slug ever issued; the check fails if one disappears from the seed or one appears that the ledger lacks. Renaming is a deliberate edit of the ledger plus a redirect in the site. Slug is a Strapi `uid`, not localized.
+- **Specs:** repeatable component `catalog.spec` with a stable machine `key` (`payload_kg`), display `label`/`value`, numeric `value_number` and `unit`. Filters and comparison join on `key`. Keys unique per product (checked).
+- **Soft rules the check enforces and Strapi cannot:** a robot has a `line`, other kinds do not; a product does not list itself in `related` / `compatible_with`.
+- **Draft/publish on every type**, so a publish can trigger the rebuild webhook (P6).
+- **`lead` is not a Strapi type here.** The memo draws it, but P3 owns its shape (`packages/lead-schema`) and the Worker writes it to R2 first; the Strapi collection arrives with the Phase 2 relay, built from that schema, carrying `schema_version`.
+- **Added to the memo's ER:** `slug` on showroom (the lead refers to `showroom_slug`), `order` on industry (twelve of them need a listing order), `key` and `value_number` on spec, `gallery`/`documents` multi-media on product, `slug` pattern and spec-key regex.
+- **Seed volume:** 7 lines, 14 robots (one with a full spec sheet, the rest `spec_pending`), 3 accessories, 3 software, 4 industries with 3 journey steps each, 3 showrooms (one open), site settings mostly empty. All names say "tạm" (temporary) and carry `name_provisional`.
+- **Strapi build quirk:** `cms/tsconfig.json` includes `src/**/*.json`; without it `dist/` has no schemas and Strapi sees none. After editing a schema: `strapi build`, then `strapi ts:generate-types`, and commit the generated files. The first build prints type errors (generated types lack the new types); it still emits, and the second step fixes them.
+- **Sandbox:** every `strapi` command prints `EPERM mkdir ~/Library/Preferences/com.strapi` (Strapi's own config folder); harmless, commands go on.
