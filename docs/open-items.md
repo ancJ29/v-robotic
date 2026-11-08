@@ -99,3 +99,17 @@ pieces rest on, and the seed does not actually exercise it for these two fields.
 **What closes it:** decide whether the seed should ship these two empty, so the promise is exercised
 by the data rather than only by a test. The counter-argument is that a visibly temporary headline is
 more useful to a client reviewing the site than a generic fallback.
+
+## 11. An untested command in a note reached a real server
+
+Opened by the orchestrator on 2026-11-08. S0a's note gave the command to start the packaged Strapi
+app and said, in the same report, that it had never run it. The orchestrator relayed it into S0b's
+brief as fact. It was wrong — `node_modules/.bin/strapi` is a shell shim in a pnpm tree — and the
+error was only found on a live, billing Lightsail box after 132 crash-restarts.
+
+This is a process item, not a code one. The pattern that failed: a piece reports a command it could
+not run, names that honestly, and the honesty is lost at the next hand-off.
+
+**What closes it:** nothing in code. A brief that passes on a command should say whether the piece
+that wrote it ran it, and an unrun command should be marked as unrun wherever it travels. Worth
+carrying to the freelance kit, since it holds in every project.

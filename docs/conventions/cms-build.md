@@ -17,3 +17,12 @@ Decisions a later session should not re-derive. Each is reversible. The scaffold
 - **`better-sqlite3` 13 ships prebuilt binaries for every platform in the package itself**, so a Mac-made copy would not necessarily fail on the box for that reason alone (the plan said it must). The runner build stays: other native packages in the tree (sharp's libvips) are installed per platform, and the artifact should be what the box runs, not what happens to work.
 - **Local limits:** the Mac cannot run the Linux binary, so the boot check after pruning runs only on GitHub. Locally the same steps were run on the unpruned tree.
 - **`strapi build` prints `EPERM … mkdir ~/Library/Preferences/com.strapi` in the sandbox** and carries on (Strapi's config store); the build succeeds. Not an issue on the runner.
+
+- **CORRECTION (2026-11-08): the start command in this note is wrong.** It says to start the packaged app
+  with `node node_modules/.bin/strapi start`. That fails: in a pnpm tree `node_modules/.bin/strapi`
+  is a shell shim, not JavaScript, and `node` dies on its second line with
+  `SyntaxError: Invalid or unexpected token`. S0a never ran it — its own report said so — and the
+  error reached a real box, where systemd restarted it 132 times in five minutes. Run the shim as a
+  program instead and put the heap cap in `NODE_OPTIONS`, with `PATH` including Node's own directory,
+  because the shim resolves `node` from `PATH`. The working form is recorded in
+  `docs/conventions/spike-512mb.md`, which S0b verified on the box. P6 would have copied this line.
