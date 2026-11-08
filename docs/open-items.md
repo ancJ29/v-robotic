@@ -87,17 +87,6 @@ may read differently with 11.
 **What closes it:** the client's real content, or a decision to extend the seed before launch if the
 layout needs proving at full size.
 
-## 9. The same card-grid CSS is copied across five pages
-
-Opened by P2c on 2026-11-08, as a finding about the two pieces before it rather than its own work. Four
-pages carry their own copy of the same card-grid rule, and the homepage added a fifth. A shared
-`CardGrid` component would remove all five. P2c noted it and deliberately did not do it, which was
-right — a refactor inside another piece's files is how two pieces conflict.
-
-**What closes it:** one small piece that adds `CardGrid` and deletes the five copies. It is cheap
-now and gets slightly more expensive with every page added, so it is worth doing before P3's six
-form layouts rather than after.
-
 ## 10. The hero headline ships filled, not empty
 
 Opened by the orchestrator on 2026-11-08, correcting its own brief. P2c was told the seed ships the
