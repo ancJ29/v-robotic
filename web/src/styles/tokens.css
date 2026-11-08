@@ -1,0 +1,73 @@
+/*
+ * Design tokens: the one place colour, type, spacing, radius and shadow are named.
+ * Read off the client's reference screens (navy bar, blue accent, red call to action,
+ * pale-blue panels, Noto Sans). Components use these names, never raw values.
+ * Breakpoints cannot be variables in @media; they are written as literals everywhere:
+ *   --bp-sm 640px (phone to tablet), --bp-md 900px (sidebar and two-column layouts), --bp-lg 1120px (full nav).
+ */
+:root {
+  /* colour: surfaces */
+  --color-navy: #0a1a33;          /* header bar, dark panels */
+  --color-page: #ffffff;
+  --color-panel: #f1f6ff;         /* sidebar, large pale-blue panels */
+  --color-panel-strong: #e6effc;  /* image wells, tab bar, chips */
+  --color-line: #d8e4f8;          /* hairline borders on cards */
+  /* colour: text */
+  --color-ink: #11233f;           /* headings, body */
+  --color-muted: #5f6f86;         /* secondary text */
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: #c9d4e6;
+  /* colour: accent */
+  --color-brand: #1a6dff;         /* links, kickers, primary button */
+  --color-brand-strong: #0f55d1;
+  --color-brand-light: #4aa8ff;   /* active item on the navy bar */
+  --color-cta: #e8353b;           /* "request a quote" red */
+  --color-cta-strong: #c9242a;
+  /* colour: badges */
+  --color-badge-provisional-bg: #fde8e8;
+  --color-badge-provisional-fg: #e0262d;
+  --color-badge-pending-bg: #eaeff6;
+  --color-badge-pending-fg: #5a6a82;
+  --color-badge-new: #e8353b;
+  --color-badge-hot: #f07a14;
+
+  /* type */
+  --font-sans: 'Noto Sans Variable', 'Noto Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(2rem, 1.4rem + 2vw, 2.75rem);   /* page titles */
+  --text-4xl: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); /* product name */
+  --leading-tight: 1.15;
+  --leading-body: 1.55;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* spacing (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --gutter: clamp(1rem, 0.4rem + 2.5vw, 3rem);
+  --content-max: 1360px;
+
+  /* radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* shadow */
+  --shadow-card: 0 1px 2px rgb(17 35 63 / 6%);
+  --shadow-raised: 0 8px 24px rgb(17 35 63 / 10%);
+  --focus-ring: 0 0 0 3px rgb(26 109 255 / 35%);
+}

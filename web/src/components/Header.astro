@@ -1,0 +1,77 @@
+---
+import { getContent } from '../content/load';
+import { routes } from '../lib/routes';
+import { t } from '../i18n/t';
+
+const { siteSettings } = getContent();
+const logo = siteSettings.logo;
+const brand = siteSettings.brand_name ?? t('site.fallbackName');
+const path = Astro.url.pathname;
+const items = [
+  { href: routes.products, label: t('nav.products') },
+  { href: routes.solutions, label: t('nav.solutions') },
+  { href: routes.services, label: t('nav.services') },
+  { href: routes.ai, label: t('nav.ai') },
+  { href: routes.showroom, label: t('nav.showroom') },
+  { href: routes.partners, label: t('nav.partners') },
+  { href: routes.about, label: t('nav.about') },
+];
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="bar">
+  <div class="wrap row">
+    <a class="brand" href={routes.home} aria-label={brand}>
+      {logo
+        ? <img src={logo.src} alt={logo.alt ?? brand} width={logo.width ?? undefined} height={logo.height ?? undefined} />
+        : <span>{brand}</span>}
+    </a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav" data-burger>
+      <span class="sr-only">{t('nav.menu')}</span><i></i><i></i><i></i>
+    </button>
+    <nav id="nav" class="nav" aria-label={t('nav.main')} data-nav>
+      <ul>
+        {items.map((i) => (
+          <li><a href={i.href} aria-current={isActive(i.href) ? 'page' : undefined}>{i.label}</a></li>
+        ))}
+      </ul>
+      <span class="lang" aria-hidden="true">VI</span>
+      <a class="consult" href={routes.contact}>{t('nav.consult')}</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  burger?.addEventListener('click', () => {
+    const open = burger.getAttribute('aria-expanded') !== 'true';
+    burger.setAttribute('aria-expanded', String(open));
+    nav?.toggleAttribute('data-open', open);
+  });
+</script>
+<style>
+  .bar { background: var(--color-navy); color: var(--color-on-dark); position: sticky; top: 0; z-index: 10; }
+  .row { display: flex; align-items: center; gap: var(--space-5); min-height: 72px; flex-wrap: wrap; }
+  .brand { display: inline-flex; align-items: center; background: var(--color-page); color: var(--color-navy);
+    border-radius: var(--radius-sm); padding: var(--space-1) var(--space-3); min-height: 48px;
+    font-weight: var(--weight-bold); letter-spacing: 0.02em; margin-right: auto; }
+  .brand img { height: 48px; width: auto; }
+  .nav { display: none; width: 100%; flex-direction: column; gap: var(--space-3); padding-bottom: var(--space-4); }
+  .nav[data-open] { display: flex; }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+  li a { display: block; color: var(--color-on-dark); padding: var(--space-2) 0; font-weight: var(--weight-medium); border-bottom: 3px solid transparent; }
+  li a:hover { color: var(--color-brand-light); }
+  li a[aria-current='page'] { color: var(--color-brand-light); font-weight: var(--weight-semibold); }
+  .lang { font-weight: var(--weight-bold); }
+  .consult { background: var(--color-brand); color: var(--color-on-dark); padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-md); font-weight: var(--weight-semibold); text-align: center; }
+  .consult:hover { background: var(--color-brand-strong); color: var(--color-on-dark); }
+  .burger { display: inline-flex; flex-direction: column; gap: 5px; background: none; border: 0; padding: var(--space-2); cursor: pointer; }
+  .burger i { width: 24px; height: 2px; background: var(--color-on-dark); }
+  @media (min-width: 1120px) {
+    .burger { display: none; }
+    .nav { display: flex; flex-direction: row; align-items: center; width: auto; padding: 0; gap: var(--space-5); }
+    ul { flex-direction: row; gap: var(--space-5); }
+    li a { padding: var(--space-5) 0 calc(var(--space-5) - 3px); }
+    li a[aria-current='page'] { border-bottom-color: var(--color-brand-light); }
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+import { getContent } from '../content/load';
+import { t } from '../i18n/t';
+
+const { siteSettings: s } = getContent();
+const contacts = [
+  { label: t('footer.phone'), value: s.phone, href: s.phone ? `tel:${s.phone.replace(/\s+/g, '')}` : null },
+  { label: t('footer.email'), value: s.email, href: s.email ? `mailto:${s.email}` : null },
+  { label: t('footer.address'), value: s.address, href: null },
+].filter((c) => c.value);
+---
+<footer class="foot">
+  <div class="wrap">
+    {(s.legal_entity || contacts.length > 0) && (
+      <div class="info">
+        {s.legal_entity && <strong>{s.legal_entity}</strong>}
+        {contacts.map((c) => (
+          <span>{c.label}: {c.href ? <a href={c.href}>{c.value}</a> : c.value}</span>
+        ))}
+      </div>
+    )}
+    {s.show_demo_banner && <p class="demo">{t('footer.demoBanner')}</p>}
+  </div>
+</footer>
+<style>
+  .foot { border-top: 2px solid var(--color-panel-strong); padding-block: var(--space-4); color: var(--color-muted); font-size: var(--text-sm); }
+  .info { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin-bottom: var(--space-2); }
+  .demo { letter-spacing: 0.04em; }
+</style>

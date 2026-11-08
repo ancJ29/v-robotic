@@ -1,0 +1,16 @@
+---
+/** Link styled as a button. variant: primary (blue), cta (red, "request a quote"), outline (blue outline). */
+interface Props { href: string; variant?: 'primary' | 'cta' | 'outline'; }
+const { href, variant = 'primary' } = Astro.props;
+---
+<a href={href} class:list={['btn', variant]}><slot /></a>
+<style>
+  .btn { display: inline-flex; align-items: center; justify-content: center; padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md); font-weight: var(--weight-bold); border: 2px solid transparent; text-align: center; }
+  .primary { background: var(--color-brand); color: var(--color-on-dark); }
+  .primary:hover { background: var(--color-brand-strong); color: var(--color-on-dark); }
+  .cta { background: var(--color-cta); color: var(--color-on-dark); }
+  .cta:hover { background: var(--color-cta-strong); color: var(--color-on-dark); }
+  .outline { background: var(--color-page); color: var(--color-brand); border-color: var(--color-brand); }
+  .outline:hover { background: var(--color-panel); color: var(--color-brand-strong); }
+</style>

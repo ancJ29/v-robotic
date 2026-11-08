@@ -1,0 +1,36 @@
+---
+import type { Product } from '../content/types';
+import Badge from './Badge.astro';
+import ProductVisual from './ProductVisual.astro';
+import { routes } from '../lib/routes';
+import { t } from '../i18n/t';
+/** One product in a grid. `subtitle` is the line name or kind label the caller resolved. Extra data-* pass through for client filtering. */
+interface Props { product: Product; subtitle: string; }
+const { product, subtitle, ...rest } = Astro.props;
+---
+<a class="card" href={routes.product(product.slug)} {...rest}>
+  <div class="media">
+    <ProductVisual product={product} />
+    {product.badge !== 'none' && (
+      <span class="flag"><Badge tone={product.badge} size="sm">{t(`badge.${product.badge}`)}</Badge></span>
+    )}
+  </div>
+  <h3>{product.model}</h3>
+  <p class="sub">{subtitle}</p>
+  {(product.name_provisional || product.spec_pending) && (
+    <p class="chips">
+      {product.name_provisional && <Badge tone="provisional" size="sm">{t('badge.provisional')}</Badge>}
+      {product.spec_pending && <Badge tone="pending" size="sm">{t('badge.specPending')}</Badge>}
+    </p>
+  )}
+</a>
+<style>
+  .card { display: block; background: var(--color-page); border: 2px solid var(--color-line); border-radius: var(--radius-md);
+    padding: var(--space-3); color: var(--color-ink); box-shadow: var(--shadow-card); transition: box-shadow .15s, border-color .15s; }
+  .card:hover { border-color: var(--color-brand); box-shadow: var(--shadow-raised); color: var(--color-ink); }
+  .media { position: relative; }
+  .flag { position: absolute; top: var(--space-2); right: var(--space-2); }
+  h3 { font-size: var(--text-xl); margin-top: var(--space-3); padding-inline: var(--space-1); }
+  .sub { color: var(--color-muted); padding-inline: var(--space-1); margin-top: var(--space-1); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-1); padding: var(--space-2) var(--space-1) var(--space-1); }
+</style>
