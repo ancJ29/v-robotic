@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHead from '../../components/PageHead.astro';
 import Band from '../../components/Band.astro';
+import CardGrid from '../../components/CardGrid.astro';
 import IndustryCard from '../../components/IndustryCard.astro';
 import Button from '../../components/Button.astro';
 import { getContent } from '../../content/load';
@@ -13,22 +14,19 @@ const { industries } = getContent();
 <BaseLayout title={t('industry.title')}>
   <PageHead kicker={t('industry.kicker')} title={t('industry.title')} subtitle={t('industry.subtitle')} />
   <Band label={t('industry.title')}>
-    <div class="grid">
+    <CardGrid cols={3}>
       {industries.map((i) => <IndustryCard industry={i} />)}
       <div class="help">
         <h2>{t('industry.helpTitle')}</h2>
         <p>{t('industry.helpBody')}</p>
         <div><Button href={routes.assistant}>{t('industry.helpCta')}</Button></div>
       </div>
-    </div>
+    </CardGrid>
   </Band>
 </BaseLayout>
 <style>
-  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
   .help { background: var(--color-navy); color: var(--color-on-dark); border-radius: var(--radius-md); padding: var(--space-5);
     display: flex; flex-direction: column; gap: var(--space-3); justify-content: center; }
   .help h2 { font-size: var(--text-xl); text-transform: uppercase; color: var(--color-on-dark); }
   .help p { color: var(--color-on-dark-muted); }
-  @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1120px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 </style>

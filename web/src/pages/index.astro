@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Band from '../components/Band.astro';
+import CardGrid from '../components/CardGrid.astro';
 import Button from '../components/Button.astro';
 import ProductCard from '../components/ProductCard.astro';
 import IndustryCard from '../components/IndustryCard.astro';
@@ -38,60 +39,54 @@ const industries = c.industries.slice(0, 6);
   {lineCards.length > 0 && (
     <Band id="dong-robot" kicker={home.linesKicker} title={home.linesTitle} subtitle={home.linesSubtitle}>
       <Fragment slot="actions"><Button href={routes.products} variant="outline">{t('home.viewAll')}</Button></Fragment>
-      <div class="grid g4">
+      <CardGrid cols={4}>
         {lineCards.map(({ line, product }) => <ProductCard product={product} subtitle={line.name} />)}
-      </div>
+      </CardGrid>
     </Band>
   )}
 
   {industries.length > 0 && (
     <Band tone="panel" id="giai-phap" kicker={home.solutionsKicker} title={home.solutionsTitle}>
       <Fragment slot="actions"><Button href={routes.solutions} variant="outline">{t('home.viewAll')}</Button></Fragment>
-      <div class="grid g2">{industries.map((i) => <IndustryCard industry={i} />)}</div>
+      <CardGrid cols={2}>{industries.map((i) => <IndustryCard industry={i} />)}</CardGrid>
     </Band>
   )}
 
   <Band id="vi-sao" kicker={home.principlesKicker} title={home.principlesTitle}>
-    <div class="grid g3">
+    <CardGrid cols={3} from={900}>
       {about.principles.map((p, i) => <InfoCard index={i + 1} title={p.title} body={p.body} />)}
-    </div>
+    </CardGrid>
   </Band>
 
   <Band tone="panel" id="dich-vu" kicker={home.servicesKicker} title={home.servicesTitle}>
     <Fragment slot="actions"><Button href={routes.services} variant="outline">{t('home.viewAll')}</Button></Fragment>
-    <div class="grid g4">
+    <CardGrid cols={4}>
       {services.items.map((it, i) => (
         <InfoCard index={i + 1} accent={i === 0} title={it.title} subtitle={it.subtitle} href={routes.services} linkLabel={t('home.learnMore')} />
       ))}
-    </div>
+    </CardGrid>
   </Band>
 
   {c.showrooms.length > 0 && (
     <Band id="showroom" kicker={home.showroomKicker} title={home.showroomTitle}
       subtitle={t('home.showroomCount', { count: c.showrooms.length })}>
       <Fragment slot="actions"><Button href={routes.showroom} variant="outline">{t('home.viewAll')}</Button></Fragment>
-      <div class="grid g3">
+      <CardGrid cols={3} from={900}>
         {c.showrooms.map((r) => (
           <InfoCard title={r.city} subtitle={t(`showroom.status.${r.opening_status}`)} href={routes.showroom} linkLabel={t('home.learnMore')} />
         ))}
-      </div>
+      </CardGrid>
     </Band>
   )}
 
   <Band tone="dark" id="ai" kicker={home.aiKicker} title={home.aiTitle} subtitle={ai.subtitle}>
     <Fragment slot="actions"><Button href={routes.ai} variant="outline">{t('home.learnMore')}</Button></Fragment>
-    <div class="grid g3">
+    <CardGrid cols={3} from={900}>
       {ai.capabilities.slice(0, home.aiTeaserCount).map((cap) => <InfoCard title={cap.title} body={cap.body} />)}
-    </div>
+    </CardGrid>
   </Band>
 
   <Band tone="panel" id="tu-van" title={home.leadTitle} subtitle={home.leadSubtitle}>
     <Fragment slot="actions"><Button href={routes.contact} variant="cta">{t('home.contactCta')}</Button></Fragment>
   </Band>
 </BaseLayout>
-<style>
-  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
-  @media (min-width: 640px) { .g2, .g4 { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 900px) { .g3 { grid-template-columns: repeat(3, 1fr); } .g2 { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1120px) { .g4 { grid-template-columns: repeat(4, 1fr); } }
-</style>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Band from '../../components/Band.astro';
+import CardGrid from '../../components/CardGrid.astro';
 import InfoCard from '../../components/InfoCard.astro';
 import Callout from '../../components/Callout.astro';
 import { services } from '../../copy/services';
@@ -10,17 +11,15 @@ import { t } from '../../i18n/t';
 <BaseLayout title={services.title} description={services.subtitle}>
   <Band tone="dark" size="hero" level={1} kicker={services.kicker} title={services.title} subtitle={services.subtitle} />
   <Band label={services.kicker}>
-    <div class="grid">
+    <CardGrid cols={2} from={900}>
       {services.items.map((s, i) => (
         <InfoCard index={i + 1} accent={i === 0} title={s.title} subtitle={s.subtitle} body={s.steps.join(' → ')}
           href={s.target === 'warranty' ? routes.warranty : routes.contact} linkLabel={t('service.request')} />
       ))}
-    </div>
+    </CardGrid>
     <div class="note"><Callout>{services.footnote}</Callout></div>
   </Band>
 </BaseLayout>
 <style>
-  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
   .note { margin-top: var(--space-5); }
-  @media (min-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 </style>

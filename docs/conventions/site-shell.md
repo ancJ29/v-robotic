@@ -22,3 +22,9 @@ Decisions a later session should not re-derive. Each is reversible.
 ## Components P2b and P2c reuse
 
 `BaseLayout` (page wrapper, header, footer, `noindex`), `Header`, `Footer`, `PageHead` (kicker, title, subtitle), `Breadcrumb`, `Badge`, `Button` (`primary`, `cta`, `outline`), `ProductCard`, `ProductVisual`. A section band and an industry card are not built yet: the first piece that needs one adds it next to these.
+
+## Card grid (cleanup after P2c)
+
+- **`CardGrid.astro` is the only card-grid rule; pages never write a `.grid`.** Props: `cols` (2, 3 or 4, the count at full width; default 3) and `from` (640 or 900; default 640). `from={640}` steps up: two columns from 640px, the full count from 1120px (for `cols={2}`, two from 640px). `from={900}` jumps straight to `cols` columns at 900px. These two shapes are exactly the ones the five pages already had (hop-tac, cong-nghe-ai, giai-phap listing: 3 stepped; homepage: 2 and 4 stepped, 3 jumping at 900; services listing: 2 jumping at 900), so no page changed how it renders. Content goes in the default slot.
+- **A new grid whose breakpoints fit neither shape adds a value to `from`, not a page-local rule.** Auto-fill product grids (`san-pham`, `giai-phap/[slug]`) are a different kind (card width, not column count) and stay local.
+

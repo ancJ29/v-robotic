@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Band from '../components/Band.astro';
+import CardGrid from '../components/CardGrid.astro';
 import InfoCard from '../components/InfoCard.astro';
 import Callout from '../components/Callout.astro';
 import Button from '../components/Button.astro';
@@ -17,9 +18,9 @@ const apply = routes.contact;
 <BaseLayout title={partners.title} description={partners.subtitle}>
   <Band tone="dark" size="hero" level={1} kicker={partners.kicker} title={partners.title} subtitle={partners.subtitle} />
   <Band label={partners.kicker}>
-    <div class="grid">
+    <CardGrid cols={3}>
       {partners.types.map((p) => <InfoCard title={p.title} subtitle={p.body} href={apply} linkLabel={t('partners.request')} />)}
-    </div>
+    </CardGrid>
     <div class="note">
       <Callout strong>
         {partners.closing}
@@ -29,8 +30,5 @@ const apply = routes.contact;
   </Band>
 </BaseLayout>
 <style>
-  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
   .note { margin-top: var(--space-5); }
-  @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1120px) { .grid { grid-template-columns: repeat(3, 1fr); } }
 </style>

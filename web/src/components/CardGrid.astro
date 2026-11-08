@@ -1,0 +1,18 @@
+---
+/**
+ * A responsive grid of cards: one column on a phone, `cols` columns on a wide screen.
+ * `cols`: 2, 3 or 4 columns at full width.
+ * `from`: 640 (default) steps up, two columns from 640px and the full count from 1120px
+ *   (for `cols` 2 that is simply two from 640px); 900 jumps straight to `cols` columns at 900px.
+ * Pages never write their own grid rule.
+ */
+interface Props { cols?: 2 | 3 | 4; from?: 640 | 900; }
+const { cols = 3, from = 640 } = Astro.props;
+---
+<div class:list={['grid', `c${cols}`, `f${from}`]}><slot /></div>
+<style>
+  .grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .f640 { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .f900.c2 { grid-template-columns: repeat(2, 1fr); } .f900.c3 { grid-template-columns: repeat(3, 1fr); } .f900.c4 { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 1120px) { .f640.c3 { grid-template-columns: repeat(3, 1fr); } .f640.c4 { grid-template-columns: repeat(4, 1fr); } }
+</style>
