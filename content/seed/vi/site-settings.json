@@ -1,0 +1,23 @@
+{
+  "brand_name": "V-ROBOTICS (tạm)",
+  "tagline": "Khẩu hiệu tạm thời",
+  "hero_headline": "Tiêu đề trang chủ tạm thời",
+  "hero_sub": "Dòng mô tả tạm thời, sẽ được thay khi khách hàng cung cấp nội dung chính thức.",
+  "phone": null,
+  "zalo": null,
+  "whatsapp": null,
+  "email": null,
+  "address": null,
+  "legal_entity": null,
+  "lead_notify_email": null,
+  "show_demo_banner": true,
+  "logo": null,
+  "mark": null,
+  "share_image": null,
+  "favicon": null,
+  "seo": {
+    "meta_title": "V-ROBOTICS (bản mẫu)",
+    "meta_description": null,
+    "noindex": true
+  }
+}

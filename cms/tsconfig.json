@@ -11,6 +11,6 @@
     "resolveJsonModule": true,
     "types": ["node"]
   },
-  "include": ["config", "src", "types"],
+  "include": ["config", "src", "src/**/*.json", "types"],
   "exclude": ["node_modules", "build", "dist", ".strapi", ".tmp", "src/admin"]
 }
