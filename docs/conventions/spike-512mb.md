@@ -37,6 +37,10 @@ Memory: Strapi at rest 110 MB, peak 158 MB (service total peak 162 MB); least me
 - **The start command** crash-looped 132 times in five minutes before the correction above.
 - The first run was split in two: it got the box, swap, Node, unpack, secrets and the unit in place, then failed at the start; a continue script (same measurement code) did the rest. No re-upload was needed.
 
+**Teardown:** one script, `/Users/hau/projects/freelance/v-robotic/one-off/20261108-1514-s0b-teardown.sh` (outside git). It deletes the box, then its key pair, then the local key-and-login folder, and after deleting the box it asks Lightsail until the box can no longer be found before saying nothing is billing; anything already deleted counts as done. Three separate pasted commands were the wrong shape: running only the first leaves clutter, running none leaves the box billing.
+
+**P6 must create the swap file:** the finding is "512 MB plus 2 GB of swap is enough", not "512 MB is enough"; a box without that swap is not this result.
+
 ## The start command (read this before P6)
 
 **The correct start is the shim run as a program, not through `node`:** `ExecStart=/opt/strapi/app/node_modules/.bin/strapi start`, with `Environment=PATH=/opt/node/bin:/usr/bin:/bin` and the heap cap as `Environment=NODE_OPTIONS=--max-old-space-size=320`. In a pnpm tree `node_modules/.bin/strapi` is a shell script, so `node node_modules/.bin/strapi start` dies with `SyntaxError: Invalid or unexpected token` on the script's second line; the first spike run crash-looped 132 times in five minutes on exactly that. The shim's own text (read from the artifact) runs `exec node <strapi.js>` and finds `node` on `PATH` (it prefers a `node` beside itself, which there is none of), which is why the `PATH` line is needed. **`docs/conventions/cms-build.md#L14` states the wrong command** (`NODE_ENV=production node node_modules/.bin/strapi start`) and should be corrected; that note's author never started the app from the tarball.
