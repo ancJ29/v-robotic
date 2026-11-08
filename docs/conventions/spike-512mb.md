@@ -15,6 +15,28 @@ One script, run by the human in their own terminal (a Claude session's sandbox c
 needs `INSTANCE_NAME` and `REGION` and refuses without them. It prints the plan, the price and a
 15-second Ctrl-C window before creating anything, and prints the delete commands every time it ends.
 
+## Result (run on 2026-11-08, box `v-robotic-s0b-spike`, ap-southeast-1)
+
+**Verdict: pass on all three; the 512 MB plan with swap holds for a bare Strapi. The 1 GB plan stays unspent.** The box: Ubuntu 24.04, plan `nano_3_0`, 412 MB of memory visible to the system, 2 GB swap at swappiness 10, Node 24.22.2, heap cap 320 MB.
+
+| Pass mark | Result | How read |
+|---|---|---|
+| Admin loads under 3 s | **1.73 s** (Load); DOMContentLoaded 1.67 s; **Finish 9.53 s** | The human, Chrome Network panel, cache disabled, hard reload: 13 of 47 requests, 105 kB of 5,777 kB transferred. The load event fires at 1.73 s while the panel keeps pulling 5.8 MB for about 8 more seconds; the human's verdict after ten minutes of real use was "fast enough", so the tail is not felt. Both figures are recorded so a later comparison against the real catalogue has both. |
+| A save under 2 s | **All 74 saves under 2 s**: median 50 ms, 95th percentile 216 ms, slowest 261 ms; first create 406 ms; list slowest 399 ms; login 166 ms; none failed | The script, on the box, against `127.0.0.1`, so Strapi's own time without the network. |
+| No out-of-memory restart in 10 minutes | **0 restarts, process id unchanged, 0 kernel out-of-memory lines** | Sampled every 10 s for the 2 minute quiet window and the 10 measured minutes. |
+
+Memory: Strapi at rest 110 MB, peak 158 MB (service total peak 162 MB); least memory left 92 MB; **most swap used 211 MB**. First start took 21 seconds. Files: `logs/20261108-1457-s0b-continue-samples.csv` and `-times.csv` (outside git).
+
+**What this result is worth, plainly:**
+- **"512 MB is enough" means "512 MB plus swap is enough."** The system sees 412 MB, and about 200 MB of the 2 GB swap file was in use during the run; with 92 MB left at the tightest sample. A box without swap would not have been measured here.
+- **It is a floor taken on an empty box.** It held none of the client's content: the 20 seed products live in the repository and reaching Strapi is P5's work. Bare Strapi, no R2 provider, no image processing. The real admin with a full catalogue will be heavier; a pass here means "bare Strapi fits".
+- **Over plain http the admin login worked** in Chrome (no cookie problem showed); the box was reached by address on port 1337 with no tunnel.
+
+**What did not work, so P6 does not repeat it:**
+- **Key import:** Lightsail rejected an ed25519 key; with the RSA key, the base64-encoded public key was also rejected and **the plain one-line text of the `.pub` file worked** (`--public-key-base64 "$(cat key.pub)"`). Use the plain text first.
+- **The start command** crash-looped 132 times in five minutes before the correction above.
+- The first run was split in two: it got the box, swap, Node, unpack, secrets and the unit in place, then failed at the start; a continue script (same measurement code) did the rest. No re-upload was needed.
+
 ## The start command (read this before P6)
 
 **The correct start is the shim run as a program, not through `node`:** `ExecStart=/opt/strapi/app/node_modules/.bin/strapi start`, with `Environment=PATH=/opt/node/bin:/usr/bin:/bin` and the heap cap as `Environment=NODE_OPTIONS=--max-old-space-size=320`. In a pnpm tree `node_modules/.bin/strapi` is a shell script, so `node node_modules/.bin/strapi start` dies with `SyntaxError: Invalid or unexpected token` on the script's second line; the first spike run crash-looped 132 times in five minutes on exactly that. The shim's own text (read from the artifact) runs `exec node <strapi.js>` and finds `node` on `PATH` (it prefers a `node` beside itself, which there is none of), which is why the `PATH` line is needed. **`docs/conventions/cms-build.md#L14` states the wrong command** (`NODE_ENV=production node node_modules/.bin/strapi start`) and should be corrected; that note's author never started the app from the tarball.
@@ -37,7 +59,7 @@ and every call time to `logs/<stem>-times.csv`.
 - **Instance size: the cheapest 512 MB IPv4 Linux plan, looked up by the script** (`get-bundles`, memory 0.5 GB, no IPv6-only plans), and it refuses any other memory size. Reason: the spike is only valid on the plan the client would pay for.
 - **Image: Ubuntu 24.04 (`ubuntu_24_04`).** Reason: current LTS, matches the box P6 will stand up. Overridable with `BLUEPRINT`.
 - **Name and region are never invented**: required environment variables. Reason: they start billing in a place the human chose.
-- **A key pair made on the Mac and imported (`ssh-keygen -t rsa -b 4096`, `import-key-pair`)**, not Lightsail's default key. Reason: the private key never passes through `aws` output. It is RSA because `ImportKeyPair` rejected an ed25519 key ("format of this public key is not valid"); the script checks the `.pub` starts with `ssh-rsa ` and retries once with the key passed as plain text.
+- **A key pair made on the Mac and imported (`ssh-keygen -t rsa -b 4096`, `import-key-pair`)**, not Lightsail's default key. Reason: the private key never passes through `aws` output. It is RSA because `ImportKeyPair` rejected an ed25519 key ("format of this public key is not valid"); the script checks the `.pub` starts with `ssh-rsa ` and tries the base64 form, then the plain text; only the plain text was accepted.
 - **Firewall: ports 22 and 1337 open to the Mac's current public address only** (`put-instance-public-ports`, address read from `checkip.amazonaws.com`). Reason: a test box with an admin login should not face the internet. If the Mac's address changes mid-run, ssh stops and the run fails red; rerun on a new name.
 - **Swap: a 2 GB file, `vm.swappiness=10`, persisted in `/etc/fstab` and `/etc/sysctl.d`.** Reason: the plan says 2 GB of swap. **This changes what the result means**: memory pressure is absorbed by swap, so "no out-of-memory restart" is with swap on, and the number to read beside it is "most swap used". The script reports it.
 - **Node heap cap: `--max-old-space-size=320` (override `HEAP_MB`).** Reason: the plan says "a capped heap"; 320 MB leaves about 100 MB for native memory (SQLite, sharp) and the system on a box with roughly 450 MB usable. This is a guess to be tuned by the numbers.
@@ -54,7 +76,7 @@ From the Mac:
 
 ```
 aws lightsail get-bundles --region R --query '<0.5 GB, LINUX_UNIX, not ipv6, cheapest>'
-aws lightsail import-key-pair --region R --key-pair-name N-key --public-key-base64 <base64 of key.pub>
+aws lightsail import-key-pair --region R --key-pair-name N-key --public-key-base64 "$(cat key.pub)"      (RSA key; the plain one-line text, not base64 of it)
 aws lightsail create-instances --region R --availability-zone Ra --instance-names N --blueprint-id ubuntu_24_04 --bundle-id <512 MB bundle> --key-pair-name N-key --ip-address-type ipv4
 aws lightsail get-instance --region R --instance-name N          (poll until running and an address)
 aws lightsail put-instance-public-ports --region R --instance-name N --port-infos fromPort=22,toPort=22,protocol=tcp,cidrs=<my ip>/32 fromPort=1337,toPort=1337,protocol=tcp,cidrs=<my ip>/32
