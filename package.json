@@ -1,0 +1,13 @@
+{
+  "name": "v-robotic",
+  "private": true,
+  "packageManager": "pnpm@12.10.1",
+  "engines": { "node": ">=22.23.4 <27" },
+  "scripts": {
+    "dev": "pnpm --parallel --filter ./cms --filter ./web dev",
+    "dev:cms": "pnpm --filter cms dev",
+    "dev:web": "pnpm --filter web dev",
+    "build": "pnpm -r build",
+    "check": "pnpm -r check"
+  }
+}

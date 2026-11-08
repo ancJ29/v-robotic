@@ -1,0 +1,15 @@
+packages:
+  - cms
+  - web
+
+# pnpm 12 runs no dependency build scripts unless named here.
+allowBuilds:
+  "@swc/core": true
+  esbuild: true
+  core-js-pure: false
+  better-sqlite3: true
+
+# @astrojs/astro2tsx resolved the emnapi runtime to a 2.0 beta that does not match emnapi core 1.x,
+# and `astro check` crashed on load. Pin the runtime to the core's line.
+overrides:
+  "@emnapi/runtime": "1.11.3"

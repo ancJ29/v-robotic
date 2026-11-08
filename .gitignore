@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+dist/
+.astro/
+.strapi/
+.tmp/
+cms/build/
+cms/public/uploads/*
+!cms/public/uploads/.gitkeep
+*.log
+logs/
+notes.local/
+.DS_Store
+.strapi-updater.json
