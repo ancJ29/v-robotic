@@ -114,38 +114,23 @@ not run, names that honestly, and the honesty is lost at the next hand-off.
 that wrote it ran it, and an unrun command should be marked as unrun wherever it travels. Worth
 carrying to the freelance kit, since it holds in every project.
 
-## 12.  is a folder, not a workspace member
+## 12. The lead schema is a folder, not a workspace member
 
-Opened by P3 on 2026-11-08. The lead record's definition lives in 
+Opened by P3 on 2026-11-08. The lead record's definition lives in `packages/lead-schema/src/index.ts`
 and is imported by relative path. Making it a real pnpm workspace member changed the lockfile, which
 made pnpm try to fetch registry metadata for its supply-chain check; that failed offline with
-, so the lockfile was reverted. Nothing is broken — the module is shared
-and type-checked — but a relative import across package boundaries is the kind of thing that works
-until someone moves a file.
+`ERR_PNPM_NO_OFFLINE_META`, so the lockfile was reverted. Nothing is broken — the module is shared
+and type-checked — but a relative import across package boundaries works until someone moves a file.
 
-**What closes it:** add it to  and run Scope: all 4 workspace projects
-✓ Lockfile passes supply-chain policies (verified 1h ago)
-Lockfile is up to date, resolution step is skipped
-Packages are cloned from the content-addressable store to the virtual store.
-  Content-addressable store is at: /Users/hau/Library/pnpm/store/v11
-  Virtual store is at:             node_modules/.pnpm
-Progress: resolved 193, reused 193, downloaded 0, added 178
-Progress: resolved 641, reused 641, downloaded 0, added 626
-Progress: resolved 1103, reused 1103, downloaded 0, added 1088
-Packages: +1429
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Progress: resolved 1429, reused 1429, downloaded 0, added 1429, done
-.../node_modules/@swc/core postinstall$ node postinstall.js
-.../node_modules/@swc/core postinstall: Done
-Done in 4.9s using pnpm v12.10.1 with the network
-available, then switch the imports to the package name.
+**What closes it:** add it to `pnpm-workspace.yaml`, run `pnpm install` with the network available,
+then switch the imports to the package name.
 
 ## 13. No rate limit on the lead endpoint
 
-Opened by P3 on 2026-11-08.  has Turnstile and a honeypot but no per-address rate limit,
-because a Pages Function has no counter without KV or a Durable Object. P3's recommendation, which
-reads right: a Cloudflare dashboard rate-limit rule on that path, which is a setting rather than
-code.
+Opened by P3 on 2026-11-08. The lead endpoint has Turnstile and a honeypot but no per-address rate
+limit, because a Pages Function has no counter without KV or a Durable Object. P3's recommendation,
+which reads right: a Cloudflare dashboard rate-limit rule on that path, which is a setting rather
+than code.
 
 **What closes it:** the rule, at P4 when the project exists in Cloudflare. Until then the endpoint is
-not public, because nothing is deployed.
+not reachable, because nothing is deployed.
