@@ -67,16 +67,6 @@ check or force five schemas nobody wants.
 the client turns out to want to edit that prose. The objects are already shaped for the second
 outcome. Recorded in `docs/conventions/remaining-pages.md`.
 
-## 7. Three routes are linked but not built until P3
-
-Opened by P2b on 2026-11-08. `/showroom/dat-lich` (showroom booking), `/dich-vu/bao-hanh` (warranty)
-and `/tro-ly-ai` (the AI assistant) are linked from built pages and 404. None is a header or footer
-link, so the navigation is whole; but `/showroom/dat-lich` is linked from 20 product pages as well
-as the showroom page, so it is the most visible of the three.
-
-**What closes it:** P3 builds all three as form flows. Until then they are dead links on a site that
-is noindex and not public.
-
 ## 8. The seed has fewer industries and showrooms than the screens
 
 Opened by P2b on 2026-11-08. The reference screens show 11 industries and 5 showrooms; the seed has 4
