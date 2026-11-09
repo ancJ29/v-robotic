@@ -13,7 +13,15 @@
     "nganh-tam-san-xuat",
     "nganh-tam-kho-van",
     "nganh-tam-y-te",
-    "nganh-tam-khach-san"
+    "nganh-tam-khach-san",
+    "nganh-ngan-hang",
+    "nganh-showroom",
+    "nganh-hanh-chinh-cong",
+    "nganh-truong-hoc",
+    "nganh-nha-hang",
+    "nganh-sieu-thi-tttm",
+    "nganh-trai-duong-lao",
+    "nganh-tu-van-tam-ly"
   ],
   "product": [
     "model-tam-1-1",
@@ -40,6 +48,8 @@
   "showroom": [
     "showroom-tam-ha-noi",
     "showroom-tam-da-nang",
-    "showroom-tam-ho-chi-minh"
+    "showroom-tam-ho-chi-minh",
+    "showroom-nha-trang",
+    "showroom-can-tho"
   ]
 }

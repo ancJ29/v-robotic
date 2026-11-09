@@ -1,7 +1,7 @@
 [
   {
     "city": "Hà Nội",
-    "name": "Showroom Hà Nội (tạm)",
+    "name": "Showroom Hà Nội",
     "slug": "showroom-tam-ha-noi",
     "opening_status": "fitting_out",
     "address": null,
@@ -11,7 +11,7 @@
   },
   {
     "city": "Đà Nẵng",
-    "name": "Showroom Đà Nẵng (tạm)",
+    "name": "Showroom Đà Nẵng",
     "slug": "showroom-tam-da-nang",
     "opening_status": "planned",
     "address": null,
@@ -20,13 +20,33 @@
     "gallery": []
   },
   {
+    "city": "Nha Trang",
+    "name": "Showroom Nha Trang",
+    "slug": "showroom-nha-trang",
+    "opening_status": "planned",
+    "address": null,
+    "hours": null,
+    "details_confirmed": false,
+    "gallery": []
+  },
+  {
     "city": "TP. Hồ Chí Minh",
-    "name": "Showroom TP. Hồ Chí Minh (tạm)",
+    "name": "Showroom TP. Hồ Chí Minh",
     "slug": "showroom-tam-ho-chi-minh",
     "opening_status": "open",
-    "address": "Địa chỉ tạm thời",
-    "hours": "09:00 – 18:00 (tạm)",
+    "address": "[PLACEHOLDER] Địa chỉ tạm thời",
+    "hours": "[PLACEHOLDER] 09:00 – 18:00",
     "details_confirmed": true,
+    "gallery": []
+  },
+  {
+    "city": "Cần Thơ",
+    "name": "Showroom Cần Thơ",
+    "slug": "showroom-can-tho",
+    "opening_status": "planned",
+    "address": null,
+    "hours": null,
+    "details_confirmed": false,
     "gallery": []
   }
 ]

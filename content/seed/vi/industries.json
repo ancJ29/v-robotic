@@ -1,26 +1,286 @@
 [
   {
-    "name": "Sản xuất (tạm)",
-    "slug": "nganh-tam-san-xuat",
+    "name": "Ngân hàng",
+    "slug": "nganh-ngan-hang",
     "order": 1,
-    "tagline": "Câu giới thiệu ngành tạm thời.",
-    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Sản xuất (tạm)**, sẽ được viết lại với khách hàng.",
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Ngân hàng**: nội dung tạm, sẽ được viết lại với khách hàng.",
     "hero_image": null,
     "journey": [
       {
         "order": 1,
-        "title": "Bước 1 (tạm)",
-        "detail": "Chi tiết tạm của bước 1."
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
       },
       {
         "order": 2,
-        "title": "Bước 2 (tạm)",
-        "detail": "Chi tiết tạm của bước 2."
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
       },
       {
         "order": 3,
-        "title": "Bước 3 (tạm)",
-        "detail": "Chi tiết tạm của bước 3."
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Showroom",
+    "slug": "nganh-showroom",
+    "order": 2,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Showroom**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Hành chính công",
+    "slug": "nganh-hanh-chinh-cong",
+    "order": 3,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Hành chính công**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Trường học",
+    "slug": "nganh-truong-hoc",
+    "order": 4,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Trường học**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Bệnh viện / Phòng khám",
+    "slug": "nganh-tam-y-te",
+    "order": 5,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Bệnh viện / Phòng khám**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Nhà hàng",
+    "slug": "nganh-nha-hang",
+    "order": 6,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Nhà hàng**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Khách sạn",
+    "slug": "nganh-tam-khach-san",
+    "order": 7,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Khách sạn**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Siêu thị / TTTM",
+    "slug": "nganh-sieu-thi-tttm",
+    "order": 8,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Siêu thị / TTTM**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Nhà máy / Kho xưởng",
+    "slug": "nganh-tam-san-xuat",
+    "order": 9,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Nhà máy / Kho xưởng**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Trại dưỡng lão",
+    "slug": "nganh-trai-duong-lao",
+    "order": 10,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Trại dưỡng lão**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
+      }
+    ],
+    "seo": null
+  },
+  {
+    "name": "Tư vấn tâm lý",
+    "slug": "nganh-tu-van-tam-ly",
+    "order": 11,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Tư vấn tâm lý**: nội dung tạm, sẽ được viết lại với khách hàng.",
+    "hero_image": null,
+    "journey": [
+      {
+        "order": 1,
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
+      },
+      {
+        "order": 2,
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
+      },
+      {
+        "order": 3,
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
       }
     ],
     "seo": null
@@ -28,77 +288,25 @@
   {
     "name": "Kho vận (tạm)",
     "slug": "nganh-tam-kho-van",
-    "order": 2,
-    "tagline": "Câu giới thiệu ngành tạm thời.",
-    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Kho vận (tạm)**, sẽ được viết lại với khách hàng.",
+    "order": 12,
+    "tagline": "[PLACEHOLDER] Câu giới thiệu ngành tạm thời.",
+    "problem": "## [PLACEHOLDER] Vấn đề\n\nĐoạn mô tả bài toán của ngành **Kho vận (tạm)**: nội dung tạm, sẽ được viết lại với khách hàng.",
     "hero_image": null,
     "journey": [
       {
         "order": 1,
-        "title": "Bước 1 (tạm)",
-        "detail": "Chi tiết tạm của bước 1."
+        "title": "[PLACEHOLDER] Bước 1",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 1."
       },
       {
         "order": 2,
-        "title": "Bước 2 (tạm)",
-        "detail": "Chi tiết tạm của bước 2."
+        "title": "[PLACEHOLDER] Bước 2",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 2."
       },
       {
         "order": 3,
-        "title": "Bước 3 (tạm)",
-        "detail": "Chi tiết tạm của bước 3."
-      }
-    ],
-    "seo": null
-  },
-  {
-    "name": "Y tế (tạm)",
-    "slug": "nganh-tam-y-te",
-    "order": 3,
-    "tagline": "Câu giới thiệu ngành tạm thời.",
-    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Y tế (tạm)**, sẽ được viết lại với khách hàng.",
-    "hero_image": null,
-    "journey": [
-      {
-        "order": 1,
-        "title": "Bước 1 (tạm)",
-        "detail": "Chi tiết tạm của bước 1."
-      },
-      {
-        "order": 2,
-        "title": "Bước 2 (tạm)",
-        "detail": "Chi tiết tạm của bước 2."
-      },
-      {
-        "order": 3,
-        "title": "Bước 3 (tạm)",
-        "detail": "Chi tiết tạm của bước 3."
-      }
-    ],
-    "seo": null
-  },
-  {
-    "name": "Khách sạn (tạm)",
-    "slug": "nganh-tam-khach-san",
-    "order": 4,
-    "tagline": "Câu giới thiệu ngành tạm thời.",
-    "problem": "## Vấn đề (nội dung tạm)\n\nĐoạn mô tả bài toán của ngành **Khách sạn (tạm)**, sẽ được viết lại với khách hàng.",
-    "hero_image": null,
-    "journey": [
-      {
-        "order": 1,
-        "title": "Bước 1 (tạm)",
-        "detail": "Chi tiết tạm của bước 1."
-      },
-      {
-        "order": 2,
-        "title": "Bước 2 (tạm)",
-        "detail": "Chi tiết tạm của bước 2."
-      },
-      {
-        "order": 3,
-        "title": "Bước 3 (tạm)",
-        "detail": "Chi tiết tạm của bước 3."
+        "title": "[PLACEHOLDER] Bước 3",
+        "detail": "[PLACEHOLDER] Chi tiết tạm của bước 3."
       }
     ],
     "seo": null

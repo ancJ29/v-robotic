@@ -48,15 +48,17 @@ check or force five schemas nobody wants.
 the client turns out to want to edit that prose. The objects are already shaped for the second
 outcome. Recorded in `docs/conventions/remaining-pages.md`.
 
-## 8. The seed has fewer industries and showrooms than the screens
+## 8. One sample industry in the seed is on no screen
 
-Opened by P2b on 2026-11-08. The reference screens show 11 industries and 5 showrooms; the seed has 4
-and 3. The pages count from the data rather than hard-coding, so nothing breaks and the counts
-update themselves when real content arrives. It is recorded because a page laid out against 4 cards
-may read differently with 11.
+Opened by P1b on 2026-11-09, narrowing the earlier item 8. The seed now has the 11 industries and 5
+showrooms of the reference screens (names real, everything else marked `[PLACEHOLDER]`), so the
+layout is proven at full size. What is left: `Kho vận (tạm)` (slug `nganh-tam-kho-van`) is a 12th
+industry that no screen shows. It stays only because the slug ledger forbids removing a slug and
+three products point at it.
 
-**What closes it:** the client's real content, or a decision to extend the seed before launch if the
-layout needs proving at full size.
+**What closes it:** a deliberate retirement: edit `content/slugs.json`, move the product links,
+delete the record, in one commit (no live site yet, so no redirect is needed), or the client keeps a
+logistics industry.
 
 ## 10. The hero headline ships filled, not empty
 
