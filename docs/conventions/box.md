@@ -88,3 +88,12 @@ All still **never run** against AWS or Ubuntu; each is covered by a selftest whe
 ## Added by P7
 
 Step `95-backup` (nightly `sqlite3 .backup` with rotation, a systemd timer) and its self-test are described in `publish.md`; also never run against a real box.
+
+## The two wrappers (outside git)
+
+`/Users/hau/projects/freelance/v-robotic/bin/start-box` and `/Users/hau/projects/freelance/v-robotic/bin/teardown-box` make the daily routine three short lines: sign in to AWS (`aws configure` once, or `aws sso login --profile <name>` per session; there is no `aws login`), `bash start-box`, `bash teardown-box`. They are thin: they set values and `exec` the two one-off scripts above, and copy none of their logic.
+
+- **Defaults, each overridable from the environment:** `INSTANCE_NAME=v-robotic-box`, `REGION=ap-southeast-1` (the region S0b measured 512 MB in), `ADMIN_EMAIL=hau@consocia.in`. `start-box` also resolves `RUN_ID` itself with `gh`: the newest green `cms-build.yml` run whose `cms-linux-x64` artifact is not expired (same artifact query as the hand-off script); `RUN_ID` in the environment wins; none usable means exit 2 and the hand-off script's path.
+- **Refusals, in order, all exit 2 and before anything is created:** `start-box`: create script missing; no `aws`; `aws sts get-caller-identity` fails (prints both sign-in ways, naming `AWS_PROFILE` if set); a box, static address, key pair or key folder of that name already exists (names which; says use the box there or run `teardown-box`); no usable run. `teardown-box`: teardown script missing; no `aws`; not signed in. Run twice or on a box never made, `teardown-box` ends green (the wrapped script reports "already gone").
+- **Not in git** because they hold this machine's paths, the region and the email. To recreate: a bash file that sets the three defaults with `${VAR:-default}`, checks `aws sts get-caller-identity`, (start only) resolves `RUN_ID` with `gh run list --workflow cms-build.yml --status success` plus `gh api repos/<repo>/actions/runs/<id>/artifacts`, then `exec bash` the one-off script. `--selftest` in each runs them against stand-in `aws` and `gh`.
+- **Never run against a real box**, like the scripts they wrap (open item 11).
