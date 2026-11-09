@@ -1,3 +1,4 @@
+// SAMPLE-DATA: in every title/body/subtitle below only the first sentence was read off the client's screen; every sentence after it is invented placeholder text. Replace before launch.
 /** Services page (screen 05). Lift to a Strapi single type `services-page` with a repeatable `service` component. */
 export interface ServiceItem {
   title: string;
@@ -14,10 +15,10 @@ export const services = {
   title: 'Đồng hành trọn vòng đời robot',
   subtitle: 'Từ lựa chọn phương án đầu tư đến triển khai, vận hành và hỗ trợ kỹ thuật.',
   items: [
-    { title: 'Thuê robot', subtitle: 'Theo ngày • tuần • tháng • sự kiện', steps: ['Nhận yêu cầu', 'kiểm tra robot đối tác', 'báo giá'], target: 'contact', service: 'rent' },
-    { title: 'Mua trả góp', subtitle: 'Tư vấn phương án tài chính', steps: ['Tiếp nhận nhu cầu', 'thẩm định', 'chốt điều kiện'], target: 'contact', service: 'finance' },
-    { title: 'Bảo hành / sửa chữa', subtitle: 'Tạo và theo dõi phiếu hỗ trợ', steps: ['Mã robot', 'mô tả lỗi', 'hình ảnh/video', 'kỹ thuật'], target: 'warranty' },
-    { title: 'Triển khai / tích hợp', subtitle: 'Khảo sát và đào tạo vận hành', steps: ['Khảo sát', 'giải pháp', 'nghiệm thu', 'hỗ trợ'], target: 'contact', service: 'deploy' },
+    { title: 'Thuê robot', subtitle: 'Theo ngày • tuần • tháng • sự kiện. Phù hợp triển lãm, khai trương hoặc thử nghiệm trước khi mua; robot được giao, cài đặt và thu hồi tận nơi.', steps: ['Nhận yêu cầu', 'kiểm tra robot đối tác', 'báo giá'], target: 'contact', service: 'rent' },
+    { title: 'Mua trả góp', subtitle: 'Tư vấn phương án tài chính. So sánh mua một lần, trả góp và thuê dài hạn theo dòng tiền của doanh nghiệp, cùng tổ chức tài chính đối tác.', steps: ['Tiếp nhận nhu cầu', 'thẩm định', 'chốt điều kiện'], target: 'contact', service: 'finance' },
+    { title: 'Bảo hành / sửa chữa', subtitle: 'Tạo và theo dõi phiếu hỗ trợ. Mỗi phiếu có mã theo dõi, kỹ thuật viên phụ trách và thời gian phản hồi dự kiến.', steps: ['Mã robot', 'mô tả lỗi', 'hình ảnh/video', 'kỹ thuật'], target: 'warranty' },
+    { title: 'Triển khai / tích hợp', subtitle: 'Khảo sát và đào tạo vận hành. Đội kỹ thuật đến địa điểm, lập bản đồ, cài đặt, đào tạo nhân viên và nghiệm thu theo tiêu chí thống nhất trước.', steps: ['Khảo sát', 'giải pháp', 'nghiệm thu', 'hỗ trợ'], target: 'contact', service: 'deploy' },
   ] satisfies ServiceItem[],
   footnote: 'Các điều kiện thuê, tài chính và bảo hành phải được xác nhận trước khi cam kết với khách hàng.',
 };

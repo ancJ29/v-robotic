@@ -48,15 +48,16 @@ check or force five schemas nobody wants.
 the client turns out to want to edit that prose. The objects are already shaped for the second
 outcome. Recorded in `docs/conventions/remaining-pages.md`.
 
-## 8. The seed has fewer industries and showrooms than the screens
+## 8. The seed and five prose pages are sample data and a ribbon says so
 
-Opened by P2b on 2026-11-08. The reference screens show 11 industries and 5 showrooms; the seed has 4
-and 3. The pages count from the data rather than hard-coding, so nothing breaks and the counts
-update themselves when real content arrives. It is recorded because a page laid out against 4 cards
-may read differently with 11.
+Opened by P1b on 2026-11-09, closing the earlier item 8 (seed smaller than the screens). Everything in
+the seed except the names read off the client's screens is invented (records with `"sample_data": true`;
+the strings in `web/src/copy/*.ts` carry a `SAMPLE-DATA` header). `SAMPLE_CONTENT` in `web/src/lib/site.ts`
+draws a red ribbon on every page while true.
 
-**What closes it:** the client's real content, or a decision to extend the seed before launch if the
-layout needs proving at full size.
+**What closes it:** the client's content replaces the records (their `sample_data` goes false), the copy
+files are rewritten, then `SAMPLE_CONTENT` is set to false. It must be off before launch. Find the rest
+with `grep -rn '"sample_data": true' content/seed` and `grep -rln SAMPLE-DATA web/src/copy`.
 
 ## 10. The hero headline ships filled, not empty
 

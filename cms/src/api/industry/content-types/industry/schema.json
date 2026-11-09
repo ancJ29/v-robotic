@@ -97,6 +97,15 @@
       "relation": "manyToMany",
       "target": "api::product.product",
       "mappedBy": "industries"
+    },
+    "sample_data": {
+      "type": "boolean",
+      "default": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     }
   }
 }

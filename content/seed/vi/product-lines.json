@@ -1,44 +1,51 @@
 [
   {
-    "name": "Dòng robot tạm 1",
+    "name": "Robot dịch vụ / lễ tân",
     "slug": "dong-tam-1",
-    "summary": "Mô tả tạm cho dòng robot 1.",
-    "order": 1
+    "summary": "Robot đón tiếp, hướng dẫn và giải đáp thông tin cho khách tại quầy, sảnh và khu vực chờ.",
+    "order": 1,
+    "sample_data": true
   },
   {
-    "name": "Dòng robot tạm 2",
+    "name": "Giao đồ",
     "slug": "dong-tam-2",
-    "summary": "Mô tả tạm cho dòng robot 2.",
-    "order": 2
+    "summary": "Robot mang khay đồ ăn, vật dụng và tài liệu đến đúng bàn, đúng phòng trong nhà hàng, khách sạn và bệnh viện.",
+    "order": 2,
+    "sample_data": true
   },
   {
-    "name": "Dòng robot tạm 3",
+    "name": "Vệ sinh",
     "slug": "dong-tam-3",
-    "summary": "Mô tả tạm cho dòng robot 3.",
-    "order": 3
+    "summary": "Robot lau sàn, hút bụi tự động theo lịch, phù hợp sảnh lớn, siêu thị và nhà xưởng.",
+    "order": 3,
+    "sample_data": true
   },
   {
-    "name": "Dòng robot tạm 4",
+    "name": "Vận chuyển kho",
     "slug": "dong-tam-4",
-    "summary": "Mô tả tạm cho dòng robot 4.",
-    "order": 4
+    "summary": "Robot chở hàng và thùng chứa giữa các khu vực trong kho, xưởng và trung tâm phân phối.",
+    "order": 4,
+    "sample_data": true
   },
   {
-    "name": "Dòng robot tạm 5",
+    "name": "AGV / AMR",
     "slug": "dong-tam-5",
-    "summary": "Mô tả tạm cho dòng robot 5.",
-    "order": 5
+    "summary": "Xe tự hành tải nặng chạy theo bản đồ, điều phối theo đội, thay thế xe đẩy và xe nâng tay.",
+    "order": 5,
+    "sample_data": true
   },
   {
-    "name": "Dòng robot tạm 6",
+    "name": "Robot công nghiệp",
     "slug": "dong-tam-6",
-    "summary": "Mô tả tạm cho dòng robot 6.",
-    "order": 6
+    "summary": "Cánh tay robot cộng tác cho lắp ráp, gắp đặt, kiểm tra và xếp pallet, triển khai cạnh người vận hành.",
+    "order": 6,
+    "sample_data": true
   },
   {
-    "name": "Dòng robot tạm 7",
+    "name": "Hỗ trợ tương tác",
     "slug": "dong-tam-7",
-    "summary": "Mô tả tạm cho dòng robot 7.",
-    "order": 7
+    "summary": "Robot đồng hành thân thiện cho giáo dục, chăm sóc và tư vấn, giao tiếp bằng giọng nói và màn hình cảm ứng.",
+    "order": 7,
+    "sample_data": true
   }
 ]
