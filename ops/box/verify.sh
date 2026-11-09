@@ -19,9 +19,17 @@ chk "env file is root:root mode 600" "[ \"\$(stat -c '%U:%G %a' $ENV_FILE)\" = '
 chk "env file holds no throwaway value" "! grep -qE 'p5local|LocalAdmin|vrobotic.test|=replace' $ENV_FILE"
 chk "database is outside the app folder" "[ -f $DATABASE_FILE ]"
 chk "caddy is enabled and running" "systemctl is-enabled --quiet caddy && systemctl is-active --quiet caddy"
-if [ -n "$DOMAIN" ]; then
-  chk "https://$DOMAIN/admin answers" "case \$(curl -s -o /dev/null -w '%{http_code}' --max-time 60 https://$DOMAIN/admin/) in 200|301|302) true;; *) false;; esac"
-fi
+# Caddy asks for the certificate on the first visit, which takes up to about a minute: retry for ~90 s
+https_ok() {
+  local end=$(( $(date +%s) + ${HTTPS_WAIT_SECONDS:-90} )) code
+  while :; do
+    code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$DOMAIN/admin/")
+    case "$code" in 200|301|302) return 0 ;; esac
+    [ "$(date +%s)" -lt "$end" ] || return 1
+    sleep 5
+  done
+}
+if [ -n "$DOMAIN" ]; then chk "https://$DOMAIN/admin answers (retried for up to ${HTTPS_WAIT_SECONDS:-90} s)" https_ok; fi
 free -m | head -2
 [ "$bad" = 0 ] && say "VERIFY_OK" || say "VERIFY_FAILED: $bad check(s)"
 exit $((bad>0))

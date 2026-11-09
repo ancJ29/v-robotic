@@ -41,6 +41,9 @@ t_ "rendered unit/Caddyfile/env are right (rc=$rc)" "[ $rc = 0 ]"
   exit 0 ); rc=$?
 t_ "gen-env.js: 6 secrets, mode 600, kept on re-run, throwaway replaced (rc=$rc)" "[ $rc = 0 ]"
 
+t_ "40-unpack skips when the app is in place and no tarball is left (re-runnable)" "grep -q 'step skipped' '$here/40-unpack.sh' && grep -q '\.strapi; do' '$here/40-unpack.sh'"
+t_ "90-ssh falls back when ssh.service is inactive" "grep -q 'try-restart ssh.socket' '$here/90-ssh.sh'"
+t_ "verify retries the https check" "grep -q 'https_ok' '$here/verify.sh'"
 t_ "step refuses off the box (exit 2)" "bash '$here/10-swap.sh' >/dev/null 2>&1; [ \$? = 2 ]"
 t_ "run-all refuses without DOMAIN (exit 2)" "env -u DOMAIN -u ADMIN_EMAIL bash '$here/run-all.sh' >/dev/null 2>&1; [ \$? = 2 ]"
 t_ "admin step refuses the throwaway email (exit 2)" "DRY_RUN=0 DOMAIN=x ADMIN_EMAIL=admin@vrobotic.test bash '$here/80-admin.sh' >/dev/null 2>&1; [ \$? = 2 ]"

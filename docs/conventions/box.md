@@ -59,10 +59,28 @@ Plan `nano_3_0` (512 MB, 1 vCPU, ~20 GB SSD in S0b's measurement; IPv4): about *
 
 **Never run anywhere:** every step of `ops/box` on Ubuntu (swap, Node download, `useradd`, unpack, systemd unit, `systemctl`, Caddy apt install, `caddy validate`, sshd drop-in, `verify.sh`); the teardown against real AWS (its deletions, `release-static-ip`, the snapshot sweep); the whole one-off past its refusals (`import-key-pair`, `create-instances`, `allocate-static-ip`, `attach-static-ip`, `put-instance-public-ports`, `reboot-instance`, `scp`, the remote run); Caddy's certificate issuance; `strapi start` as user `strapi` under the permissions above; a build with the `PROXY` change on Actions. The swap, Node, unpack, secrets, unit and `register-admin` lines are lifted from S0b, which did run them as user `ubuntu`; what changed around them (account, permissions, env file, Caddy, ssh drop-in, static address) has not.
 
+## Handled after review (a second model read both one-off scripts and ops/box; 16 findings)
+
+All still **never run** against AWS or Ubuntu; each is covered by a selftest where one can exist on a Mac.
+
+- **Teardown keeps the key folder unless every AWS deletion is confirmed** (the key is the only way into a box that may still bill). Selftest runs the whole script against a stand-in `aws` whose deletes do nothing.
+- **Setup is bounded:** the remote `run-all.sh` runs under `timeout $SETUP_SECONDS` (default 25 min); the reboot-time verify under `timeout 120`.
+- **The printed teardown command passes every name** (`INSTANCE_NAME`, `REGION`, `STATIC_IP_NAME`, `DOWNLOAD_ROOT`), so an overridden static-address name is not missed (an unattached one bills silently).
+- **`verify.sh` retries the https check for ~90 s** (Caddy fetches its certificate on the first visit); the Mac-side final check retries too. This was a near-certain false RED.
+- **`40-unpack.sh` is skippable on re-run** (app present, tarball gone), so a failure in step 50-90 is recovered by running `run-all.sh` again, not by a teardown and a new upload. A new version needs a new tarball at `TARBALL`.
+- **`90-ssh.sh`:** `systemctl reload ssh || systemctl try-restart ssh.socket || true`. Kept as the reviewer suggested, though in practice `ssh.service` is active (we are connected through it), so this was probably not reachable; it costs nothing.
+- **`.strapi` added to the strapi-owned folders.** Handled, not proven: it is excluded from the artifact and a root-owned tree would refuse its creation.
+- **Create refuses before touching the account:** a zone Lightsail does not offer in the region (`get-regions --include-availability-zones`, read-only), `SSH_CIDR` that is not `a.b.c.d/N` with N 1-32 (`/0` refused), a malformed `DOMAIN` or `ACME_EMAIL`, invalid static-address or key-pair names. The key's `ssh-rsa ` prefix is checked before import, and import tries the plain text then base64 (S0b: plain worked, base64 did not; the AWS docs describe base64).
+- **Reboot proof uses `/proc/sys/kernel/random/boot_id`:** read before, and the box must show a different one after; otherwise RED ("did not reboot").
+- **After a failed `create-instances` (no address yet), the closing lines say a resource may exist** and print only the teardown command, not "box kept" and an ssh command.
+- **Emails and domains are limited to `[A-Za-z0-9._%+@-]` / `[A-Za-z0-9.-]`** because they go into a quoted remote command. Names are 2-255 characters, start with a letter or digit.
+- **Teardown:** the final sweep matches the three exact names (a sibling box such as `<name>-PRODUCTION` cannot turn it RED); a `KEYDIR` containing `..` is refused; snapshots deleted with `DELETE_SNAPSHOTS=1` are listed again and reported only if gone.
+- **The downloaded artifact folder (~280 MB) is removed at exit** when this run downloaded it; `KEEP_ARTIFACT=1` keeps it for a second run the same day.
+
 ## Likeliest first-run failures, so the log is read in this order
 
-1. `strapi` fails to start on a permission: see Accounts above.
+1. `strapi` fails to start on a permission: see Accounts above (`.strapi` is now covered; another folder is possible).
 2. Caddy apt install: repository URL or key changed (check Caddy's install page).
-3. Certificate not issued: port 80/443 not open in the Lightsail firewall, or sslip.io rate limit.
+3. Certificate not issued: port 80/443 not open in the Lightsail firewall, or sslip.io rate limit. (The slow first certificate is no longer a failure: verify retries ~90 s.)
 4. `verify.sh` "Strapi listens on 127.0.0.1 only": `ss` output format; a check bug, not a box bug, if Strapi is up.
-5. Upload slow: the artifact is ~280 MB; the ceiling is 25 minutes for upload and setup.
+5. Upload slow: the artifact is ~280 MB; the ceiling is 25 minutes for the upload, and 25 more for the setup (`timeout`).
