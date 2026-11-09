@@ -1,15 +1,17 @@
 [
   {
     "industries": [
-      "nganh-tam-y-te",
-      "nganh-tam-khach-san"
+      "nganh-ngan-hang",
+      "nganh-hanh-chinh-cong",
+      "nganh-tam-khach-san",
+      "nganh-tam-y-te"
     ],
     "related": [
       "model-tam-1-2"
     ],
     "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 1-1.",
-    "description": "Nội dung tạm cho model 1-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "summary": "Robot lễ tân thân thiện với màn hình cảm ứng 21,5 inch, đón khách, hướng dẫn đường đi và trả lời các câu hỏi thường gặp bằng tiếng Việt và tiếng Anh.",
+    "description": "V-AURA 01 được thiết kế cho quầy lễ tân và sảnh đón tiếp có lưu lượng khách đều trong ngày. Robot chào khách khi đến gần, hỏi nhu cầu, rồi hướng dẫn hoặc dẫn khách tới đúng phòng, đúng quầy mà không cần nhân viên rời vị trí.\n\nNội dung hỏi đáp được cấu hình theo từng đơn vị: giờ làm việc, quy trình, bảng giá dịch vụ và các câu hỏi thường gặp. Khi gặp câu hỏi ngoài phạm vi, robot chuyển khách đến nhân viên thay vì trả lời sai.\n\n- Nhận diện khách đến gần và chào theo ngữ cảnh\n- Dẫn đường đến phòng ban hoặc khu vực theo bản đồ nội bộ\n- Hỏi đáp bằng giọng nói và màn hình, hai ngôn ngữ\n- Ghi nhận lượt khách và câu hỏi phổ biến để báo cáo",
     "name_provisional": true,
     "spec_pending": false,
     "featured": true,
@@ -19,378 +21,306 @@
     "documents": [],
     "specs": [
       {
-        "group": "Tải trọng",
-        "key": "payload_kg",
-        "label": "Tải trọng tối đa",
-        "value": "50 kg",
-        "value_number": 50,
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "1280 mm",
+        "value_number": 1280,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "48 kg",
+        "value_number": 48,
         "unit": "kg"
       },
       {
-        "group": "Di chuyển",
+        "group": "Vận hành",
         "key": "speed_mps",
-        "label": "Tốc độ tối đa",
-        "value": "1,2 m/s",
-        "value_number": 1.2,
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "0,8 m/s",
+        "value_number": 0.8,
         "unit": "m/s"
+      },
+      {
+        "group": "Vận hành",
+        "key": "noise_db",
+        "label": "Độ ồn khi hoạt động",
+        "value": "45 dB",
+        "value_number": 45,
+        "unit": "dB"
       },
       {
         "group": "Năng lượng",
         "key": "battery_h",
         "label": "Thời gian hoạt động",
-        "value": "8 giờ",
-        "value_number": 8,
+        "value": "10 h",
+        "value_number": 10,
         "unit": "h"
       },
       {
-        "group": null,
+        "group": "Năng lượng",
+        "key": "charge_h",
+        "label": "Thời gian sạc đầy",
+        "value": "3 h",
+        "value_number": 3,
+        "unit": "h"
+      },
+      {
+        "group": "Tương tác",
+        "key": "screen_in",
+        "label": "Màn hình cảm ứng",
+        "value": "21,5 in",
+        "value_number": 21.5,
+        "unit": "in"
+      },
+      {
+        "group": "Tương tác",
         "key": "navigation",
         "label": "Điều hướng",
-        "value": "LiDAR + camera",
+        "value": "LiDAR và camera độ sâu",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tương tác",
+        "key": "connectivity",
+        "label": "Kết nối",
+        "value": "Wi-Fi 6, 4G, Bluetooth 5.0",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tương tác",
+        "key": "languages",
+        "label": "Ngôn ngữ",
+        "value": "Tiếng Việt, tiếng Anh",
         "value_number": null,
         "unit": null
       }
     ],
     "seo": null,
     "kind": "robot",
-    "model": "Model tạm 1-1",
+    "model": "V-AURA 01",
     "slug": "model-tam-1-1",
-    "line": "dong-tam-1"
+    "line": "dong-tam-1",
+    "sample_data": true
   },
   {
     "industries": [
-      "nganh-tam-khach-san",
-      "nganh-tam-san-xuat"
+      "nganh-ngan-hang",
+      "nganh-sieu-thi-tttm",
+      "nganh-showroom",
+      "nganh-truong-hoc",
+      "nganh-hanh-chinh-cong"
     ],
     "related": [
       "model-tam-1-1"
     ],
     "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 1-2.",
-    "description": "Nội dung tạm cho model 1-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "summary": "Phiên bản cao hơn với màn hình quảng cáo 32 inch, dành cho sảnh lớn, trung tâm thương mại và showroom cần vừa đón khách vừa trình chiếu nội dung.",
+    "description": "V-AURA 02 giữ nguyên khả năng đón tiếp của dòng AURA nhưng thêm màn hình lớn hơn và thân máy cao hơn, nhìn rõ từ xa trong không gian rộng. Robot có thể xen kẽ giữa hướng dẫn khách và phát nội dung giới thiệu theo lịch.\n\nỞ showroom hoặc trung tâm thương mại, robot đứng tại điểm đón và dẫn khách qua từng khu vực trưng bày, đồng thời thu thập đánh giá sau trải nghiệm bằng vài câu hỏi ngắn trên màn hình.\n\n- Màn hình 32 inch hiển thị rõ ở khoảng cách 5 mét\n- Phát nội dung quảng bá theo khung giờ cài sẵn\n- Dẫn khách qua tuyến tham quan có sẵn\n- Khảo sát mức độ hài lòng ngay tại điểm đón",
     "name_provisional": true,
-    "spec_pending": true,
+    "spec_pending": false,
     "featured": false,
     "badge": "hot",
     "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "1450 mm",
+        "value_number": 1450,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "62 kg",
+        "value_number": 62,
+        "unit": "kg"
+      },
+      {
+        "group": "Vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "0,7 m/s",
+        "value_number": 0.7,
+        "unit": "m/s"
+      },
+      {
+        "group": "Vận hành",
+        "key": "noise_db",
+        "label": "Độ ồn khi hoạt động",
+        "value": "48 dB",
+        "value_number": 48,
+        "unit": "dB"
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "8 h",
+        "value_number": 8,
+        "unit": "h"
+      },
+      {
+        "group": "Năng lượng",
+        "key": "charge_h",
+        "label": "Thời gian sạc đầy",
+        "value": "3,5 h",
+        "value_number": 3.5,
+        "unit": "h"
+      },
+      {
+        "group": "Tương tác",
+        "key": "screen_in",
+        "label": "Màn hình cảm ứng",
+        "value": "32 in",
+        "value_number": 32,
+        "unit": "in"
+      },
+      {
+        "group": "Tương tác",
+        "key": "navigation",
+        "label": "Điều hướng",
+        "value": "LiDAR và camera độ sâu",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tương tác",
+        "key": "connectivity",
+        "label": "Kết nối",
+        "value": "Wi-Fi 6, 4G, Bluetooth 5.0",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tương tác",
+        "key": "languages",
+        "label": "Ngôn ngữ",
+        "value": "Tiếng Việt, tiếng Anh, tiếng Hàn",
+        "value_number": null,
+        "unit": null
+      }
+    ],
     "seo": null,
     "kind": "robot",
-    "model": "Model tạm 1-2",
+    "model": "V-AURA 02",
     "slug": "model-tam-1-2",
-    "line": "dong-tam-1"
+    "line": "dong-tam-1",
+    "sample_data": true
   },
   {
     "industries": [
-      "nganh-tam-khach-san",
-      "nganh-tam-san-xuat"
+      "nganh-nha-hang",
+      "nganh-tam-khach-san"
     ],
     "related": [
       "model-tam-2-2"
     ],
     "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 2-1.",
-    "description": "Nội dung tạm cho model 2-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
+    "summary": "Robot giao đồ bốn khay, chở tối đa 40 kg, mang món ăn và vật dụng đến bàn hoặc phòng, rồi tự quay về trạm sạc.",
+    "description": "V-SERVE 01 thay phần đi lại lặp đi lặp lại của nhân viên phục vụ: chuyển món từ bếp ra bàn, mang đồ đến phòng khách, thu dọn bát đĩa về khu rửa. Nhân viên đặt khay, chọn bàn trên màn hình, robot tự đi.\n\nRobot tránh người và vật cản trong lối đi từ 60 cm, dừng chờ khi có người đi qua, và báo bằng giọng nói khi tới nơi để khách tự lấy món. Số bàn và tuyến đường được cài một lần theo mặt bằng.\n\n- Bốn khay, tải tối đa 40 kg\n- Chọn điểm đến trên màn hình hoặc gọi từ ứng dụng\n- Tự tránh vật cản, đi được lối hẹp từ 60 cm\n- Tự về sạc khi pin dưới ngưỡng cài đặt",
     "name_provisional": true,
-    "spec_pending": true,
+    "spec_pending": false,
     "featured": true,
     "badge": "none",
     "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "1100 mm",
+        "value_number": 1100,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "55 kg",
+        "value_number": 55,
+        "unit": "kg"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "min_aisle_mm",
+        "label": "Lối đi tối thiểu",
+        "value": "600 mm",
+        "value_number": 600,
+        "unit": "mm"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "40 kg",
+        "value_number": 40,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "tray_count",
+        "label": "Số khay",
+        "value": "4 khay",
+        "value_number": 4,
+        "unit": null
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "1,2 m/s",
+        "value_number": 1.2,
+        "unit": "m/s"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "noise_db",
+        "label": "Độ ồn khi hoạt động",
+        "value": "50 dB",
+        "value_number": 50,
+        "unit": "dB"
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "12 h",
+        "value_number": 12,
+        "unit": "h"
+      }
+    ],
     "seo": null,
     "kind": "robot",
-    "model": "Model tạm 2-1",
+    "model": "V-SERVE 01",
     "slug": "model-tam-2-1",
-    "line": "dong-tam-2"
+    "line": "dong-tam-2",
+    "sample_data": true
   },
   {
     "industries": [
-      "nganh-tam-san-xuat",
-      "nganh-tam-kho-van"
+      "nganh-nha-hang",
+      "nganh-trai-duong-lao",
+      "nganh-tam-y-te"
     ],
     "related": [
       "model-tam-2-1"
     ],
     "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 2-2.",
-    "description": "Nội dung tạm cho model 2-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 2-2",
-    "slug": "model-tam-2-2",
-    "line": "dong-tam-2"
-  },
-  {
-    "industries": [
-      "nganh-tam-san-xuat",
-      "nganh-tam-kho-van"
-    ],
-    "related": [
-      "model-tam-3-2"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 3-1.",
-    "description": "Nội dung tạm cho model 3-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": true,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 3-1",
-    "slug": "model-tam-3-1",
-    "line": "dong-tam-3"
-  },
-  {
-    "industries": [
-      "nganh-tam-kho-van",
-      "nganh-tam-y-te"
-    ],
-    "related": [
-      "model-tam-3-1"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 3-2.",
-    "description": "Nội dung tạm cho model 3-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 3-2",
-    "slug": "model-tam-3-2",
-    "line": "dong-tam-3"
-  },
-  {
-    "industries": [
-      "nganh-tam-kho-van",
-      "nganh-tam-y-te"
-    ],
-    "related": [
-      "model-tam-4-2"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 4-1.",
-    "description": "Nội dung tạm cho model 4-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 4-1",
-    "slug": "model-tam-4-1",
-    "line": "dong-tam-4"
-  },
-  {
-    "industries": [
-      "nganh-tam-y-te",
-      "nganh-tam-khach-san"
-    ],
-    "related": [
-      "model-tam-4-1"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 4-2.",
-    "description": "Nội dung tạm cho model 4-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 4-2",
-    "slug": "model-tam-4-2",
-    "line": "dong-tam-4"
-  },
-  {
-    "industries": [
-      "nganh-tam-y-te",
-      "nganh-tam-khach-san"
-    ],
-    "related": [
-      "model-tam-5-2"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 5-1.",
-    "description": "Nội dung tạm cho model 5-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 5-1",
-    "slug": "model-tam-5-1",
-    "line": "dong-tam-5"
-  },
-  {
-    "industries": [
-      "nganh-tam-khach-san",
-      "nganh-tam-san-xuat"
-    ],
-    "related": [
-      "model-tam-5-1"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 5-2.",
-    "description": "Nội dung tạm cho model 5-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 5-2",
-    "slug": "model-tam-5-2",
-    "line": "dong-tam-5"
-  },
-  {
-    "industries": [
-      "nganh-tam-khach-san",
-      "nganh-tam-san-xuat"
-    ],
-    "related": [
-      "model-tam-6-2"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 6-1.",
-    "description": "Nội dung tạm cho model 6-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 6-1",
-    "slug": "model-tam-6-1",
-    "line": "dong-tam-6"
-  },
-  {
-    "industries": [
-      "nganh-tam-san-xuat",
-      "nganh-tam-kho-van"
-    ],
-    "related": [
-      "model-tam-6-1"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 6-2.",
-    "description": "Nội dung tạm cho model 6-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 6-2",
-    "slug": "model-tam-6-2",
-    "line": "dong-tam-6"
-  },
-  {
-    "industries": [
-      "nganh-tam-san-xuat",
-      "nganh-tam-kho-van"
-    ],
-    "related": [
-      "model-tam-7-2"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 7-1.",
-    "description": "Nội dung tạm cho model 7-1.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 7-1",
-    "slug": "model-tam-7-1",
-    "line": "dong-tam-7"
-  },
-  {
-    "industries": [
-      "nganh-tam-kho-van",
-      "nganh-tam-y-te"
-    ],
-    "related": [
-      "model-tam-7-1"
-    ],
-    "compatible_with": [],
-    "summary": "Mô tả ngắn tạm cho model 7-2.",
-    "description": "Nội dung tạm cho model 7-2.\n\n- Gạch đầu dòng tạm\n- Gạch đầu dòng tạm",
-    "name_provisional": true,
-    "spec_pending": true,
-    "featured": false,
-    "badge": "none",
-    "video_url": null,
-    "gallery": [],
-    "documents": [],
-    "specs": [],
-    "seo": null,
-    "kind": "robot",
-    "model": "Model tạm 7-2",
-    "slug": "model-tam-7-2",
-    "line": "dong-tam-7"
-  },
-  {
-    "industries": [],
-    "related": [],
-    "compatible_with": [
-      "model-tam-1-1",
-      "model-tam-2-1"
-    ],
-    "summary": "Mô tả tạm cho phụ kiện 1.",
-    "description": null,
+    "summary": "Phiên bản năm khay, tải 60 kg, có ngăn kín giữ vệ sinh cho bữa ăn, thuốc và vật tư, dùng được trong bệnh viện và trại dưỡng lão.",
+    "description": "V-SERVE 02 thêm ngăn có nắp để vận chuyển suất ăn, thuốc và vật tư y tế đến từng phòng mà không để lộ ra ngoài. Robot mở ngăn khi người nhận quét thẻ hoặc xác nhận trên màn hình.\n\nỞ môi trường chăm sóc, robot giảm số lượt nhân viên đi bộ giữa các tầng và ghi lại thời điểm bàn giao, giúp việc đối chiếu cuối ca nhanh hơn.\n\n- Năm khay, ngăn kín có nắp, tải tối đa 60 kg\n- Mở ngăn khi người nhận xác nhận\n- Ghi nhật ký giờ giao và người nhận\n- Dùng thang máy khi được tích hợp với hệ thống tòa nhà",
     "name_provisional": true,
     "spec_pending": false,
     "featured": false,
@@ -398,12 +328,989 @@
     "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "1250 mm",
+        "value_number": 1250,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "70 kg",
+        "value_number": 70,
+        "unit": "kg"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "min_aisle_mm",
+        "label": "Lối đi tối thiểu",
+        "value": "650 mm",
+        "value_number": 650,
+        "unit": "mm"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "60 kg",
+        "value_number": 60,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "tray_count",
+        "label": "Số khay",
+        "value": "5 khay",
+        "value_number": 5,
+        "unit": null
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "1 m/s",
+        "value_number": 1,
+        "unit": "m/s"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "noise_db",
+        "label": "Độ ồn khi hoạt động",
+        "value": "52 dB",
+        "value_number": 52,
+        "unit": "dB"
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "14 h",
+        "value_number": 14,
+        "unit": "h"
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-SERVE 02",
+    "slug": "model-tam-2-2",
+    "line": "dong-tam-2",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-sieu-thi-tttm",
+      "nganh-tam-khach-san",
+      "nganh-truong-hoc"
+    ],
+    "related": [
+      "model-tam-3-2"
+    ],
+    "compatible_with": [],
+    "summary": "Robot lau sàn nhỏ gọn, bề rộng làm sạch 45 cm, công suất khoảng 900 mét vuông mỗi giờ, chạy êm theo lịch ngoài giờ cao điểm.",
+    "description": "V-CLEAN 01 dành cho sảnh, hành lang và lớp học có diện tích vừa. Robot học bản đồ mặt bằng trong lần chạy đầu, sau đó tự lập tuyến để phủ kín sàn và tránh đồ đạc.\n\nLịch làm việc được đặt theo ngày trong tuần. Khi bình nước sạch gần hết hoặc bình nước bẩn đầy, robot dừng ở vị trí thuận tiện và gửi thông báo đến người phụ trách.\n\n- Lau và hút trong một lượt\n- Học bản đồ và tự lập tuyến\n- Hẹn giờ theo ngày, tự về sạc\n- Cảnh báo bình nước qua ứng dụng",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": true,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "650 mm",
+        "value_number": 650,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "85 kg",
+        "value_number": 85,
+        "unit": "kg"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "cleaning_width_mm",
+        "label": "Bề rộng làm sạch",
+        "value": "450 mm",
+        "value_number": 450,
+        "unit": "mm"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "area_m2h",
+        "label": "Công suất làm sạch",
+        "value": "900 m²/giờ",
+        "value_number": 900,
+        "unit": "m2/h"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "tank_l",
+        "label": "Dung tích bình nước sạch",
+        "value": "20 l",
+        "value_number": 20,
+        "unit": "l"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "noise_db",
+        "label": "Độ ồn khi hoạt động",
+        "value": "58 dB",
+        "value_number": 58,
+        "unit": "dB"
+      },
+      {
+        "group": "Vận hành và năng lượng",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "0,6 m/s",
+        "value_number": 0.6,
+        "unit": "m/s"
+      },
+      {
+        "group": "Vận hành và năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "4 h",
+        "value_number": 4,
+        "unit": "h"
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-CLEAN 01",
+    "slug": "model-tam-3-1",
+    "line": "dong-tam-3",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-sieu-thi-tttm",
+      "nganh-tam-san-xuat",
+      "nganh-tam-y-te"
+    ],
+    "related": [
+      "model-tam-3-1"
+    ],
+    "compatible_with": [],
+    "summary": "Robot lau sàn cỡ lớn, bề rộng 65 cm và bình nước 40 lít, đủ sức làm sạch sàn siêu thị và nhà xưởng trong một ca đêm.",
+    "description": "V-CLEAN 02 là bản công suất cao của dòng CLEAN, thân máy nặng hơn để giữ lực ép chổi ổn định trên sàn xi măng và sàn gạch lớn. Robot tự lập tuyến theo vùng và có thể chia việc cho nhiều máy chạy chung một tầng.\n\nVới môi trường y tế, robot dùng chế độ lau ướt hạn chế nước và dừng khi cửa phòng đang mở. Báo cáo cuối ca nêu diện tích đã làm và các vùng bị bỏ qua.\n\n- Bề rộng 65 cm, bình nước 40 lít\n- Chia vùng khi chạy nhiều máy\n- Chế độ lau ướt hạn chế nước\n- Báo cáo diện tích đã làm cuối ca",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "720 mm",
+        "value_number": 720,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "140 kg",
+        "value_number": 140,
+        "unit": "kg"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "cleaning_width_mm",
+        "label": "Bề rộng làm sạch",
+        "value": "650 mm",
+        "value_number": 650,
+        "unit": "mm"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "area_m2h",
+        "label": "Công suất làm sạch",
+        "value": "1.800 m²/giờ",
+        "value_number": 1800,
+        "unit": "m2/h"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "tank_l",
+        "label": "Dung tích bình nước sạch",
+        "value": "40 l",
+        "value_number": 40,
+        "unit": "l"
+      },
+      {
+        "group": "Hiệu suất làm sạch",
+        "key": "noise_db",
+        "label": "Độ ồn khi hoạt động",
+        "value": "62 dB",
+        "value_number": 62,
+        "unit": "dB"
+      },
+      {
+        "group": "Vận hành và năng lượng",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "0,8 m/s",
+        "value_number": 0.8,
+        "unit": "m/s"
+      },
+      {
+        "group": "Vận hành và năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "5 h",
+        "value_number": 5,
+        "unit": "h"
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-CLEAN 02",
+    "slug": "model-tam-3-2",
+    "line": "dong-tam-3",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat",
+      "nganh-tam-y-te"
+    ],
+    "related": [
+      "model-tam-4-2"
+    ],
+    "compatible_with": [],
+    "summary": "Robot chở hàng tải 150 kg, đi theo tuyến hoặc theo người, chuyển thùng giữa các khu vực trong kho và xưởng.",
+    "description": "V-CARGO 01 là xe chở hàng thông minh cho việc đẩy xe tay đường dài. Nhân viên đặt thùng lên, chọn điểm đến; robot đi theo tuyến đã vẽ trên bản đồ hoặc bám theo người cầm thẻ nhận dạng.\n\nRobot dừng ở điểm nhận, chờ người lấy hàng xác nhận rồi tự quay lại điểm xuất phát. Thân máy thấp, sàn tải phẳng nên dùng được với thùng nhựa, kệ nhỏ và xe đẩy tiêu chuẩn.\n\n- Tải 150 kg, sàn tải phẳng\n- Chạy theo tuyến hoặc đi theo người\n- Xác nhận giao nhận tại điểm đến\n- Tự về sạc khi pin thấp",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "deck_height_mm",
+        "label": "Chiều cao sàn tải",
+        "value": "650 mm",
+        "value_number": 650,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng bản thân",
+        "value": "120 kg",
+        "value_number": 120,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "150 kg",
+        "value_number": 150,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "1,2 m/s",
+        "value_number": 1.2,
+        "unit": "m/s"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "navigation",
+        "label": "Điều hướng",
+        "value": "LiDAR 2D và camera",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "8 h",
+        "value_number": 8,
+        "unit": "h"
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-CARGO 01",
+    "slug": "model-tam-4-1",
+    "line": "dong-tam-4",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat",
+      "nganh-sieu-thi-tttm"
+    ],
+    "related": [
+      "model-tam-4-1"
+    ],
+    "compatible_with": [],
+    "summary": "Bản tải 300 kg với sàn tải nâng hạ nhẹ, chở hàng giữa kho và quầy bán trong siêu thị, trung tâm thương mại hoặc nhà máy.",
+    "description": "V-CARGO 02 có khung chắc hơn và sàn tải có thể nâng hạ một đoạn ngắn để đối tiếp với bàn giao hàng. Robot phù hợp những tuyến lặp lại nhiều lần mỗi ngày, nơi một người vẫn phải đẩy xe đi cùng quãng đường.\n\nKhi dùng chung nhiều máy, các robot tránh nhau ở ngã rẽ và xếp hàng chờ tại thang máy hoặc cửa tự động nếu được tích hợp.\n\n- Tải 300 kg, sàn nâng hạ nhẹ\n- Đi cùng nhiều robot, tự nhường đường\n- Tích hợp thang máy, cửa tự động\n- Giới hạn khu vực đi theo bản đồ",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "deck_height_mm",
+        "label": "Chiều cao sàn tải",
+        "value": "700 mm",
+        "value_number": 700,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng bản thân",
+        "value": "220 kg",
+        "value_number": 220,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "300 kg",
+        "value_number": 300,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "1,5 m/s",
+        "value_number": 1.5,
+        "unit": "m/s"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "navigation",
+        "label": "Điều hướng",
+        "value": "LiDAR 2D và camera",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "10 h",
+        "value_number": 10,
+        "unit": "h"
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-CARGO 02",
+    "slug": "model-tam-4-2",
+    "line": "dong-tam-4",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-5-2"
+    ],
+    "compatible_with": [],
+    "summary": "Xe tự hành AMR tải 500 kg, nâng pallet nhỏ và kệ, định vị theo bản đồ laser, điều phối theo đội.",
+    "description": "V-NAVI 01 là xe tự hành tải nặng cho tuyến vận chuyển cố định trong nhà máy: từ kho nguyên liệu ra dây chuyền, từ dây chuyền về kho thành phẩm. Robot dùng bản đồ laser nên không cần dán vạch hay đặt nam châm.\n\nPhần mềm điều phối nhận lệnh vận chuyển, chọn xe gần nhất còn pin và gửi đi. Đường đi được cập nhật khi có vật cản mới, nên thay đổi bố trí xưởng không phải làm lại hạ tầng.\n\n- Tải 500 kg, cơ cấu nâng 60 mm\n- Bản đồ laser, không cần vạch dẫn\n- Điều phối đội tối đa 50 xe\n- Độ chính xác dừng ±10 mm",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng bản thân",
+        "value": "280 kg",
+        "value_number": 280,
+        "unit": "kg"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "lift_mm",
+        "label": "Hành trình nâng",
+        "value": "60 mm",
+        "value_number": 60,
+        "unit": "mm"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "500 kg",
+        "value_number": 500,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "1,5 m/s",
+        "value_number": 1.5,
+        "unit": "m/s"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "accuracy_mm",
+        "label": "Độ chính xác dừng",
+        "value": "±10 mm",
+        "value_number": 10,
+        "unit": "mm"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "navigation",
+        "label": "Điều hướng",
+        "value": "SLAM laser 2D",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "fleet",
+        "label": "Điều phối đội",
+        "value": "Tối đa 50 xe mỗi hệ thống",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "8 h",
+        "value_number": 8,
+        "unit": "h"
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-NAVI 01",
+    "slug": "model-tam-5-1",
+    "line": "dong-tam-5",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-5-1"
+    ],
+    "compatible_with": [],
+    "summary": "Xe tự hành AMR tải 1.000 kg, nâng hạ 120 mm, dùng cho pallet tiêu chuẩn và tuyến vận chuyển cường độ cao.",
+    "description": "V-NAVI 02 là bản tải một tấn của dòng NAVI, thân máy dài hơn để mang pallet 1.200 mm. Cơ cấu nâng cho phép đưa pallet lên bàn băng tải hoặc xuống sàn, không cần xe nâng hỗ trợ.\n\nRobot có cảm biến an toàn quanh thân và vùng giảm tốc theo khoảng cách, phù hợp làm việc chung với người và xe nâng trong kho.\n\n- Tải 1.000 kg, hành trình nâng 120 mm\n- Pallet tiêu chuẩn 1.200 mm\n- Vùng giảm tốc theo khoảng cách\n- Độ chính xác dừng ±5 mm",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng bản thân",
+        "value": "420 kg",
+        "value_number": 420,
+        "unit": "kg"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "lift_mm",
+        "label": "Hành trình nâng",
+        "value": "120 mm",
+        "value_number": 120,
+        "unit": "mm"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "1.000 kg",
+        "value_number": 1000,
+        "unit": "kg"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "1,8 m/s",
+        "value_number": 1.8,
+        "unit": "m/s"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "accuracy_mm",
+        "label": "Độ chính xác dừng",
+        "value": "±5 mm",
+        "value_number": 5,
+        "unit": "mm"
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "navigation",
+        "label": "Điều hướng",
+        "value": "SLAM laser 2D",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tải và vận hành",
+        "key": "fleet",
+        "label": "Điều phối đội",
+        "value": "Tối đa 50 xe mỗi hệ thống",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Năng lượng",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "8 h",
+        "value_number": 8,
+        "unit": "h"
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-NAVI 02",
+    "slug": "model-tam-5-2",
+    "line": "dong-tam-5",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-6-2"
+    ],
+    "compatible_with": [],
+    "summary": "Cánh tay robot cộng tác 6 trục, tải 3 kg, tầm với 590 mm, lặp lại ±0,03 mm, dùng cho lắp ráp nhỏ, gắp đặt và kiểm tra.",
+    "description": "V-FORGE 01 là cobot nhỏ gọn để lắp trên bàn làm việc hoặc giá đỡ, làm việc cạnh người mà không cần rào chắn khi đã đánh giá rủi ro. Lập trình bằng cách kéo tay robot qua các điểm và chọn khối chức năng trên màn hình cầm tay.\n\nRobot dừng khi có va chạm vượt ngưỡng, đạt cấp bảo vệ IP54 nên chịu được bụi và bắn nước nhẹ trong xưởng. Dùng tốt cho các công đoạn lặp lại như bắt vít, dán nhãn, gắp linh kiện.\n\n- 6 trục, tải 3 kg, tầm với 590 mm\n- Lập trình bằng kéo tay và khối chức năng\n- Dừng an toàn khi va chạm\n- Cấp bảo vệ IP54",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "11,2 kg",
+        "value_number": 11.2,
+        "unit": "kg"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "dof",
+        "label": "Số trục",
+        "value": "6 trục",
+        "value_number": 6,
+        "unit": null
+      },
+      {
+        "group": "Hiệu suất",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "3 kg",
+        "value_number": 3,
+        "unit": "kg"
+      },
+      {
+        "group": "Hiệu suất",
+        "key": "reach_mm",
+        "label": "Tầm với",
+        "value": "590 mm",
+        "value_number": 590,
+        "unit": "mm"
+      },
+      {
+        "group": "Hiệu suất",
+        "key": "repeatability_mm",
+        "label": "Độ lặp lại",
+        "value": "±0,03 mm",
+        "value_number": 0.03,
+        "unit": "mm"
+      },
+      {
+        "group": "Điện và bảo vệ",
+        "key": "power_w",
+        "label": "Công suất tiêu thụ điển hình",
+        "value": "150 W",
+        "value_number": 150,
+        "unit": "W"
+      },
+      {
+        "group": "Điện và bảo vệ",
+        "key": "voltage",
+        "label": "Nguồn điện",
+        "value": "AC 100–240 V",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Điện và bảo vệ",
+        "key": "ip",
+        "label": "Cấp bảo vệ",
+        "value": "IP54",
+        "value_number": null,
+        "unit": null
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-FORGE 01",
+    "slug": "model-tam-6-1",
+    "line": "dong-tam-6",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tam-san-xuat"
+    ],
+    "related": [
+      "model-tam-6-1"
+    ],
+    "compatible_with": [],
+    "summary": "Cobot xếp pallet tải 25 kg, tầm với 1.700 mm, đi kèm giá đỡ di động, xếp thùng tự động ở cuối dây chuyền đóng gói.",
+    "description": "V-FORGE 02 là cánh tay cộng tác cỡ lớn dành cho công đoạn xếp pallet cuối dây chuyền. Phần mềm xếp pallet cho phép chọn kiểu xếp, số lớp và kích thước thùng trên màn hình, không cần viết chương trình.\n\nRobot đặt trên giá có bánh xe, kéo đến dây chuyền khác khi cần. Cảm biến vùng báo khi có người bước vào khu xếp, robot giảm tốc hoặc dừng tùy cấu hình.\n\n- Tải 25 kg, tầm với 1.700 mm\n- Phần mềm xếp pallet chọn kiểu xếp\n- Giá đỡ di động có bánh xe\n- Cảm biến vùng an toàn",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "62 kg",
+        "value_number": 62,
+        "unit": "kg"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "dof",
+        "label": "Số trục",
+        "value": "6 trục",
+        "value_number": 6,
+        "unit": null
+      },
+      {
+        "group": "Hiệu suất",
+        "key": "payload_kg",
+        "label": "Tải trọng tối đa",
+        "value": "25 kg",
+        "value_number": 25,
+        "unit": "kg"
+      },
+      {
+        "group": "Hiệu suất",
+        "key": "reach_mm",
+        "label": "Tầm với",
+        "value": "1.700 mm",
+        "value_number": 1700,
+        "unit": "mm"
+      },
+      {
+        "group": "Hiệu suất",
+        "key": "repeatability_mm",
+        "label": "Độ lặp lại",
+        "value": "±0,05 mm",
+        "value_number": 0.05,
+        "unit": "mm"
+      },
+      {
+        "group": "Điện và bảo vệ",
+        "key": "power_w",
+        "label": "Công suất tiêu thụ điển hình",
+        "value": "650 W",
+        "value_number": 650,
+        "unit": "W"
+      },
+      {
+        "group": "Điện và bảo vệ",
+        "key": "voltage",
+        "label": "Nguồn điện",
+        "value": "AC 200–240 V",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Điện và bảo vệ",
+        "key": "ip",
+        "label": "Cấp bảo vệ",
+        "value": "IP54",
+        "value_number": null,
+        "unit": null
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-FORGE 02",
+    "slug": "model-tam-6-2",
+    "line": "dong-tam-6",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tu-van-tam-ly",
+      "nganh-trai-duong-lao",
+      "nganh-truong-hoc"
+    ],
+    "related": [
+      "model-tam-7-2"
+    ],
+    "compatible_with": [],
+    "summary": "Robot đồng hành cỡ nhỏ với màn hình 10,1 inch, trò chuyện, nhắc lịch và dẫn dắt hoạt động nhóm cho trẻ em và người lớn tuổi.",
+    "description": "V-EMPA 01 có dáng thân thiện, giọng nói êm và biểu cảm trên màn hình. Robot dẫn dắt các hoạt động đơn giản như đọc truyện, tập vận động nhẹ, nhắc uống thuốc hoặc làm bài khảo sát tâm trạng ngắn.\n\nNội dung được nhân viên chuyên môn soạn và chọn trước; robot không đưa ra chẩn đoán hay lời khuyên y tế. Dữ liệu trò chuyện được lưu theo quy định của đơn vị sử dụng.\n\n- Màn hình cảm ứng 10,1 inch, giọng nói tiếng Việt\n- Nhắc lịch, đọc truyện, dẫn hoạt động nhóm\n- Khảo sát tâm trạng ngắn theo mẫu\n- Không tự chẩn đoán, nhân viên kiểm soát nội dung",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "1100 mm",
+        "value_number": 1100,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "30 kg",
+        "value_number": 30,
+        "unit": "kg"
+      },
+      {
+        "group": "Vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "0,6 m/s",
+        "value_number": 0.6,
+        "unit": "m/s"
+      },
+      {
+        "group": "Vận hành",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "6 h",
+        "value_number": 6,
+        "unit": "h"
+      },
+      {
+        "group": "Tương tác",
+        "key": "screen_in",
+        "label": "Màn hình cảm ứng",
+        "value": "10,1 in",
+        "value_number": 10.1,
+        "unit": "in"
+      },
+      {
+        "group": "Tương tác",
+        "key": "microphones",
+        "label": "Micro",
+        "value": "4 micro định hướng",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tương tác",
+        "key": "languages",
+        "label": "Ngôn ngữ",
+        "value": "Tiếng Việt, tiếng Anh",
+        "value_number": null,
+        "unit": null
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-EMPA 01",
+    "slug": "model-tam-7-1",
+    "line": "dong-tam-7",
+    "sample_data": true
+  },
+  {
+    "industries": [
+      "nganh-tu-van-tam-ly",
+      "nganh-tam-y-te",
+      "nganh-showroom"
+    ],
+    "related": [
+      "model-tam-7-1"
+    ],
+    "compatible_with": [],
+    "summary": "Robot đồng hành cỡ lớn với màn hình 15,6 inch và sáu micro, phù hợp phòng chờ bệnh viện, phòng tư vấn và khu trải nghiệm.",
+    "description": "V-EMPA 02 có màn hình lớn hơn để hiển thị câu hỏi, hình minh họa và biểu mẫu dễ đọc từ vài mét. Mảng sáu micro giúp robot nghe rõ hơn trong phòng đông người.\n\nTrong phòng chờ, robot chào người đến, hướng dẫn thủ tục và thu thập phản hồi sau buổi hẹn. Với phòng tư vấn, robot hỗ trợ làm bảng hỏi trước buổi gặp để chuyên viên có thêm thời gian trò chuyện.\n\n- Màn hình 15,6 inch, sáu micro\n- Hướng dẫn thủ tục tại phòng chờ\n- Bảng hỏi trước buổi tư vấn\n- Giao diện chữ lớn cho người lớn tuổi",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "height_mm",
+        "label": "Chiều cao",
+        "value": "1250 mm",
+        "value_number": 1250,
+        "unit": "mm"
+      },
+      {
+        "group": "Kích thước và khối lượng",
+        "key": "weight_kg",
+        "label": "Khối lượng",
+        "value": "40 kg",
+        "value_number": 40,
+        "unit": "kg"
+      },
+      {
+        "group": "Vận hành",
+        "key": "speed_mps",
+        "label": "Tốc độ di chuyển tối đa",
+        "value": "0,6 m/s",
+        "value_number": 0.6,
+        "unit": "m/s"
+      },
+      {
+        "group": "Vận hành",
+        "key": "battery_h",
+        "label": "Thời gian hoạt động",
+        "value": "8 h",
+        "value_number": 8,
+        "unit": "h"
+      },
+      {
+        "group": "Tương tác",
+        "key": "screen_in",
+        "label": "Màn hình cảm ứng",
+        "value": "15,6 in",
+        "value_number": 15.6,
+        "unit": "in"
+      },
+      {
+        "group": "Tương tác",
+        "key": "microphones",
+        "label": "Micro",
+        "value": "6 micro định hướng",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Tương tác",
+        "key": "languages",
+        "label": "Ngôn ngữ",
+        "value": "Tiếng Việt, tiếng Anh",
+        "value_number": null,
+        "unit": null
+      }
+    ],
+    "seo": null,
+    "kind": "robot",
+    "model": "V-EMPA 02",
+    "slug": "model-tam-7-2",
+    "line": "dong-tam-7",
+    "sample_data": true
+  },
+  {
+    "industries": [],
+    "related": [],
+    "compatible_with": [
+      "model-tam-1-1",
+      "model-tam-2-1"
+    ],
+    "summary": "Đế sạc cho robot dịch vụ và giao đồ, robot tự tìm về sạc khi pin xuống dưới ngưỡng đã cài.",
+    "description": "Đế sạc nhận tín hiệu từ robot và căn chỉnh đầu sạc tự động, không cần người cắm dây. Đèn trên đế báo trạng thái sạc để nhân viên nhìn thấy từ xa.\n\nMột đế phục vụ một robot; với đội nhiều robot, nên đặt đế ở nơi gần tuyến đi chính và ngoài lối khách đi.\n\n- Tự căn chỉnh đầu sạc\n- Đèn báo trạng thái\n- Lắp sát tường, không cần khoan",
+    "name_provisional": true,
+    "spec_pending": false,
+    "featured": false,
+    "badge": "none",
+    "video_url": null,
+    "gallery": [],
+    "documents": [],
+    "specs": [
+      {
+        "group": "Thông số",
+        "key": "input_v",
+        "label": "Điện áp vào",
+        "value": "AC 220 V",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "output_w",
+        "label": "Công suất sạc",
+        "value": "600 W",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "size",
+        "label": "Kích thước",
+        "value": "420 × 300 × 180 mm",
+        "value_number": null,
+        "unit": null
+      }
+    ],
     "seo": null,
     "kind": "accessory",
-    "model": "Phụ kiện tạm 1",
+    "model": "Đế sạc tự động",
     "slug": "phu-kien-tam-1",
-    "line": null
+    "line": null,
+    "sample_data": true
   },
   {
     "industries": [],
@@ -412,21 +1319,47 @@
       "model-tam-1-1",
       "model-tam-2-1"
     ],
-    "summary": "Mô tả tạm cho phụ kiện 2.",
-    "description": null,
+    "summary": "Bộ ba khay inox và nhựa cứng thay thế cho dòng robot giao đồ, rửa được và chịu tải 10 kg mỗi khay.",
+    "description": "Bộ khay gồm ba khay có gờ chống trượt, lắp vào khung robot không cần dụng cụ. Có thể chuyển giữa khay phẳng cho đồ ăn và khay sâu cho vật tư.\n\nNên giữ một bộ dự phòng để đổi khi rửa, nhất là trong giờ cao điểm của nhà hàng.\n\n- Chịu tải 10 kg mỗi khay\n- Rửa được bằng máy rửa chén công nghiệp\n- Lắp không cần dụng cụ",
     "name_provisional": true,
-    "spec_pending": true,
+    "spec_pending": false,
     "featured": false,
     "badge": "none",
     "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Thông số",
+        "key": "material",
+        "label": "Vật liệu",
+        "value": "Inox 304 và nhựa PP",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "tray_load",
+        "label": "Tải mỗi khay",
+        "value": "10 kg",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "count",
+        "label": "Số khay trong bộ",
+        "value": "3 khay",
+        "value_number": null,
+        "unit": null
+      }
+    ],
     "seo": null,
     "kind": "accessory",
-    "model": "Phụ kiện tạm 2",
+    "model": "Bộ khay giao đồ thay thế",
     "slug": "phu-kien-tam-2",
-    "line": null
+    "line": null,
+    "sample_data": true
   },
   {
     "industries": [],
@@ -435,21 +1368,47 @@
       "model-tam-1-1",
       "model-tam-2-1"
     ],
-    "summary": "Mô tả tạm cho phụ kiện 3.",
-    "description": null,
+    "summary": "Gói pin thay nóng cho dòng AMR và robot vận chuyển, kéo dài ca làm việc mà không phải chờ sạc.",
+    "description": "Gói pin có tay cầm và khóa chốt, một người thay được trong vài phút khi robot dừng ở trạm. Mỗi gói có chip báo dung lượng còn lại và số chu kỳ sạc.\n\nVới kho chạy hai ca, thường dùng hai gói cho mỗi robot: một gói đang chạy và một gói đang sạc.\n\n- Thay nhanh, không cần tắt hệ thống\n- Báo dung lượng và số chu kỳ\n- Tương thích dòng CARGO và NAVI",
     "name_provisional": true,
-    "spec_pending": true,
+    "spec_pending": false,
     "featured": false,
     "badge": "none",
     "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Thông số",
+        "key": "chemistry",
+        "label": "Loại pin",
+        "value": "LiFePO4",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "capacity",
+        "label": "Dung lượng",
+        "value": "48 V, 40 Ah",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "cycles",
+        "label": "Số chu kỳ sạc",
+        "value": "2.000 chu kỳ",
+        "value_number": null,
+        "unit": null
+      }
+    ],
     "seo": null,
     "kind": "accessory",
-    "model": "Phụ kiện tạm 3",
+    "model": "Gói pin dự phòng",
     "slug": "phu-kien-tam-3",
-    "line": null
+    "line": null,
+    "sample_data": true
   },
   {
     "industries": [],
@@ -459,21 +1418,47 @@
       "model-tam-3-1",
       "model-tam-5-1"
     ],
-    "summary": "Mô tả tạm cho phần mềm 1.",
-    "description": null,
+    "summary": "Phần mềm hỏi đáp, hướng dẫn và cung cấp thông tin cho robot lễ tân, cấu hình theo từng đơn vị.",
+    "description": "Agent lễ tân đọc bộ câu hỏi thường gặp, sơ đồ tòa nhà và lịch của đơn vị, rồi trả lời khách bằng giọng nói và văn bản. Khi không chắc câu trả lời, agent gọi nhân viên thay vì đoán.\n\nQuản trị viên cập nhật nội dung qua trình duyệt, có lịch sử thay đổi và thử trả lời trước khi áp dụng.\n\n- Hỏi đáp theo bộ nội dung riêng của đơn vị\n- Chuyển nhân viên khi ngoài phạm vi\n- Cập nhật qua trình duyệt, có lịch sử",
     "name_provisional": true,
-    "spec_pending": true,
+    "spec_pending": false,
     "featured": false,
     "badge": "none",
-    "video_url": "https://example.com/video-tam",
+    "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Thông số",
+        "key": "languages",
+        "label": "Ngôn ngữ",
+        "value": "Tiếng Việt, tiếng Anh",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "deploy",
+        "label": "Cách triển khai",
+        "value": "Cài trên robot hoặc đám mây",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "seats",
+        "label": "Số robot mỗi giấy phép",
+        "value": "1 robot",
+        "value_number": null,
+        "unit": null
+      }
+    ],
     "seo": null,
     "kind": "software",
-    "model": "Phần mềm tạm 1",
+    "model": "Agent lễ tân",
     "slug": "phan-mem-tam-1",
-    "line": null
+    "line": null,
+    "sample_data": true
   },
   {
     "industries": [],
@@ -483,21 +1468,47 @@
       "model-tam-3-1",
       "model-tam-5-1"
     ],
-    "summary": "Mô tả tạm cho phần mềm 2.",
-    "description": null,
+    "summary": "Phần mềm tìm hiểu nhu cầu và gợi ý sơ bộ giải pháp, không tự chốt giá hay cam kết tính năng.",
+    "description": "Agent tư vấn hỏi vài câu về lĩnh vực, mặt bằng và mục tiêu của khách, rồi gợi ý các dòng robot phù hợp để chuyên viên tiếp tục trao đổi.\n\nKết quả được lưu thành hồ sơ nhu cầu gửi cho chuyên viên, có đánh dấu những điểm khách chưa rõ.\n\n- Hỏi nhu cầu theo kịch bản theo ngành\n- Gợi ý dòng robot sơ bộ\n- Gửi hồ sơ nhu cầu cho chuyên viên",
     "name_provisional": true,
-    "spec_pending": true,
+    "spec_pending": false,
     "featured": false,
     "badge": "none",
     "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Thông số",
+        "key": "languages",
+        "label": "Ngôn ngữ",
+        "value": "Tiếng Việt, tiếng Anh",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "deploy",
+        "label": "Cách triển khai",
+        "value": "Đám mây",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "output",
+        "label": "Đầu ra",
+        "value": "Hồ sơ nhu cầu dạng văn bản",
+        "value_number": null,
+        "unit": null
+      }
+    ],
     "seo": null,
     "kind": "software",
-    "model": "Phần mềm tạm 2",
+    "model": "Agent tư vấn",
     "slug": "phan-mem-tam-2",
-    "line": null
+    "line": null,
+    "sample_data": true
   },
   {
     "industries": [],
@@ -507,20 +1518,46 @@
       "model-tam-3-1",
       "model-tam-5-1"
     ],
-    "summary": "Mô tả tạm cho phần mềm 3.",
-    "description": null,
+    "summary": "Phần mềm phân quyền, giao việc và theo dõi đội robot, có báo cáo ca và cảnh báo khi robot cần hỗ trợ.",
+    "description": "Bảng điều khiển hiển thị vị trí, trạng thái pin và nhiệm vụ của từng robot. Quản lý giao việc, đặt lịch và xem báo cáo ca theo ngày, tuần, tháng.\n\nPhân quyền theo vai trò: người vận hành chỉ giao việc, quản lý xem báo cáo, quản trị viên đổi cấu hình.\n\n- Bảng điều khiển đội robot\n- Phân quyền theo vai trò\n- Báo cáo ca và cảnh báo",
     "name_provisional": true,
-    "spec_pending": true,
+    "spec_pending": false,
     "featured": false,
     "badge": "none",
     "video_url": null,
     "gallery": [],
     "documents": [],
-    "specs": [],
+    "specs": [
+      {
+        "group": "Thông số",
+        "key": "access",
+        "label": "Truy cập",
+        "value": "Trình duyệt web",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "roles",
+        "label": "Số vai trò",
+        "value": "3 vai trò",
+        "value_number": null,
+        "unit": null
+      },
+      {
+        "group": "Thông số",
+        "key": "fleet",
+        "label": "Số robot quản lý",
+        "value": "Đến 50 robot",
+        "value_number": null,
+        "unit": null
+      }
+    ],
     "seo": null,
     "kind": "software",
-    "model": "Phần mềm tạm 3",
+    "model": "Quản trị tác vụ",
     "slug": "phan-mem-tam-3",
-    "line": null
+    "line": null,
+    "sample_data": true
   }
 ]

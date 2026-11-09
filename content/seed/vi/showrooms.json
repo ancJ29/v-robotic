@@ -7,7 +7,9 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": []
+    "gallery": [],
+    "description": "Khu trưng bày chính cho khách miền Bắc, nơi khách xem trực tiếp robot lễ tân, giao đồ và vệ sinh, nghe tư vấn của chuyên viên và đặt lịch chạy thử theo nhu cầu.",
+    "sample_data": true
   },
   {
     "city": "Đà Nẵng",
@@ -17,7 +19,9 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": []
+    "gallery": [],
+    "description": "Điểm trải nghiệm cho khách miền Trung, tập trung vào robot dịch vụ cho khách sạn, nhà hàng và khu du lịch, kèm buổi tư vấn theo mặt bằng của khách.",
+    "sample_data": true
   },
   {
     "city": "Nha Trang",
@@ -27,17 +31,21 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": []
+    "gallery": [],
+    "description": "Điểm trải nghiệm dự kiến phục vụ khách sạn, nhà hàng và khu nghỉ dưỡng ven biển, giới thiệu robot giao đồ, đón tiếp và vệ sinh.",
+    "sample_data": true
   },
   {
     "city": "TP. Hồ Chí Minh",
     "name": "Showroom TP. Hồ Chí Minh",
     "slug": "showroom-tam-ho-chi-minh",
     "opening_status": "open",
-    "address": "[PLACEHOLDER] Địa chỉ tạm thời",
-    "hours": "[PLACEHOLDER] 09:00 – 18:00",
-    "details_confirmed": true,
-    "gallery": []
+    "address": null,
+    "hours": null,
+    "details_confirmed": false,
+    "gallery": [],
+    "description": "Khu trưng bày cho khách phía Nam với đủ các dòng robot dịch vụ, vận chuyển và công nghiệp, có phòng họp nhỏ để trao đổi giải pháp theo từng ngành.",
+    "sample_data": true
   },
   {
     "city": "Cần Thơ",
@@ -47,6 +55,8 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": []
+    "gallery": [],
+    "description": "Điểm trải nghiệm dự kiến cho khách khu vực đồng bằng sông Cửu Long, giới thiệu robot dịch vụ, vận chuyển kho và hỗ trợ tương tác.",
+    "sample_data": true
   }
 ]

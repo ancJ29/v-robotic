@@ -181,6 +181,15 @@
           "localized": true
         }
       }
+    },
+    "sample_data": {
+      "type": "boolean",
+      "default": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
     }
   }
 }

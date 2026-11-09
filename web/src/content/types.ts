@@ -55,6 +55,8 @@ export type ProductKind = 'robot' | 'accessory' | 'software';
 export type ProductBadge = 'new' | 'hot' | 'none';
 
 export interface Product {
+  /** True while the record's text, specs and relations are invented sample data (names read off the client's screens stay real). Always false once the client's content is in. */
+  sample_data: boolean;
   kind: ProductKind;
   model: string;
   slug: string;
@@ -83,6 +85,8 @@ export interface Product {
 }
 
 export interface ProductLine {
+  /** True while the record's text, specs and relations are invented sample data (names read off the client's screens stay real). Always false once the client's content is in. */
+  sample_data: boolean;
   name: string;
   slug: string;
   summary: string | null;
@@ -90,6 +94,8 @@ export interface ProductLine {
 }
 
 export interface Industry {
+  /** True while the record's text, specs and relations are invented sample data (names read off the client's screens stay real). Always false once the client's content is in. */
+  sample_data: boolean;
   name: string;
   slug: string;
   order: number;
@@ -104,10 +110,14 @@ export interface Industry {
 export type ShowroomOpeningStatus = 'open' | 'fitting_out' | 'planned';
 
 export interface Showroom {
+  /** True while the record's text, specs and relations are invented sample data (names read off the client's screens stay real). Always false once the client's content is in. */
+  sample_data: boolean;
   city: string;
   name: string;
   slug: string;
   opening_status: ShowroomOpeningStatus;
+  /** A short public description of the showroom; never an address. */
+  description: string | null;
   /** Null until the project owner confirms it; the page then hides the address block. */
   address: string | null;
   hours: string | null;

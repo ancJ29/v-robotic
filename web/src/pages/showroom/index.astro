@@ -36,6 +36,7 @@ const active = firstOpen >= 0 ? firstOpen : 0;
                 <div class="info">
                   <h2>{s.name}</h2>
                   <p><Badge tone="open">{t(`showroom.status.${s.opening_status}`)}</Badge></p>
+                  {s.description && <p class="desc">{s.description}</p>}
                   {!s.details_confirmed && <p class="pending">{t('showroom.pending')}</p>}
                   <div><Button href={routes.visit} variant="cta">{t('showroom.book')}</Button></div>
                 </div>
@@ -81,6 +82,7 @@ const active = firstOpen >= 0 ? firstOpen : 0;
   .main { background: var(--color-panel); border-radius: var(--radius-lg); padding: var(--space-4); display: grid; gap: var(--space-5); align-items: center; }
   .info { display: flex; flex-direction: column; gap: var(--space-4); align-items: flex-start; }
   .info h2 { font-size: var(--text-2xl); text-transform: uppercase; }
+  .desc { color: var(--color-ink); max-width: 60ch; }
   .pending { color: var(--color-muted); font-size: var(--text-lg); }
   .visit { border: 2px solid var(--color-line); border-radius: var(--radius-lg); padding: var(--space-5); }
   .visit h3 { font-size: var(--text-xl); text-transform: uppercase; }

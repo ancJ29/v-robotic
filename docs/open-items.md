@@ -48,17 +48,16 @@ check or force five schemas nobody wants.
 the client turns out to want to edit that prose. The objects are already shaped for the second
 outcome. Recorded in `docs/conventions/remaining-pages.md`.
 
-## 8. One sample industry in the seed is on no screen
+## 8. The seed and five prose pages are sample data and a ribbon says so
 
-Opened by P1b on 2026-11-09, narrowing the earlier item 8. The seed now has the 11 industries and 5
-showrooms of the reference screens (names real, everything else marked `[PLACEHOLDER]`), so the
-layout is proven at full size. What is left: `Kho vận (tạm)` (slug `nganh-tam-kho-van`) is a 12th
-industry that no screen shows. It stays only because the slug ledger forbids removing a slug and
-three products point at it.
+Opened by P1b on 2026-11-09, closing the earlier item 8 (seed smaller than the screens). Everything in
+the seed except the names read off the client's screens is invented (records with `"sample_data": true`;
+the strings in `web/src/copy/*.ts` carry a `SAMPLE-DATA` header). `SAMPLE_CONTENT` in `web/src/lib/site.ts`
+draws a red ribbon on every page while true.
 
-**What closes it:** a deliberate retirement: edit `content/slugs.json`, move the product links,
-delete the record, in one commit (no live site yet, so no redirect is needed), or the client keeps a
-logistics industry.
+**What closes it:** the client's content replaces the records (their `sample_data` goes false), the copy
+files are rewritten, then `SAMPLE_CONTENT` is set to false. It must be off before launch. Find the rest
+with `grep -rn '"sample_data": true' content/seed` and `grep -rln SAMPLE-DATA web/src/copy`.
 
 ## 10. The hero headline ships filled, not empty
 

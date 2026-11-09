@@ -58,6 +58,14 @@
         }
       }
     },
+    "description": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "address": {
       "type": "text",
       "pluginOptions": {
@@ -89,6 +97,15 @@
       "allowedTypes": [
         "images"
       ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "sample_data": {
+      "type": "boolean",
+      "default": false,
       "pluginOptions": {
         "i18n": {
           "localized": false

@@ -43,7 +43,7 @@ function mapStep(s: Raw): JourneyStep {
 }
 
 export function mapProductLine(r: Raw): ProductLine {
-  return { name: r.name, slug: r.slug, summary: str(r.summary), order: r.order };
+  return { name: r.name, slug: r.slug, summary: str(r.summary), order: r.order, sample_data: !!r.sample_data };
 }
 
 export function mapProduct(r: Raw, publicUrl: string): Product {
@@ -57,6 +57,7 @@ export function mapProduct(r: Raw, publicUrl: string): Product {
     compatible_with: slugs(r.compatible_with),
     summary: str(r.summary),
     description: str(r.description),
+    sample_data: !!r.sample_data,
     name_provisional: !!r.name_provisional,
     spec_pending: !!r.spec_pending,
     featured: !!r.featured,
@@ -74,6 +75,7 @@ export function mapIndustry(r: Raw, publicUrl: string): Industry {
     name: r.name,
     slug: r.slug,
     order: r.order,
+    sample_data: !!r.sample_data,
     tagline: str(r.tagline),
     problem: str(r.problem),
     hero_image: mapMedia(r.hero_image, publicUrl),
@@ -88,8 +90,10 @@ export function mapShowroom(r: Raw, publicUrl: string): Showroom {
     name: r.name,
     slug: r.slug,
     opening_status: r.opening_status,
+    description: str(r.description),
     address: str(r.address),
     hours: str(r.hours),
+    sample_data: !!r.sample_data,
     details_confirmed: !!r.details_confirmed,
     gallery: medias(r.gallery, publicUrl),
   };
