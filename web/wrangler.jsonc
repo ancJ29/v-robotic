@@ -7,6 +7,8 @@
   "name": "v-robotic",
   "pages_build_output_dir": "./dist",
   "compatibility_date": "2026-11-01",
+  // Not a secret: which repository /api/rebuild asks to run web-deploy. Its two secrets are set with `wrangler pages secret put`.
+  "vars": { "GITHUB_REPO": "ancJ29/v-robotic" },
   "r2_buckets": [
     { "binding": "LEADS", "bucket_name": "v-robotic-leads" }
   ]

@@ -48,5 +48,6 @@ t_ "step refuses off the box (exit 2)" "bash '$here/10-swap.sh' >/dev/null 2>&1;
 t_ "run-all refuses without DOMAIN (exit 2)" "env -u DOMAIN -u ADMIN_EMAIL bash '$here/run-all.sh' >/dev/null 2>&1; [ \$? = 2 ]"
 t_ "admin step refuses the throwaway email (exit 2)" "DRY_RUN=0 DOMAIN=x ADMIN_EMAIL=admin@vrobotic.test bash '$here/80-admin.sh' >/dev/null 2>&1; [ \$? = 2 ]"
 t_ "dry run of the whole box prints and changes nothing" "DRY_RUN=1 DOMAIN=x.example ADMIN_EMAIL=a@b.co bash '$here/run-all.sh' 2>&1 | grep -q 'dry run finished'"
+t_ "backup-selftest.sh passes (needs sqlite3 and rsync)" "bash '$here/backup-selftest.sh' 2>&1 | tail -1 | grep -q BACKUP_SELFTEST_OK"
 [ "$fails" = 0 ] && echo "SELFTEST_OK" || echo "SELFTEST_FAILED: $fails"
 exit $((fails>0))

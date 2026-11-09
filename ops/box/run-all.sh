@@ -9,7 +9,7 @@ here=$(cd "$(dirname "$0")" && pwd)
 . "$here/params.sh"
 [ -n "$DOMAIN" ] || refuse "no DOMAIN"
 [ -n "$ADMIN_EMAIL" ] || refuse "no ADMIN_EMAIL"
-for s in 10-swap 20-node 30-account 40-unpack 50-env 60-service 80-admin 70-caddy 90-ssh; do
+for s in 10-swap 20-node 30-account 40-unpack 50-env 60-service 80-admin 70-caddy 90-ssh 95-backup; do
   say "step $s"
   bash "$here/$s.sh"
 done

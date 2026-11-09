@@ -1,10 +1,20 @@
 # Builds web/ and deploys it, with its lead Function, to Cloudflare Pages (direct upload).
 # Deliberate: it runs only when someone presses "Run workflow" on main, never on a push.
 # The site is noindex; this workflow checks that on the built output and fails if it is not.
+# Two ways to run it. By hand: content_source stays "seed" (the default; needs no Strapi box).
+# From Strapi's Publish button: the relay Function /api/rebuild starts it with content_source=strapi,
+# and only that run reads the box. The repository's own default is never "strapi".
+# NEVER RUN: written in a sandbox without GitHub (docs/conventions/publish.md).
 name: web-deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      content_source:
+        description: 'Where the pages get their content: seed (the committed files) or strapi (the CMS box)'
+        type: choice
+        options: [seed, strapi]
+        default: seed
 
 permissions:
   contents: read
@@ -26,6 +36,13 @@ jobs:
       # Read at BUILD time (printed into the page). A GitHub repository VARIABLE, not a secret: it is public.
       PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
       TURNSTILE_TEST_SITE_KEY: 1x00000000000000000000AA
+      # The content switch is flipped HERE, per run, never in the repository's default.
+      CONTENT_SOURCE: ${{ inputs.content_source || 'seed' }}
+      # Read only by a strapi run. STRAPI_URL is the box's PUBLIC https address; images are addressed from it too
+      # (open item 17), so it must be an address a visitor can open.
+      STRAPI_URL: ${{ inputs.content_source == 'strapi' && vars.STRAPI_URL || '' }}
+      STRAPI_PUBLIC_URL: ${{ inputs.content_source == 'strapi' && vars.STRAPI_URL || '' }}
+      STRAPI_TOKEN: ${{ inputs.content_source == 'strapi' && secrets.STRAPI_TOKEN || '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -40,6 +57,25 @@ jobs:
             exit 1
           fi
           echo "site key present (${#PUBLIC_TURNSTILE_SITE_KEY} characters)"
+
+      - name: Require a reachable box when building from Strapi
+        if: env.CONTENT_SOURCE == 'strapi'
+        run: |
+          if [ -z "$STRAPI_URL" ] || [ -z "$STRAPI_TOKEN" ]; then
+            echo "::error::A strapi run needs the repository variable STRAPI_URL and the secret STRAPI_TOKEN."
+            exit 1
+          fi
+          case "$STRAPI_URL" in
+            https://127.*|https://localhost*|http://*) echo "::error::STRAPI_URL must be the box's public https address, got $STRAPI_URL"; exit 1;;
+            https://*) ;;
+            *) echo "::error::STRAPI_URL must start with https://"; exit 1;;
+          esac
+          code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "${STRAPI_URL%/}/_health" || true)"
+          echo "box health: $code"
+          if [ "$code" != 204 ]; then
+            echo "::error::The CMS box did not answer healthy ($code). Nothing was built or deployed; the live site is unchanged."
+            exit 1
+          fi
 
       # Reads the pnpm version from the root package.json "packageManager".
       - uses: pnpm/action-setup@v4
@@ -72,6 +108,15 @@ jobs:
           fi
           grep -rqF "$PUBLIC_TURNSTILE_SITE_KEY" dist
           test -f functions/api/lead.ts
+          test -f functions/api/rebuild.ts
+          # Open item 17: no address a visitor cannot open may reach the pages, from whichever source.
+          if grep -rlE '(127\.0\.0\.1|localhost)(:[0-9]+)?/uploads' dist; then
+            echo "::error::the built site points images at a local address"
+            exit 1
+          fi
+          if [ "$CONTENT_SOURCE" = strapi ]; then
+            grep -rqF "${STRAPI_URL%/}/uploads/" dist || echo "::warning::no page uses an image from the box (is any image uploaded?)"
+          fi
           test -f wrangler.jsonc
 
       # Runs from web/ because wrangler finds functions/ and wrangler.jsonc beside it. npx, pinned, not
@@ -85,4 +130,4 @@ jobs:
         run: |
           npx --yes wrangler@4.152.0 pages deploy dist \
             --project-name=v-robotic --branch=main \
-            --commit-hash="$GITHUB_SHA" --commit-message="web-deploy run $GITHUB_RUN_ID"
+            --commit-hash="$GITHUB_SHA" --commit-message="web-deploy run $GITHUB_RUN_ID ($CONTENT_SOURCE)"

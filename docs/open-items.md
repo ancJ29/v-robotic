@@ -152,7 +152,9 @@ not (the same shape of gap as item 10's hero headline).
 **What closes it:** a seed or test showroom with `details_confirmed` true, or the client's real showroom data
 replacing the sample ones.
 
-## 17. A site built from Strapi points its images at Strapi's own address
+## 17. A site built from Strapi points its images at Strapi's own address — CLOSED by P7
+
+Closed 2026-11-09 by the first way: the publish workflow builds against the box's public https address and sets `STRAPI_PUBLIC_URL` to it; the run fails if a page holds a local image address. Proved against a local Strapi (144 local references reproduced, then none). Details and the remaining cost (images are served by the box): `docs/conventions/publish.md`. The original text follows.
 
 Opened by P1c on 2026-11-09. Strapi's local upload provider returns paths like `/uploads/x.svg`; the adapter
 prefixes `STRAPI_PUBLIC_URL` (default: the Strapi URL the build read from). Built against the local box the

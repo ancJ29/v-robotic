@@ -122,3 +122,45 @@ KbdInteractiveAuthentication no
 PermitRootLogin no
 SSHD
 }
+
+# ---------- backup (piece P7). NOT RUN ANYWHERE against a real box. ----------
+: "${BACKUP_DIR:=/var/backups/strapi}"   # on the box's own disk: it does NOT survive the box (see docs/conventions/publish.md)
+: "${UPLOADS_DIR:=$APP_DIR/public/uploads}"
+: "${BACKUP_KEEP:=14}"                   # how many daily database sets are kept; older ones are deleted AFTER a new one is verified
+: "${BACKUP_MIN_FREE_MB:=500}"           # refuse to start with less free than this (and less than 3x what is being copied)
+: "${BACKUP_TIME:=03:30}"                # box local time (UTC on Lightsail Ubuntu); the timer is Persistent, so a missed run happens at next boot
+: "${OFFBOX_CMD:=}"                      # optional: a command run with the finished set's folder as $1, e.g. an upload. Empty = none.
+: "${BACKUP_BIN:=/usr/local/sbin/strapi-backup}"
+
+render_backup_service() {
+  cat <<UNIT
+# Written by ops/box/95-backup.sh. NOT RUN ANYWHERE until the first real box run.
+[Unit]
+Description=Nightly backup of the Strapi database and uploads ($SERVICE_NAME)
+
+[Service]
+Type=oneshot
+Environment=DATABASE_FILE=$DATABASE_FILE UPLOADS_DIR=$UPLOADS_DIR BACKUP_DIR=$BACKUP_DIR BACKUP_KEEP=$BACKUP_KEEP BACKUP_MIN_FREE_MB=$BACKUP_MIN_FREE_MB
+ExecStart=$BACKUP_BIN
+# Low priority: the box has 512 MB and one CPU share, and Strapi must stay responsive during the copy.
+Nice=15
+IOSchedulingClass=idle
+TimeoutStartSec=30min
+UNIT
+}
+
+render_backup_timer() {
+  cat <<TIMER
+# Written by ops/box/95-backup.sh. NOT RUN ANYWHERE until the first real box run.
+[Unit]
+Description=Nightly Strapi backup at $BACKUP_TIME
+
+[Timer]
+OnCalendar=*-*-* $BACKUP_TIME:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
+TIMER
+}

@@ -10,3 +10,7 @@ PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
 SLACK_WEBHOOK_URL=
 
 # The R2 bucket is a binding, not a variable: bind a bucket to the name LEADS in the Pages project.
+
+# Publish relay (/api/rebuild, piece P7). Real values are Pages secrets; never commit them.
+REBUILD_HOOK_SECRET=
+GITHUB_DISPATCH_TOKEN=

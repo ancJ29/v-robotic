@@ -84,3 +84,7 @@ All still **never run** against AWS or Ubuntu; each is covered by a selftest whe
 3. Certificate not issued: port 80/443 not open in the Lightsail firewall, or sslip.io rate limit. (The slow first certificate is no longer a failure: verify retries ~90 s.)
 4. `verify.sh` "Strapi listens on 127.0.0.1 only": `ss` output format; a check bug, not a box bug, if Strapi is up.
 5. Upload slow: the artifact is ~280 MB; the ceiling is 25 minutes for the upload, and 25 more for the setup (`timeout`).
+
+## Added by P7
+
+Step `95-backup` (nightly `sqlite3 .backup` with rotation, a systemd timer) and its self-test are described in `publish.md`; also never run against a real box.
