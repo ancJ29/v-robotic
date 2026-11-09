@@ -24,10 +24,23 @@ const want = {
   industries: byOrder(seed('industries')),
   showrooms: seed('showrooms'),
 };
+// Media: the seed's src is a site path (/placeholders/x/slug.svg); Strapi serves its own copy as
+// <origin>/uploads/slug_with_underscores_<10 hex>.svg. Both are reduced to the file's own name; alt, width, height compare as they are.
+const baseOf = (src, fromStrapi) => {
+  const b = src.split('/').pop();
+  if (!fromStrapi) return b;
+  if (!/\/uploads\//.test(src)) throw new Error(`media src is not a Strapi upload: ${src}`);
+  return b.replace(/_[0-9a-f]{10}(\.[a-z]+)$/, '$1').replace(/_/g, '-');
+};
+const normMedia = (v, fromStrapi) =>
+  Array.isArray(v) ? v.map((x) => normMedia(x, fromStrapi))
+  : v && typeof v === 'object'
+    ? ('src' in v && 'alt' in v && 'width' in v ? { ...v, src: baseOf(v.src, fromStrapi) } : Object.fromEntries(Object.entries(v).map(([k, x]) => [k, normMedia(x, fromStrapi)])))
+    : v;
 let bad = 0;
 for (const k of Object.keys(want)) {
   try {
-    assert.deepStrictEqual(got[k], want[k]);
+    assert.deepStrictEqual(normMedia(got[k], true), normMedia(want[k], false));
     console.log(`ok   ${k}${Array.isArray(want[k]) ? ` (${want[k].length})` : ''}`);
   } catch (e) {
     bad++;

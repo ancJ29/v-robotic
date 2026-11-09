@@ -693,6 +693,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       }> &
       Schema.Attribute.DefaultTo<false>;
     publishedAt: Schema.Attribute.DateTime;
+    related: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     sample_data: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -700,7 +701,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<false>;
-    related: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

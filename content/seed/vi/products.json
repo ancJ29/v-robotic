@@ -17,7 +17,14 @@
     "featured": true,
     "badge": "new",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-1-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-AURA 01",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -127,7 +134,14 @@
     "featured": false,
     "badge": "hot",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-1-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-AURA 02",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -234,7 +248,14 @@
     "featured": true,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-2-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-SERVE 01",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -326,7 +347,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-2-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-SERVE 02",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -418,7 +446,14 @@
     "featured": true,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-3-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-CLEAN 01",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -510,7 +545,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-3-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-CLEAN 02",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -601,7 +643,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-4-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-CARGO 01",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -676,7 +725,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-4-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-CARGO 02",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -750,7 +806,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-5-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-NAVI 01",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -840,7 +903,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-5-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-NAVI 02",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -930,7 +1000,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-6-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-FORGE 01",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1020,7 +1097,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-6-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-FORGE 02",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1112,7 +1196,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-7-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-EMPA 01",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1196,7 +1287,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/model-tam-7-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): V-EMPA 02",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1277,7 +1375,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/phu-kien-tam-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Đế sạc tự động",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1326,7 +1431,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/phu-kien-tam-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Bộ khay giao đồ thay thế",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1375,7 +1487,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/phu-kien-tam-3.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Gói pin dự phòng",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1425,7 +1544,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/phan-mem-tam-1.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Agent lễ tân",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1475,7 +1601,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/phan-mem-tam-2.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Agent tư vấn",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {
@@ -1525,7 +1658,14 @@
     "featured": false,
     "badge": "none",
     "video_url": null,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/products/phan-mem-tam-3.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Quản trị tác vụ",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "documents": [],
     "specs": [
       {

@@ -5,7 +5,12 @@
     "order": 1,
     "tagline": "Quầy giao dịch đông khách, robot đón và dẫn đúng quầy",
     "problem": "## Bài toán của ngành\n\nKhách đến chi nhánh thường mất thời gian xếp hàng chỉ để hỏi thủ tục hoặc lấy số thứ tự. Nhân viên quầy phải ngừng giao dịch để trả lời những câu hỏi lặp lại.\n\nNhững điểm khó thường gặp:\n\n- Khách chờ lâu vì không biết đến quầy nào\n- Nhân viên bị gián đoạn bởi câu hỏi lặp lại\n- Khó đo được lượng khách và nhu cầu theo giờ\n\n**Cách V-ROBOTICS tiếp cận:** Robot lễ tân chào khách, hỏi mục đích, cấp số thứ tự và dẫn đến đúng quầy.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-ngan-hang.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Ngân hàng",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -37,7 +42,12 @@
     "order": 2,
     "tagline": "Showroom trưng bày, robot đón khách và kể chuyện sản phẩm",
     "problem": "## Bài toán của ngành\n\nKhách vào showroom thường đi một vòng rồi ra nếu không có ai dẫn dắt. Nhân viên bán hàng không thể đón từng người cùng lúc.\n\nNhững điểm khó thường gặp:\n\n- Khách vào không ai chào trong giờ đông\n- Nhân viên mệt vì lặp lại phần giới thiệu\n- Khó thu thập thông tin khách quan tâm\n\n**Cách V-ROBOTICS tiếp cận:** Robot đón khách, dẫn qua từng khu trưng bày và thu thập quan tâm của khách.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-showroom.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Showroom",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -69,7 +79,12 @@
     "order": 3,
     "tagline": "Bộ phận một cửa, robot hướng dẫn thủ tục từng bước",
     "problem": "## Bài toán của ngành\n\nNgười dân đến làm thủ tục thường không rõ cần hồ sơ gì và nộp ở quầy nào, dẫn đến đi lại nhiều lần. Cán bộ tiếp dân mất nhiều thời gian giải đáp.\n\nNhững điểm khó thường gặp:\n\n- Người dân đi lại nhiều lần vì thiếu giấy tờ\n- Cán bộ phải giải thích lặp lại cùng một thủ tục\n- Khó thống kê thủ tục được hỏi nhiều nhất\n\n**Cách V-ROBOTICS tiếp cận:** Robot hỏi người dân cần làm thủ tục gì, liệt kê giấy tờ cần chuẩn bị và dẫn đến quầy tiếp nhận.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-hanh-chinh-cong.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Hành chính công",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -101,7 +116,12 @@
     "order": 4,
     "tagline": "Trường học, robot đồng hành trong lớp và đón khách",
     "problem": "## Bài toán của ngành\n\nGiáo viên cần công cụ mới để học sinh hứng thú với STEM, trong khi nhà trường vẫn phải có người đón phụ huynh và khách đến làm việc.\n\nNhững điểm khó thường gặp:\n\n- Học sinh khó giữ hứng thú với bài học khô\n- Không đủ người hướng dẫn khách và phụ huynh\n- Thiết bị đắt khó dùng chung nhiều lớp\n\n**Cách V-ROBOTICS tiếp cận:** Robot dẫn hoạt động nhóm trong lớp, đón phụ huynh ở sảnh và hướng dẫn khách đến phòng ban.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-truong-hoc.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Trường học",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -133,7 +153,12 @@
     "order": 5,
     "tagline": "Bệnh viện và phòng khám, robot hướng dẫn và giao vật tư",
     "problem": "## Bài toán của ngành\n\nBệnh nhân lạc đường giữa nhiều tầng, điều dưỡng mất nhiều thời gian đi bộ giao thuốc và vật tư. Phòng chờ đông dễ gây áp lực cho quầy tiếp đón.\n\nNhững điểm khó thường gặp:\n\n- Bệnh nhân mất thời gian tìm đúng khoa\n- Nhân viên đi bộ nhiều để giao vật tư\n- Quầy tiếp đón quá tải ở giờ cao điểm\n\n**Cách V-ROBOTICS tiếp cận:** Robot hướng dẫn bệnh nhân, giao vật tư kín giữa các khoa và hỗ trợ khảo sát hài lòng.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-tam-y-te.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Bệnh viện / Phòng khám",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -165,7 +190,12 @@
     "order": 6,
     "tagline": "Nhà hàng, robot bưng món để nhân viên ở gần khách hơn",
     "problem": "## Bài toán của ngành\n\nGiờ cao điểm nhân viên phục vụ đi lại liên tục giữa bếp và bàn, ít thời gian chăm khách. Món nguội vì chờ người bưng.\n\nNhững điểm khó thường gặp:\n\n- Món chờ ở quầy pass vì thiếu người bưng\n- Nhân viên mệt và ít thời gian tiếp khách\n- Chi phí nhân sự tăng, khó tuyển người\n\n**Cách V-ROBOTICS tiếp cận:** Robot chở món từ bếp ra bàn và thu bát đĩa về khu rửa, nhân viên giữ phần tiếp xúc với khách.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-nha-hang.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Nhà hàng",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -197,7 +227,12 @@
     "order": 7,
     "tagline": "Khách sạn, robot giao đồ đến phòng và đón khách ở sảnh",
     "problem": "## Bài toán của ngành\n\nKhách yêu cầu khăn, nước, đồ dùng cá nhân vào giờ khuya khi lễ tân ít người. Nhân viên buồng phải bỏ việc đi giao từng món.\n\nNhững điểm khó thường gặp:\n\n- Yêu cầu giao đồ giờ khuya khó đáp ứng\n- Lễ tân bị kéo khỏi quầy để giao đồ\n- Trải nghiệm khách thiếu điểm nhấn\n\n**Cách V-ROBOTICS tiếp cận:** Robot nhận đồ ở quầy, đi thang máy và gõ cửa phòng, đồng thời đón khách ở sảnh.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-tam-khach-san.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Khách sạn",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -229,7 +264,12 @@
     "order": 8,
     "tagline": "Siêu thị và trung tâm thương mại, robot dẫn khách và làm sạch sàn",
     "problem": "## Bài toán của ngành\n\nMặt bằng rộng làm khách khó tìm quầy, trong khi sàn cần lau thường xuyên mà không ảnh hưởng người mua sắm.\n\nNhững điểm khó thường gặp:\n\n- Khách khó tìm đúng gian hàng\n- Sàn lau vào ban đêm tốn nhân công\n- Khó đo lưu lượng khách theo khu\n\n**Cách V-ROBOTICS tiếp cận:** Robot đón khách, chỉ đường đến gian hàng; robot vệ sinh chạy theo lịch ngoài giờ.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-sieu-thi-tttm.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Siêu thị / TTTM",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -261,7 +301,12 @@
     "order": 9,
     "tagline": "Nhà máy và kho xưởng, robot vận chuyển và cobot cạnh người",
     "problem": "## Bài toán của ngành\n\nCông nhân dành nhiều thời gian đẩy xe và xếp hàng, trong khi các công đoạn lặp lại gây mỏi và sai sót.\n\nNhững điểm khó thường gặp:\n\n- Đẩy xe tay đường dài tốn sức và thời gian\n- Công đoạn lặp lại dễ sai sót\n- Thay đổi bố trí xưởng khó với hạ tầng cố định\n\n**Cách V-ROBOTICS tiếp cận:** Xe tự hành chở hàng giữa các khu, cobot xếp pallet và lắp ráp nhỏ cạnh người vận hành.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-tam-san-xuat.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Nhà máy / Kho xưởng",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -293,7 +338,12 @@
     "order": 10,
     "tagline": "Trại dưỡng lão, robot đồng hành và giao vật dụng",
     "problem": "## Bài toán của ngành\n\nNhân viên chăm sóc luôn thiếu thời gian, trong khi người lớn tuổi cần trò chuyện và nhắc nhở đều đặn trong ngày.\n\nNhững điểm khó thường gặp:\n\n- Nhân viên quá tải, ít thời gian trò chuyện\n- Dễ quên uống thuốc và sinh hoạt đúng giờ\n- Vận chuyển suất ăn tốn nhân công\n\n**Cách V-ROBOTICS tiếp cận:** Robot nhắc lịch, trò chuyện, dẫn hoạt động nhóm và giao suất ăn, vật dụng đến phòng.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-trai-duong-lao.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Trại dưỡng lão",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,
@@ -325,7 +375,12 @@
     "order": 11,
     "tagline": "Tư vấn tâm lý, robot hỗ trợ trước và sau buổi gặp",
     "problem": "## Bài toán của ngành\n\nChuyên viên cần thời gian thu thập thông tin ban đầu, trong khi người đến tư vấn thường ngại nói ra ngay với người lạ.\n\nNhững điểm khó thường gặp:\n\n- Người đến e ngại khi kể chuyện với người lạ\n- Chuyên viên mất thời gian hỏi thông tin cơ bản\n- Khó theo dõi tiến triển giữa các buổi\n\n**Cách V-ROBOTICS tiếp cận:** Robot đón tiếp, hỗ trợ làm bảng hỏi trước buổi gặp và nhắc lịch hẹn kế tiếp.",
-    "hero_image": null,
+    "hero_image": {
+      "src": "/placeholders/industries/nganh-tu-van-tam-ly.svg",
+      "alt": "Ảnh mẫu (chưa phải ảnh thật): Tư vấn tâm lý",
+      "width": 1000,
+      "height": 1000
+    },
     "journey": [
       {
         "order": 1,

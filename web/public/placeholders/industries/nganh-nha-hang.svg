@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000" role="img" aria-label="ẢNH MẪU - chưa phải ảnh thật: Nhà hàng">
+  <defs><pattern id="h" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="28" height="28" fill="#e6e9ee"/><rect width="14" height="28" fill="#dde1e7"/></pattern></defs>
+  <rect width="1000" height="1000" fill="url(#h)"/>
+  <rect x="12" y="12" width="976" height="976" fill="none" stroke="#8a93a1" stroke-width="4" stroke-dasharray="18 12"/>
+  <g font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+  <rect x="120" y="400" width="760" height="250.20000000000005" rx="14" fill="#ffffff" fill-opacity="0.88"/>
+  <text x="500" y="500" font-size="100" font-weight="700" fill="#2b3440">Nhà hàng</text>
+  <text x="500" y="625" font-size="42" font-weight="700" fill="#b3261e">ẢNH MẪU - chưa phải ảnh thật</text>
+  </g>
+</svg>

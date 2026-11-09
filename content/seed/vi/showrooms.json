@@ -7,7 +7,14 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/showrooms/showroom-tam-ha-noi.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Showroom Hà Nội",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "description": "Khu trưng bày chính cho khách miền Bắc, nơi khách xem trực tiếp robot lễ tân, giao đồ và vệ sinh, nghe tư vấn của chuyên viên và đặt lịch chạy thử theo nhu cầu.",
     "sample_data": true
   },
@@ -19,7 +26,14 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/showrooms/showroom-tam-da-nang.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Showroom Đà Nẵng",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "description": "Điểm trải nghiệm cho khách miền Trung, tập trung vào robot dịch vụ cho khách sạn, nhà hàng và khu du lịch, kèm buổi tư vấn theo mặt bằng của khách.",
     "sample_data": true
   },
@@ -31,7 +45,14 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/showrooms/showroom-nha-trang.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Showroom Nha Trang",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "description": "Điểm trải nghiệm dự kiến phục vụ khách sạn, nhà hàng và khu nghỉ dưỡng ven biển, giới thiệu robot giao đồ, đón tiếp và vệ sinh.",
     "sample_data": true
   },
@@ -43,7 +64,14 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/showrooms/showroom-tam-ho-chi-minh.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Showroom TP. Hồ Chí Minh",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "description": "Khu trưng bày cho khách phía Nam với đủ các dòng robot dịch vụ, vận chuyển và công nghiệp, có phòng họp nhỏ để trao đổi giải pháp theo từng ngành.",
     "sample_data": true
   },
@@ -55,7 +83,14 @@
     "address": null,
     "hours": null,
     "details_confirmed": false,
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/placeholders/showrooms/showroom-can-tho.svg",
+        "alt": "Ảnh mẫu (chưa phải ảnh thật): Showroom Cần Thơ",
+        "width": 800,
+        "height": 600
+      }
+    ],
     "description": "Điểm trải nghiệm dự kiến cho khách khu vực đồng bằng sông Cửu Long, giới thiệu robot dịch vụ, vận chuyển kho và hỗ trợ tương tác.",
     "sample_data": true
   }

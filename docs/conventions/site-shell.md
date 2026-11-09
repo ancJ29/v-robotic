@@ -16,7 +16,7 @@ Decisions a later session should not re-derive. Each is reversible.
 - **Product detail anchors:** the four numbered chips on screen 02 are anchors; the designer's labels do not map one-to-one to data, so 01 goes to applications, 02 to specs, 03 to related/compatible products, 04 to documents. Confirm with the client.
 - **Description Markdown** is rendered by a small parser (`lib/text.ts`: paragraphs and bullet lists) into text nodes, never raw HTML. Replace it with a real Markdown library when a description needs more.
 - **Specs print grouped** (a table per group, groups in order of first appearance, ungrouped rows under "Thông số chung"). `spec_pending` adds a notice above the sheet; both provisional and pending badges show together.
-- **No images exist in the seed,** so `ProductVisual` draws a neutral well labelled with the kind. A gallery image replaces it with no template change.
+- **`ProductVisual` draws the first gallery image; with none it draws a neutral well labelled with the kind.** The seed now carries placeholder pictures (P1c), so the well shows only for a product added without one.
 - **The designer's "02/13" page counters and the screens' icon glyphs are not built** (the glyphs render as empty boxes in the screens, so their intent is unknown).
 
 ## Components P2b and P2c reuse
