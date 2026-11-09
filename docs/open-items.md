@@ -99,15 +99,31 @@ and type-checked — but a relative import across package boundaries works until
 **What closes it:** add it to `pnpm-workspace.yaml`, run `pnpm install` with the network available,
 then switch the imports to the package name.
 
-## 13. No rate limit on the lead endpoint
+## 13. No rate limit on the lead endpoint, and none is possible until there is a custom domain
 
 Opened by P3 on 2026-11-08. The lead endpoint has Turnstile and a honeypot but no per-address rate
-limit, because a Pages Function has no counter without KV or a Durable Object. P3's recommendation,
-which reads right: a Cloudflare dashboard rate-limit rule on that path, which is a setting rather
-than code.
+limit, because a Pages Function has no counter without KV or a Durable Object. P3's recommendation
+was a Cloudflare dashboard rate-limiting rule on that path, "which is a setting rather than code".
 
-**What closes it:** the rule, at P4 when the project exists in Cloudflare. Until then the endpoint is
-not reachable, because nothing is deployed.
+**Corrected on 2026-11-09, from Cloudflare's own documentation rather than memory: that setting is
+not available to this site yet.** Rate limiting rules are **zone-scoped** — the docs' own next steps
+are "Create a rate limiting rule in the dashboard for a zone" and "via API for a zone", and the only
+account-level form is an Enterprise feature deployed to Enterprise zones
+(https://developers.cloudflare.com/waf/rate-limiting-rules/). A `*.pages.dev` hostname is not a zone
+on the account, so there is nothing to attach a rule to. The custom-domains page does not contradict
+this; it only says an apex custom domain "must be a zone on the Cloudflare account"
+(https://developers.cloudflare.com/pages/configuration/custom-domains/). Note that the docs do not
+state the `pages.dev` case explicitly, so this follows from the zone model rather than from one
+sentence.
+
+Rate limiting itself needs no paid plan once a zone exists: the plan table gives Free 1 rule, Pro 2,
+Business 5, with Free limited to a 10-second counting period.
+
+**What closes it:** the client's custom domain added to the account as a zone, then one rate limiting
+rule on `/api/lead`. Until then the endpoint's protection is Turnstile plus the honeypot, which is
+what it has had all along. The alternative, if the domain is slow to arrive and abuse appears, is a
+counter in KV or a Durable Object — code rather than a setting, and a bigger change than this item
+assumed.
 
 ## 14. Cloudflare now points new projects at Workers, not Pages
 
