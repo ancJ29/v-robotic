@@ -152,16 +152,51 @@ not (the same shape of gap as item 10's hero headline).
 **What closes it:** a seed or test showroom with `details_confirmed` true, or the client's real showroom data
 replacing the sample ones.
 
-## 17. A site built from Strapi points its images at Strapi's own address — CLOSED by P7
+## 17. The box serves the site's images, so the box being down breaks the pictures
 
-Closed 2026-11-09 by the first way: the publish workflow builds against the box's public https address and sets `STRAPI_PUBLIC_URL` to it; the run fails if a page holds a local image address. Proved against a local Strapi (144 local references reproduced, then none). Details and the remaining cost (images are served by the box): `docs/conventions/publish.md`. The original text follows.
+Opened by P1c on 2026-11-09 as "a site built from Strapi points its images at Strapi's own address",
+and reduced to this by P7, which closed the original: the deploy workflow now sets
+`STRAPI_PUBLIC_URL` to the box's public https address, and P7 proved it both ways against a local
+Strapi — the build without it wrote 144 references to `http://127.0.0.1:1337/uploads/...`, and the
+build with it wrote 144 to the public address and none local.
 
-Opened by P1c on 2026-11-09. Strapi's local upload provider returns paths like `/uploads/x.svg`; the adapter
-prefixes `STRAPI_PUBLIC_URL` (default: the Strapi URL the build read from). Built against the local box the
-pages therefore say `http://127.0.0.1:1337/uploads/...`, which no visitor can open. Harmless today because
-the deployed site builds from the seed, whose images are site paths. It bites the first deploy built from
-Strapi.
+What is left is a consequence rather than a bug: the images are then served **by the box**. A site
+built from Strapi keeps its pages up when the box is down, because the pages are static, but every
+picture on them breaks. Today's placeholders are 0.4 MB; the client's photographs will not be.
 
-**What closes it:** P7 sets `STRAPI_PUBLIC_URL` to the box's public address, or Strapi gets an object-storage
-provider (R2) whose URLs are already absolute; then one built page is read to see the images point somewhere
-a visitor can reach.
+**What closes it:** mirror the uploads into the build so the images ship with the site, or give Strapi
+an object-storage provider (R2) whose URLs do not depend on the box. P7 chose neither, deliberately,
+rather than add a provider and a migration for 0.4 MB of placeholders. Recorded in
+`docs/conventions/publish.md`.
+
+## 18. The GitHub token behind Publish expires, and Publish then stops quietly
+
+Opened by the orchestrator on 2026-11-09, from P7's own flag. The client's Publish button reaches
+GitHub through a fine-grained token the human creates. Those tokens expire. When it does, the relay
+can no longer dispatch the build, so **pressing Publish stops rebuilding the site** — and the person
+who notices is the client, who sees their edit never appear and has no way to tell why.
+
+**What closes it:** two halves, and the second matters more than the first. The expiry date is written
+down where it will be seen — `docs/conventions/publish.md` and the human's own calendar — when the
+token is created. And a failed rebuild tells somebody: the relay already answers Strapi with an
+error, but nobody reads Strapi's webhook log, so the fix is a notice to the Slack webhook this
+project already uses for leads. That needs the webhook URL, which is the human's.
+
+## 19. The backups live on the box they are backing up
+
+Opened by the orchestrator on 2026-11-09, from P7's own flag. The nightly set is verified, rotated and
+sound — `sqlite3 .backup` for a consistent copy while Strapi writes, `integrity_check`, a table count,
+gzip, `SHA256SUMS`, fourteen nights in roughly 15 MB, and it refuses to start rather than fill the
+disk. But it all sits on the same 512 MB box, so if the box is deleted or lost the backups go with it.
+The static site survives either way; what is lost is the client's content edits since the last copy
+that exists somewhere else.
+
+**What closes it:** Lightsail automatic snapshots, or an off-box copy — P7 left a hook for an off-box
+command, exit 6, which keeps the local set when it fails. Both need something of the human's: a
+setting that bills, or a key.
+
+**Not now, and for a reason:** automatic snapshots on a box that is created and destroyed every day
+would leave snapshots behind every evening, and the teardown deliberately refuses to delete a
+snapshot unless asked (`DELETE_SNAPSHOTS=1`), so each test day would quietly add a billing leftover.
+This belongs to the box that is meant to live — the one that stands up in December — not to the test
+boxes.
