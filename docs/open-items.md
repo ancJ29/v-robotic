@@ -135,3 +135,23 @@ exercised anywhere. Listed in `docs/conventions/box.md`, "Never run anywhere".
 
 **What closes it:** the human's first run of the one-off script ends green (box up, admin over https,
 survived its reboot), or fails and the failing step is fixed in `ops/box/` and noted in `box.md`.
+
+## 16. The showroom type's new field was hand-edited into Strapi's generated types
+
+Opened by the orchestrator on 2026-11-09, from P1b's own disclosure. P1b added a `description` text
+field to the showroom type, because the type had none and a showroom with no address needed something
+to say. The schema, `types.ts`, the adapter and `cms/types/generated/contentTypes.d.ts` all agree —
+but that last file is **generated**, and it was edited by hand because no Strapi was running. The
+seed validator's three-way check passes, so nothing is known to be wrong; what is missing is the
+round trip through Strapi itself, which is the only thing that proves the field exists in the CMS
+rather than only in the repository's idea of it.
+
+Related and smaller: P1b removed the one sample showroom that carried a placeholder address and
+opening hours, so **the seed no longer exercises the `details_confirmed = true` path**. The site's
+tests still cover it, but the data does not — the same shape of gap as item 10's hero headline.
+
+**What closes it:** the next time Strapi runs — P7, or any local box — run `strapi build`, then
+`strapi ts:generate-types`, then `content/scripts/import-seed.mjs` and
+`web/scripts/compare-with-seed.mjs`. If the generated file comes back different from the hand-edited
+one, the hand edit was wrong and the difference is the answer. Recorded in
+`docs/conventions/content.md`'s P1b section.
