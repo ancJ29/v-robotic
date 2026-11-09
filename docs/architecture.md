@@ -46,7 +46,7 @@ flowchart LR
         CD["Caddy :80 :443<br/>Let's Encrypt · sslip.io"]
         ST["Strapi 5<br/>:1337 · closed to internet"]
         DB[("SQLite<br/>outside deploy dir")]
-        PM["pm2 · restarts on crash/reboot"]
+        PM["systemd · restarts on crash/reboot"]
     end
 
     subgraph GH["GitHub"]

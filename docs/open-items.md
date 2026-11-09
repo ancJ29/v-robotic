@@ -15,25 +15,6 @@ decision, and an override that outlives its cause silently holds a package back.
 both pass, the pin is gone for good. Worth trying whenever Astro is upgraded. Recorded in
 `docs/conventions/scaffold.md`.
 
-## 2. The plan says S0a deploys to Lightsail; it does not
-
-Opened by S0a on 2026-11-08. `docs/plan.md` line 100 lists "the step that puts it on Lightsail"
-inside S0a. S0a was deliberately scoped to build and publish an artifact only, because standing up
-the box is P6 and had no caller. Nothing is broken; the plan line overstates what S0a delivers, and
-a later session reading only the plan would look for a deploy step that is not there.
-
-**What closes it:** correct that line when P6 is planned, so the two agree.
-
-## 3. P6 should unpack, not install
-
-Opened by S0a on 2026-11-08. `docs/plan.md` line 138 has P6 running a production install on the
-box. S0a's artifact is instead a self-contained production tree — about 1.4 GB unpacked, 280 MB as
-a tarball, with the Linux x86-64 SQLite binary already in place — so the box needs no install and no
-network. Installing roughly 1,250 packages on a 512 MB box is the wrong place for that work.
-
-**What closes it:** P6 decides. If it unpacks the artifact, the plan line is corrected to match; if
-it installs on the box after all, this item records why that was chosen against the cheaper route.
-
 ## 4. Catalog search is a client-side filter, not a build-time index
 
 Opened by P2a on 2026-11-08. `docs/plan.md`'s P2a row says the catalog search uses a build-time
@@ -100,6 +81,8 @@ error was only found on a live, billing Lightsail box after 132 crash-restarts.
 This is a process item, not a code one. The pattern that failed: a piece reports a command it could
 not run, names that honestly, and the honesty is lost at the next hand-off.
 
+**P6 obeyed it (2026-11-09):** every script header, `docs/conventions/box.md` and `reports/p6.md` mark each command as run here or never run anywhere, and the paste-ready script says so in its first lines and again at start. Whether the rule survives the orchestrator's relay is the part this file cannot show.
+
 **What closes it:** nothing in code. A brief that passes on a command should say whether the piece
 that wrote it ran it, and an unrun command should be marked as unrun wherever it travels. Worth
 carrying to the freelance kit, since it holds in every project.
@@ -141,3 +124,13 @@ supported today. Moving later is a config change plus one build step, not a rewr
 **What closes it:** a deliberate decision, not a deadline. Revisit if Cloudflare announces an end
 date for Pages, or when something is wanted that only Workers assets offer. Recorded in
 `docs/conventions/live-deploy.md` with both source URLs.
+
+## 15. The box scripts have never run against a real box
+
+Opened by P6 on 2026-11-09. `ops/box/` and the paste-ready script were written in a sandbox with no AWS
+access. Their text, parsers, refusals and a dry run were tested on a Mac; no step has run on Ubuntu, and
+the Caddy apt lines, the strapi account's file permissions and the sslip.io certificate have never been
+exercised anywhere. Listed in `docs/conventions/box.md`, "Never run anywhere".
+
+**What closes it:** the human's first run of the one-off script ends green (box up, admin over https,
+survived its reboot), or fails and the failing step is fixed in `ops/box/` and noted in `box.md`.

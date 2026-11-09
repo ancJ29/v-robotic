@@ -97,7 +97,7 @@ at first and Strapi later, so swapping the source is a one-file change rather th
 
 | | Piece | What it ends with | Est. |
 |---|---|---|---|
-| S0a | A Strapi build that can reach the box | `cms-build.yml` on Actions (ubuntu x64): install, `strapi build`, tar the artifact, plus the step that puts it on Lightsail. P6 reuses it unchanged | ~40 min |
+| S0a | A Strapi build that can reach the box | `cms-build.yml` on Actions (ubuntu x64): install, `strapi build`, tar the artifact. It builds only; putting the artifact on the box is P6 (open item 2, closed 2026-11-09) | ~40 min |
 | S0b | Strapi on 512 MB, for real | A box with swap, that artifact running, the admin opened and timed, memory measured under load — a yes or no on the 512 MB plan | ~45 min + your console steps |
 
 **S0 was one piece and is now two, because as written it could not start.** "Stand the box up, run
@@ -135,7 +135,7 @@ But it's real, and you can judge it.
 | | Piece | What it ends with | Est. |
 |---|---|---|---|
 | P5 | Strapi locally | Types created, seed imported, the adapter mapping Strapi's REST shape into the P1 types | ~50 min |
-| P6 | Lightsail, for keeps | The deploy recipe as parameterised scripts: artifact transfer, prod install with Strapi stopped, SQLite path outside the deploy dir, systemd unit, Caddyfile and sslip.io hostname, swap and swappiness persisted, SSH restricted, R2 media provider, client accounts | ~90 min + your console work |
+| P6 | Lightsail, for keeps | The box as parameterised scripts in `ops/box/` plus one paste-ready script: unpack the artifact (no install on the box), a `strapi` system account, a generated secrets file, SQLite outside the deploy dir, systemd unit, Caddyfile and sslip.io hostname, swap and swappiness persisted, ssh by key only. Written, **never run against a real box**. R2 media provider and client accounts are not in it (R2 needs the bucket and its key; client accounts need the client). | ~90 min + your console work |
 | P7 | The loop closes | `/api/rebuild` relaying Strapi's webhook to Actions, a concurrency group on the build, nightly `sqlite3 .backup` by cron **on the box** | ~40 min |
 
 **At the end of P7 the client logs in, changes a product, and sees it live two minutes later.**
